@@ -3,6 +3,7 @@ import React, { useState } from "react";
 function AuthPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
   const handleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };
@@ -57,11 +58,9 @@ function AuthPage() {
             </div>
           </form>
           <p className="text-center mt-4 text-gray-500">
-            {isSignUp
-              ? "If you have an account? "
-              : "You don't have an account? "}
+            {isSignUp ? "You have an account? " : "You don't have an account? "}
             <span
-              className="text-blue-500 font-bold cursor-pointer "
+              className="text-blue-500 font-bold cursor-pointer"
               onClick={handleSignUp}
             >
               Click here
