@@ -1,4 +1,5 @@
 import React from "react";
+import Input from "./Input";
 
 interface UserInfo {
   email: string;
@@ -33,46 +34,35 @@ function AuthPageForm({
         </h1>
         <div className="border w-[300px] mt-5 mb-5 border-purple-500" />
         <form onSubmit={handleSubmit}>
-          <span className="text-gray-500">Email</span>
-          <div className="h-11 mt-2 mb-5">
-            <input
-              name="email"
-              type="email"
-              className="w-full h-full border rounded-lg border-purple-500 focus: outline-purple-700 focus: outline-4 p-1"
-              placeholder="Enter your email"
-              onChange={handleInputUserInfo}
-              value={userInfo.email}
-            />
-          </div>
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            onChange={handleInputUserInfo}
+            value={userInfo.email}
+          />
           {isSignUp && (
-            <>
-              <span className="text-gray-500">Name</span>
-              <div className="h-11 mt-2 mb-5">
-                <input
-                  name="name"
-                  type="text"
-                  className="w-full h-full border rounded-lg border-purple-500 focus: outline-purple-700 focus: outline-4 p-1"
-                  placeholder="Enter your name"
-                  onChange={handleInputUserInfo}
-                  value={userInfo.name}
-                />
-              </div>
-            </>
-          )}
-          <span className="text-gray-500">Password</span>
-          <div className="h-11 mt-2 flex justify-center items-center border border-purple-500 focus-within:border-2 rounded-lg p-1">
-            <input
-              name="password"
-              type={showPassword ? "text" : "password"}
-              className="w-full h-full outline-none p-1 rounded-lg"
-              placeholder="Enter your password"
+            <Input
+              label="Name"
+              name="name"
+              type="text"
+              placeholder="Enter your name"
               onChange={handleInputUserInfo}
-              value={userInfo.password}
+              value={userInfo.name}
             />
-            <p onClick={handleShowPassword} className="cursor-pointer">
-              {showPassword ? "Hide" : "Show"}
-            </p>
-          </div>
+          )}
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="Enter your password"
+            onChange={handleInputUserInfo}
+            value={userInfo.password}
+            showPassword={showPassword}
+            isPassword
+            handleShowPassword={handleShowPassword}
+          />
           <button
             className="cursor-pointer bg-purple-500 flex items-center justify-center text-white h-11 mt-5 rounded-lg w-full"
             type="submit"
