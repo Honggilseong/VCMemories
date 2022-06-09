@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 
 interface FormData {
-  name: String;
-  email: String;
-  password: String;
+  name: string;
+  email: string;
+  password: string;
 }
 
 const API = axios.create({ baseURL: "http://localhost:5000/" });
 
-export const signUp = (formData: FormData) => {
-  API.post("/user/signup", formData);
+export const signUp = (formData: FormData): AxiosPromise => {
+  return API.post("/user/signup", formData);
 };

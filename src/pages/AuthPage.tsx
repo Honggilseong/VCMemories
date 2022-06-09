@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { createUser } from "../actions/authAction";
+import { useAppDispatch } from "../reducers/store";
+import { useInternalRouter } from "./routing";
 
 interface UserInfo {
   email: string;
@@ -14,14 +17,27 @@ function AuthPage() {
     email: "",
     name: "",
   });
+  const dispatch = useAppDispatch();
+  const { push } = useInternalRouter();
+
+  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
+    event.preventDefault();
+    if (isSignUp) {
+      dispatch(createUser(userInfo, push));
+    } else {
+      //will do something
+    }
+  };
 
   const handleInputUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo({ ...userInfo, [name]: value });
   };
+
   const handleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };
+
   const handleSignUp = () => {
     setIsSignUp((prevState) => !prevState);
     setUserInfo({
@@ -30,6 +46,7 @@ function AuthPage() {
       name: "",
     });
   };
+
   return (
     <div className="w-screen h-screen flex">
       <div className="flex flex-row justify-center border-r-2 w-[550px]">
@@ -38,7 +55,7 @@ function AuthPage() {
             {isSignUp ? "Sign Up" : "Sign In"}
           </h1>
           <div className="border w-[300px] mt-5 mb-5 border-purple-500" />
-          <form>
+          <form onSubmit={handleSubmit}>
             <span className="text-gray-500">Email</span>
             <div className="h-11 mt-2 mb-5">
               <input
@@ -79,9 +96,12 @@ function AuthPage() {
                 {showPassword ? "Hide" : "Show"}
               </p>
             </div>
-            <div className="cursor-pointer bg-purple-500 flex items-center justify-center text-white h-11 mt-5 rounded-lg">
+            <button
+              className="cursor-pointer bg-purple-500 flex items-center justify-center text-white h-11 mt-5 rounded-lg w-full"
+              type="submit"
+            >
               {isSignUp ? "Sign Up" : "Sign In"}
-            </div>
+            </button>
           </form>
           <p className="text-center mt-4 text-gray-500">
             {isSignUp ? "You have an account? " : "You don't have an account? "}
