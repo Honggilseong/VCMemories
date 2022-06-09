@@ -1,4 +1,8 @@
-import { authActionDispatch, CREATE_USER } from "../actions/authActionDispatch";
+import {
+  authActionDispatch,
+  CREATE_USER,
+  SIGN_IN,
+} from "../actions/authActionDispatch";
 
 interface InitialState {
   name: string;
@@ -18,6 +22,10 @@ const AuthReducer = (
 ) => {
   switch (action.type) {
     case CREATE_USER: {
+      localStorage.setItem("profile", JSON.stringify(action.payload));
+      return { ...state, userData: action.payload };
+    }
+    case SIGN_IN: {
       localStorage.setItem("profile", JSON.stringify(action.payload));
       return { ...state, userData: action.payload };
     }

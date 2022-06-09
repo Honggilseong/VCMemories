@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createUser } from "../actions/authAction";
+import { createUser, signIn } from "../actions/authAction";
 import { useAppDispatch } from "../reducers/store";
 import { useInternalRouter } from "./routing";
 
@@ -25,7 +25,7 @@ function AuthPage() {
     if (isSignUp) {
       dispatch(createUser(userInfo, push));
     } else {
-      //will do something
+      dispatch(signIn(userInfo, push));
     }
   };
 
