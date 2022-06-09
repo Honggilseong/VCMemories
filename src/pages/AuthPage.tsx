@@ -1,14 +1,34 @@
 import React, { useState } from "react";
 
+interface UserInfo {
+  email: string;
+  password: string;
+  name: string;
+}
+
 function AuthPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    password: "",
+    email: "",
+    name: "",
+  });
 
+  const handleInputUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserInfo({ ...userInfo, [name]: value });
+  };
   const handleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };
   const handleSignUp = () => {
     setIsSignUp((prevState) => !prevState);
+    setUserInfo({
+      password: "",
+      email: "",
+      name: "",
+    });
   };
   return (
     <div className="w-screen h-screen flex">
@@ -26,6 +46,8 @@ function AuthPage() {
                 type="email"
                 className="w-full h-full border rounded-lg border-purple-500 focus: outline-purple-700 focus: outline-4 p-1"
                 placeholder="Enter your email"
+                onChange={handleInputUserInfo}
+                value={userInfo.email}
               />
             </div>
             {isSignUp && (
@@ -37,6 +59,8 @@ function AuthPage() {
                     type="text"
                     className="w-full h-full border rounded-lg border-purple-500 focus: outline-purple-700 focus: outline-4 p-1"
                     placeholder="Enter your name"
+                    onChange={handleInputUserInfo}
+                    value={userInfo.name}
                   />
                 </div>
               </>
@@ -48,6 +72,8 @@ function AuthPage() {
                 type={showPassword ? "text" : "password"}
                 className="w-full h-full outline-none p-1 rounded-lg"
                 placeholder="Enter your password"
+                onChange={handleInputUserInfo}
+                value={userInfo.password}
               />
               <p onClick={handleShowPassword} className="cursor-pointer">
                 {showPassword ? "Hide" : "Show"}
