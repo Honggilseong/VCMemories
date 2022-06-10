@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
+interface User {
+  name: string;
+  token: string;
+  email: string;
+  profilePicture: string;
+}
 
 function Header() {
+  const [user, setUser] = useState<User | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
+
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setSearchValue(event.target.value);
   };
+
+  useEffect(() => {
+    const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
+    if (!isAuthenticated) return;
+    setUser(isAuthenticated.user);
+  }, []);
 
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
@@ -24,7 +38,24 @@ function Header() {
             <BiSearchAlt2 color="black" size="20px" cursor="pointer" />
           </div>
         </div>
-        <div>userInfo</div>
+        <div>
+          {user ? (
+            <div className="flex items-center justify-center cursor-pointer">
+              <h1 className="mr-4">{user.name}</h1>
+              <div className="rounded-full border-2 w-10 h-10 hidden lg:block">
+                <img
+                  src={user.profilePicture}
+                  alt="userProfilePicture"
+                  className="rounded-full"
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="bg-purple-800 border-2 border-purple-900 p-2 rounded-lg cursor-pointer hover:bg-purple-700">
+              Sign In
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
