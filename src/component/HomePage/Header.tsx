@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
 interface User {
   name: string;
@@ -32,7 +33,13 @@ function Header() {
           handleSearchBar={handleSearchBar}
           searchValue={searchValue}
         />
-        <UserProfile user={user} />
+        <div className="flex justify-center items-center">
+          <MdOutlineAddPhotoAlternate
+            size={30}
+            className="cursor-pointer mr-4"
+          />
+          <UserProfile user={user} />
+        </div>
       </div>
     </header>
   );
