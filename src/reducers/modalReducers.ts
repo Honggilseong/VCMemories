@@ -1,5 +1,8 @@
-import { modalActionDispatch } from "../actions/modalActionDIspatch";
-import { OPEN_MODAL } from "../actions/modalActionDIspatch";
+import {
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  modalActionDispatch,
+} from "../actions/modalActionDIspatch";
 
 interface InitialState {
   isModalOpen: boolean;
@@ -15,6 +18,10 @@ const ModalReducer = (
     case OPEN_MODAL: {
       console.log("Modal state has changed");
       return { ...state, isModalOpen: true };
+    }
+    case CLOSE_MODAL: {
+      console.log("Modal state has changed");
+      return { ...state, isModalOpen: false };
     }
     default:
       return state;
