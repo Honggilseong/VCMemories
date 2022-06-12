@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { useAppDispatch } from "../../reducers/store";
+import { openModal } from "../../actions/modalAction";
+import { useSelector } from "react-redux";
+import { RootState } from "../../reducers";
 
 interface User {
   name: string;
@@ -13,10 +17,16 @@ interface User {
 function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
-
+  const dispatch = useAppDispatch();
+  const modal = useSelector((state: RootState) => state.modal);
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setSearchValue(event.target.value);
+  };
+
+  const handleCreatePost = () => {
+    console.log(modal.isModalOpen);
+    dispatch(openModal());
   };
 
   useEffect(() => {
@@ -37,6 +47,7 @@ function Header() {
           <MdOutlineAddPhotoAlternate
             size={30}
             className="cursor-pointer mr-4"
+            onClick={handleCreatePost}
           />
           <UserProfile user={user} />
         </div>
