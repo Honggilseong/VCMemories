@@ -14,7 +14,7 @@ const ModalReducer = (
   switch (action.type) {
     case OPEN_MODAL: {
       console.log("Modal state has changed");
-      return { ...state, isModalOpen: !state.isModalOpen };
+      return { ...state, isModalOpen: true };
     }
     default:
       return state;
