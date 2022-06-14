@@ -1,4 +1,5 @@
 export const CREATE_POST = "CREATE_POST";
+export const GET_POSTS = "GET_POSTS";
 
 export interface NewPost {
   title: string;
@@ -14,4 +15,11 @@ export interface createPost {
   payload: NewPost;
 }
 
-export type postActionDispatch = createPost;
+export type PostsState = NewPost[];
+
+export interface getPosts {
+  type: typeof GET_POSTS;
+  payload: PostsState;
+}
+
+export type postActionDispatch = createPost | getPosts;

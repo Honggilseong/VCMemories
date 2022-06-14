@@ -34,3 +34,6 @@ export const signIn = (formData: FormData): AxiosPromise => {
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
 };
+export const getPosts = (): AxiosPromise => {
+  return API.get("/posts/", config);
+};

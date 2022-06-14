@@ -1,4 +1,4 @@
-import { postActionDispatch } from "../actions/postActionDispatch";
+import { GET_POSTS, postActionDispatch } from "../actions/postActionDispatch";
 import { CREATE_POST } from "../actions/postActionDispatch";
 
 interface PostData {
@@ -8,23 +8,22 @@ interface PostData {
   picture: string;
   profilePicture: string;
 }
-interface InitialState {
-  post: PostData[];
-}
-const initialState = {
-  post: [],
-};
+type PostsState = PostData[];
+const initialState: PostsState = [];
 
 const PostReducer = (
-  state: InitialState = initialState,
+  state: PostsState = initialState,
   action: postActionDispatch
 ) => {
   switch (action.type) {
     case CREATE_POST: {
-      console.log("connected", action.payload, state);
-      return { post: [...state.post, action.payload] };
+      console.log("createPost", action.payload, state);
+      return [...state, action.payload];
     }
-
+    case GET_POSTS: {
+      console.log("getPosts", action.payload);
+      return action.payload;
+    }
     default:
       return state;
   }
