@@ -1,17 +1,18 @@
 import { postActionDispatch } from "../actions/postActionDispatch";
 import { CREATE_POST } from "../actions/postActionDispatch";
 
-interface InitialState {
+interface PostData {
   title: string;
   message: string;
   tags: string;
   picture: string;
+  profilePicture: string;
+}
+interface InitialState {
+  post: PostData[];
 }
 const initialState = {
-  title: "",
-  message: "",
-  tags: "",
-  picture: "",
+  post: [],
 };
 
 const PostReducer = (
@@ -20,8 +21,8 @@ const PostReducer = (
 ) => {
   switch (action.type) {
     case CREATE_POST: {
-      console.log("connected");
-      return state;
+      console.log("connected", action.payload, state);
+      return { post: [...state.post, action.payload] };
     }
 
     default:
