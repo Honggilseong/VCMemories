@@ -5,11 +5,14 @@ import { useInternalRouter } from "../../../pages/routing";
 import { RootState } from "../../../reducers";
 import { useAppDispatch } from "../../../reducers/store";
 import { closeModal } from "../../../actions/modalAction";
+import { createPost } from "../../../actions/postAction";
 interface NewPost {
   title: string;
   picture: string;
   message: string;
-  tags: string;
+  tags: string[];
+  name: string;
+  profilePicture: string;
 }
 
 const customStyles = {
@@ -27,7 +30,9 @@ function CreatePostModal() {
     title: "",
     picture: "",
     message: "",
-    tags: "",
+    tags: [],
+    name: "",
+    profilePicture: "",
   });
   const navigate = useInternalRouter();
   const modal = useSelector((state: RootState) => state.modal);
@@ -45,7 +50,9 @@ function CreatePostModal() {
       title: "",
       picture: "",
       message: "",
-      tags: "",
+      tags: [],
+      name: "",
+      profilePicture: "",
     });
   };
 
@@ -55,14 +62,20 @@ function CreatePostModal() {
     console.log(newPost);
   };
 
+  const handleUploadPost = () => {
+    dispatch(createPost(newPost));
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("profile") || "");
     if (!user) {
       navigate.push("/");
+      handleCloseModal();
       return;
     }
-    console.log(user);
-  }, [navigate]);
+    const { name, profilePicture } = user.user;
+    setNewPost({ ...newPost, name, profilePicture });
+  }, [modal.isModalOpen]);
 
   return (
     <Modal
@@ -129,6 +142,12 @@ function CreatePostModal() {
           accept="image/png, image/jpeg , image/jpg"
           onChange={handleFile}
         />
+      </div>
+      <div
+        className="h-12 bg-red-400 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer"
+        onClick={handleUploadPost}
+      >
+        <p>Upload your post</p>
       </div>
       <div
         className="h-12 bg-gray-500 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer"
