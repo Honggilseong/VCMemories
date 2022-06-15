@@ -25,14 +25,14 @@ function Post({ post }: Props) {
           <BsThreeDotsVertical size={20} />
         </div>
       </div>
-      <div className="max-w-4xl h-full mx-auto">
+      <div className="max-w-2xl mx-auto">
         <img
           src={require("../../images/vc.png")}
           alt="userImage"
           className="object-cover"
         />
       </div>
-      <div className=" my-2">
+      <div className="my-2">
         <p>{post.message}</p>
         <p>{post.tags.map((tag: string) => tag)}</p>
         <p>{post.createdAt}</p>

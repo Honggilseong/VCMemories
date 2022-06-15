@@ -1,3 +1,4 @@
+import { FullPage, Slide } from "react-full-page";
 import { useSelector } from "react-redux";
 import Post from "./Post";
 
@@ -15,10 +16,14 @@ interface UserPost {
 function Posts() {
   const fetchPosts = useSelector((state: any) => state.post);
   return (
-    <div className="max-w-4xl mx-auto">
-      {fetchPosts.map((post: UserPost) => (
-        <Post key={post._id} post={post} />
-      ))}
+    <div className="max-w-2xl mx-auto">
+      <FullPage>
+        {fetchPosts.map((post: UserPost) => (
+          <Slide>
+            <Post key={post._id} post={post} />
+          </Slide>
+        ))}
+      </FullPage>
     </div>
   );
 }
