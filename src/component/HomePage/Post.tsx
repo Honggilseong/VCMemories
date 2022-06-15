@@ -1,7 +1,7 @@
 import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
-
+import moment from "moment";
 interface Props {
   post: {
     createdAt: string;
@@ -35,7 +35,7 @@ function Post({ post }: Props) {
       <div className="my-2">
         <p>{post.message}</p>
         <p>{post.tags.map((tag: string) => tag)}</p>
-        <p>{post.createdAt}</p>
+        <p>{moment(post.createdAt).fromNow()}</p>
       </div>
       <div className="flex">
         <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-point">
