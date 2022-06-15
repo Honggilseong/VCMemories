@@ -17,7 +17,7 @@ function Posts() {
   return (
     <div className="max-w-4xl mx-auto">
       {fetchPosts.map((post: UserPost) => (
-        <Post post={post} />
+        <Post key={post._id} post={post} />
       ))}
     </div>
   );
