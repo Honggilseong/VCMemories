@@ -2,6 +2,8 @@ import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
 import moment from "moment";
+import { useAppDispatch } from "../../reducers/store";
+import { deletePost } from "../../actions/postAction";
 interface Props {
   post: {
     createdAt: string;
@@ -12,18 +14,30 @@ interface Props {
     tags: string[];
     title: string;
     _id: string;
+    userId: string;
+    profilePicture: string;
   };
 }
 
 function Post({ post }: Props) {
+  const dispatch = useAppDispatch();
+  const getUser = JSON.parse(localStorage.getItem("profile") || "");
+  const handleDeletePost = () => {
+    dispatch(deletePost(post._id, getUser.user._id));
+  };
   return (
     <>
       <div className="h-14 border flex justify-between items-center px-3">
         <div />
         <h1>{post.name}</h1>
-        <div className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center">
-          <BsThreeDotsVertical size={20} />
-        </div>
+        {post.userId === getUser.user._id && (
+          <div
+            className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center"
+            onClick={handleDeletePost}
+          >
+            <BsThreeDotsVertical size={20} />
+          </div>
+        )}
       </div>
       <div className="max-w-2xl mx-auto">
         <img
