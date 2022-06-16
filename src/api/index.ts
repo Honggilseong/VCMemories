@@ -7,12 +7,14 @@ interface FormData {
 }
 
 interface PostData {
-  name: string;
-  picture: string;
   title: string;
-  profilePicture: string;
-  tags: string[];
+  picture: string;
   message: string;
+  tags: string[];
+  name: string;
+  profilePicture: string;
+  userId: string;
+  likes: string[];
 }
 
 const API = axios.create({ baseURL: "http://localhost:5000/" });
@@ -37,3 +39,12 @@ export const createPost = (postData: PostData): AxiosPromise => {
 export const getPosts = (): AxiosPromise => {
   return API.get("/posts/", config);
 };
+
+export const deletePost = (id: string, userId: string) =>
+  API.delete(`/posts/${id}`, {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+    data: { userId },
+  });
