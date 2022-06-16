@@ -43,8 +43,8 @@ function CreatePostModal() {
   const modal = useSelector((state: RootState) => state.modal);
   const dispatch = useAppDispatch();
 
-  const handleFile = (e: any) => {
-    const fileBlob = e.target.files[0];
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileBlob = e.target.files![0];
 
     setNewPost({ ...newPost, picture: URL.createObjectURL(fileBlob) });
   };
@@ -69,7 +69,7 @@ function CreatePostModal() {
     console.log(newPost);
   };
 
-  const handleUploadPost = (e: any) => {
+  const handleUploadPost = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (!getUser) {
       navigate.push("/");
