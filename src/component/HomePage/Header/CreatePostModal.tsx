@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { useInternalRouter } from "../../../pages/routing";
@@ -13,6 +13,8 @@ interface NewPost {
   tags: string[];
   name: string;
   profilePicture: string;
+  userId: string;
+  likes: string[];
 }
 
 const customStyles = {
@@ -26,13 +28,16 @@ const customStyles = {
   },
 };
 function CreatePostModal() {
+  const getUser = JSON.parse(localStorage.getItem("profile") || "");
   const [newPost, setNewPost] = useState<NewPost>({
     title: "",
     picture: "",
     message: "",
     tags: [],
-    name: "",
-    profilePicture: "",
+    name: getUser.user.name,
+    profilePicture: getUser.user.profilePicture,
+    userId: getUser.user._id,
+    likes: [],
   });
   const navigate = useInternalRouter();
   const modal = useSelector((state: RootState) => state.modal);
@@ -51,8 +56,10 @@ function CreatePostModal() {
       picture: "",
       message: "",
       tags: [],
-      name: "",
-      profilePicture: "",
+      name: getUser.user.name,
+      profilePicture: getUser.user.profilePicture,
+      userId: getUser.user._id,
+      likes: [],
     });
   };
 
@@ -62,20 +69,15 @@ function CreatePostModal() {
     console.log(newPost);
   };
 
-  const handleUploadPost = () => {
-    dispatch(createPost(newPost));
-  };
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("profile") || "");
-    if (!user) {
+  const handleUploadPost = (e: any) => {
+    e.preventDefault();
+    if (!getUser) {
       navigate.push("/");
-      handleCloseModal();
+      dispatch(closeModal());
       return;
     }
-    const { name, profilePicture } = user.user;
-    setNewPost({ ...newPost, name, profilePicture });
-  }, [modal.isModalOpen]);
+    dispatch(createPost(newPost));
+  };
 
   return (
     <Modal
