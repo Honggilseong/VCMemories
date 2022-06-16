@@ -2,9 +2,9 @@ import Posts from "./Posts";
 
 function Body() {
   return (
-    <body className="w-full h-full">
+    <section className="w-full h-full">
       <Posts />
-    </body>
+    </section>
   );
 }
 
