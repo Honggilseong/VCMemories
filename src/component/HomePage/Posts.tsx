@@ -11,6 +11,8 @@ interface UserPost {
   tags: string[];
   title: string;
   _id: string;
+  userId: string;
+  profilePicture: string;
 }
 
 function Posts() {
@@ -18,11 +20,15 @@ function Posts() {
   return (
     <div className="max-w-2xl mx-auto">
       <FullPage>
-        {fetchPosts.map((post: UserPost) => (
-          <Slide>
-            <Post key={post._id} post={post} />
-          </Slide>
-        ))}
+        {fetchPosts.length > 0 ? (
+          fetchPosts.map((post: UserPost) => (
+            <Slide key={post._id}>
+              <Post post={post} />
+            </Slide>
+          ))
+        ) : (
+          <p className="text-center">there's no posts</p>
+        )}
       </FullPage>
     </div>
   );
