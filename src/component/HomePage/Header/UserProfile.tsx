@@ -1,4 +1,5 @@
 import React from "react";
+import { useInternalRouter } from "../../../pages/routing";
 interface User {
   name: string;
   token: string;
@@ -9,10 +10,17 @@ interface Props {
   user: User | null;
 }
 function UserProfile({ user }: Props) {
+  const navigate = useInternalRouter();
+  const handleUserProfile = () => {
+    navigate.push("/profile");
+  };
   return (
     <div>
       {user ? (
-        <div className="flex items-center justify-center cursor-pointer">
+        <div
+          className="flex items-center justify-center cursor-pointer"
+          onClick={handleUserProfile}
+        >
           <h1 className="mr-4">{user.name}</h1>
           <div className="rounded-full border-2 w-10 h-10 hidden lg:block">
             <img
