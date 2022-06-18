@@ -8,7 +8,6 @@ interface UserInfo {
   email: string;
   password: string;
   name: string;
-  profilePicture: string;
 }
 
 function AuthPage() {
@@ -18,7 +17,6 @@ function AuthPage() {
     password: "",
     email: "",
     name: "",
-    profilePicture: "",
   });
   const dispatch = useAppDispatch();
   const { push } = useInternalRouter();
@@ -47,7 +45,6 @@ function AuthPage() {
       password: "",
       email: "",
       name: "",
-      profilePicture: "",
     });
   };
 
