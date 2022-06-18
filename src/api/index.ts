@@ -33,6 +33,10 @@ export const signIn = (formData: FormData): AxiosPromise => {
   return API.post("/user/signin", formData);
 };
 
+export const getUserInfo = (id: string): AxiosPromise => {
+  return API.get(`/user/getuserinfo/${id}`, config);
+};
+
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
 };
@@ -40,11 +44,16 @@ export const getPosts = (): AxiosPromise => {
   return API.get("/posts/", config);
 };
 
-export const deletePost = (id: string, userId: string) =>
-  API.delete(`/posts/${id}`, {
+export const deletePost = (id: string, userId: string): AxiosPromise => {
+  return API.delete(`/posts/${id}`, {
     headers: {
       "Content-type": "application/json",
       Authorization: "Bearer " + user.user.token,
     },
     data: { userId },
   });
+};
+
+export const likePost = (id: string, userId: string): AxiosPromise => {
+  return API.patch(`/posts/${id}/likepost`, userId, config);
+};
