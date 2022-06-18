@@ -1,7 +1,9 @@
 import {
   authActionDispatch,
   CREATE_USER,
+  GET_USER_INFO,
   SIGN_IN,
+  UserPosts,
 } from "../actions/authActionDispatch";
 
 interface InitialState {
@@ -9,6 +11,10 @@ interface InitialState {
   email: string;
   password: string;
   token?: string;
+  profilePicture?: string;
+  userPosts?: UserPosts[];
+  followers?: string[];
+  following?: string[];
 }
 const initialState = {
   name: "",
@@ -28,6 +34,9 @@ const AuthReducer = (
     case SIGN_IN: {
       localStorage.setItem("profile", JSON.stringify(action.payload));
       return { ...state, userData: action.payload };
+    }
+    case GET_USER_INFO: {
+      return { ...state, ...action.payload };
     }
     default:
       return state;
