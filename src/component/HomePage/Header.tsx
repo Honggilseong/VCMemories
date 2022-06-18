@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../reducers/store";
 import { openModal } from "../../actions/modalAction";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
+import { useInternalRouter } from "../../pages/routing";
 
 interface User {
   name: string;
@@ -18,6 +19,7 @@ function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
   const dispatch = useAppDispatch();
+  const navigate = useInternalRouter();
   const modal = useSelector((state: RootState) => state.modal);
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -29,6 +31,10 @@ function Header() {
     dispatch(openModal());
   };
 
+  const handleClickLogo = () => {
+    navigate.push("/");
+  };
+
   useEffect(() => {
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
     if (!isAuthenticated) return;
@@ -38,7 +44,9 @@ function Header() {
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
       <div className="max-w-7xl flex justify-between h-full items-center mx-auto p-3 xl:p-0">
-        <h1 className="font-bold">VCMemories</h1>
+        <h1 className="font-bold cursor-pointer" onClick={handleClickLogo}>
+          VCMemories
+        </h1>
         <SearchBar
           handleSearchBar={handleSearchBar}
           searchValue={searchValue}
