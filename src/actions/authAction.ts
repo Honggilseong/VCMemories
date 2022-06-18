@@ -1,5 +1,10 @@
 import { Dispatch } from "redux";
-import { CREATE_USER, SIGN_IN, UserInfo } from "./authActionDispatch";
+import {
+  CREATE_USER,
+  GET_USER_INFO,
+  SIGN_IN,
+  UserInfo,
+} from "./authActionDispatch";
 import * as api from "../api";
 
 export const createUser =
@@ -28,3 +33,15 @@ export const signIn =
       console.log(error);
     }
   };
+
+export const getUserInfo = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    const { data } = await api.getUserInfo(id);
+    dispatch({
+      type: GET_USER_INFO,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
