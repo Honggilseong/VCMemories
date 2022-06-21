@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineComment, AiFillHeart } from "react-icons/ai";
 import moment from "moment";
 import { useAppDispatch } from "../../reducers/store";
 import { deletePost, likePost } from "../../actions/postAction";
+import { useEffect } from "react";
 interface Props {
   post: {
     createdAt: string;
@@ -20,16 +21,29 @@ interface Props {
 }
 
 function Post({ post }: Props) {
+  const [likedPost, setLikedPost] = useState<Boolean>(false);
   const dispatch = useAppDispatch();
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
+
   const handleDeletePost = (e: any) => {
     e.preventDefault();
     dispatch(deletePost(post._id, getUser.user._id));
   };
+
   const handleLikePost = (e: any) => {
     e.preventDefault();
     dispatch(likePost(post._id, getUser.user._id));
   };
+
+  useEffect(() => {
+    const likedPost = post.likes.findIndex((id) => id === getUser.user._id);
+    if (likedPost === -1) {
+      setLikedPost(false);
+    } else {
+      setLikedPost(true);
+    }
+  }, [post.likes]);
+
   return (
     <>
       <div className="h-14 border flex justify-between items-center px-3">
@@ -61,7 +75,12 @@ function Post({ post }: Props) {
           className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
           onClick={handleLikePost}
         >
-          <AiOutlineHeart size={30} />
+          {likedPost ? (
+            <AiFillHeart size={30} color="red" />
+          ) : (
+            <AiOutlineHeart size={30} />
+          )}
+
           <span>{post.likes.length}</span>
         </div>
         <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
