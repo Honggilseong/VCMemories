@@ -1,6 +1,7 @@
 import {
   DELETE_POST,
   GET_POSTS,
+  LIKE_POST,
   postActionDispatch,
 } from "../actions/postActionDispatch";
 import { CREATE_POST } from "../actions/postActionDispatch";
@@ -32,6 +33,11 @@ const PostReducer = (
     }
     case DELETE_POST: {
       return state.filter((post) => post._id !== action.payload);
+    }
+    case LIKE_POST: {
+      return state.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
     }
     default:
       return state;
