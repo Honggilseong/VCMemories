@@ -25,6 +25,7 @@ const config = {
     Authorization: "Bearer " + user.user.token,
   },
 };
+//user
 export const signUp = (formData: FormData): AxiosPromise => {
   return API.post("/user/signup", formData);
 };
@@ -37,6 +38,12 @@ export const getUserInfo = (id: string): AxiosPromise => {
   return API.get(`/user/getuserinfo/${id}`, config);
 };
 
+export const getSearchingUser = (
+  username: string | undefined
+): AxiosPromise => {
+  return API.get(`/user/${username}`, config);
+};
+//posts
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
 };
