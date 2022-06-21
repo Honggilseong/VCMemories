@@ -55,5 +55,5 @@ export const deletePost = (id: string, userId: string): AxiosPromise => {
 };
 
 export const likePost = (id: string, userId: string): AxiosPromise => {
-  return API.patch(`/posts/${id}/likepost`, userId, config);
+  return API.patch(`/posts/${id}/likepost`, { userId }, config);
 };
