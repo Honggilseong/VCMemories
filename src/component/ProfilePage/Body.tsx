@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getUserInfo } from "../../actions/authAction";
+import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
 import { useAppDispatch } from "../../reducers/store";
 
@@ -31,9 +32,15 @@ function Body() {
           </div>
         </div>
         {userInfo.userPosts?.length ? (
-          <div className="h-[500px] justify-center items-center flex border">
-            {userInfo.userPosts?.map((post) => (
-              <div></div>
+          <div className="min-h-[500px] grid grid-cols-3 border gap-1">
+            {userInfo.userPosts?.map((post: NewPost) => (
+              <div
+                key={post._id}
+                className="cursor-pointer flex justify-center items-center flex-col"
+              >
+                <h1>{post.message}</h1>
+                <h2>{post.title}</h2>
+              </div>
             ))}
           </div>
         ) : (
