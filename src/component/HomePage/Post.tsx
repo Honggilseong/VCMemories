@@ -3,7 +3,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
 import moment from "moment";
 import { useAppDispatch } from "../../reducers/store";
-import { deletePost } from "../../actions/postAction";
+import { deletePost, likePost } from "../../actions/postAction";
 interface Props {
   post: {
     createdAt: string;
@@ -22,8 +22,13 @@ interface Props {
 function Post({ post }: Props) {
   const dispatch = useAppDispatch();
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
-  const handleDeletePost = () => {
+  const handleDeletePost = (e: any) => {
+    e.preventDefault();
     dispatch(deletePost(post._id, getUser.user._id));
+  };
+  const handleLikePost = (e: any) => {
+    e.preventDefault();
+    dispatch(likePost(post._id, getUser.user._id));
   };
   return (
     <>
@@ -52,11 +57,14 @@ function Post({ post }: Props) {
         <p>{moment(post.createdAt).fromNow()}</p>
       </div>
       <div className="flex">
-        <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-point">
+        <div
+          className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
+          onClick={handleLikePost}
+        >
           <AiOutlineHeart size={30} />
-          <span>322</span>
+          <span>{post.likes.length}</span>
         </div>
-        <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-point">
+        <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
           <AiOutlineComment size={30} />
           <span>31</span>
         </div>
