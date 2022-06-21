@@ -1,7 +1,7 @@
 export const CREATE_POST = "CREATE_POST";
 export const GET_POSTS = "GET_POSTS";
 export const DELETE_POST = "DELETE_POST";
-
+export const LIKE_POST = "LIKE_POST";
 export interface NewPost {
   title: string;
   picture: string;
@@ -11,6 +11,7 @@ export interface NewPost {
   profilePicture: string;
   userId: string;
   likes: string[];
+  _id?: string;
 }
 
 export interface createPost {
@@ -30,4 +31,8 @@ export interface deletePost {
   payload: string;
 }
 
-export type postActionDispatch = createPost | getPosts | deletePost;
+export interface likePost {
+  type: typeof LIKE_POST;
+  payload: NewPost;
+}
+export type postActionDispatch = createPost | getPosts | deletePost | likePost;
