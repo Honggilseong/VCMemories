@@ -41,7 +41,11 @@ export const getUserInfo = (id: string): AxiosPromise => {
 export const getSearchingUser = (
   username: string | undefined
 ): AxiosPromise => {
-  return API.get(`/user/${username}`, config);
+  return API.get(`/user/search/${username}`, config);
+};
+
+export const getAllUsers = (): AxiosPromise => {
+  return API.get("/user/getallusers", config);
 };
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
