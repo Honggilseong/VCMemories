@@ -21,6 +21,7 @@ function Header() {
   const dispatch = useAppDispatch();
   const navigate = useInternalRouter();
   const modal = useSelector((state: RootState) => state.modal);
+
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setSearchValue(event.target.value);
@@ -35,6 +36,9 @@ function Header() {
     navigate.push("/");
   };
 
+  const handleClickSearchingUser = (name: string) => {
+    navigate.push(`/user/search/${name}`);
+  };
   useEffect(() => {
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
     if (!isAuthenticated) return;
@@ -50,6 +54,7 @@ function Header() {
         <SearchBar
           handleSearchBar={handleSearchBar}
           searchValue={searchValue}
+          handleClickSearchingUser={handleClickSearchingUser}
         />
         <div className="flex justify-center items-center">
           <MdOutlineAddPhotoAlternate
