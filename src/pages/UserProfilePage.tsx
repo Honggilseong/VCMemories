@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "../component/HomePage/Header";
 import Body from "../component/UserProfilePage/Body";
 import { useParams } from "react-router-dom";
@@ -10,8 +10,7 @@ function UserProfilePage() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getSearchingUser(username));
-    console.log(username);
-  }, []);
+  }, [dispatch, username]);
   return (
     <section>
       <Header />
