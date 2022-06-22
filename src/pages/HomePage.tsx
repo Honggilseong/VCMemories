@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { getAllUsers } from "../actions/allUsersAction";
 import { getPosts } from "../actions/postAction";
 import Body from "../component/HomePage/Body";
 import Header from "../component/HomePage/Header";
@@ -10,6 +11,7 @@ function HomePage() {
 
   useEffect(() => {
     dispatch(getPosts());
+    dispatch(getAllUsers());
   }, []);
   return (
     <div>
