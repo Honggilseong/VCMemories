@@ -10,7 +10,7 @@ function Routes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/user/:username" element={<UserProfilePage />} />
+      <Route path="/user/search/:username" element={<UserProfilePage />} />
     </ReactRouterRoutes>
   );
 }
