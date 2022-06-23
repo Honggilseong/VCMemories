@@ -15,6 +15,7 @@ function SearchBar({
   handleClickSearchingUser,
 }: Props) {
   const allUsers = useSelector((state: RootState) => state.allUsers);
+  const modal = useSelector((state: RootState) => state.modal);
   return (
     <div className="relative">
       <div className="hidden lg:flex justify-center items-center bg-white rounded-lg p-1 text text-black outline-1 outline outline-purple-900 focus-within:outline-[3px]">
@@ -27,7 +28,7 @@ function SearchBar({
         />
         <BiSearchAlt2 color="black" size="20px" cursor="pointer" />
       </div>
-      {searchValue && (
+      {modal.isSearchResultsModalOpen && (
         <div className="border absolute -bottom-[18rem] -left-12 rounded-lg h-72 overflow-hidden w-[300px] bg-white ">
           {allUsers
             .filter((user) =>
