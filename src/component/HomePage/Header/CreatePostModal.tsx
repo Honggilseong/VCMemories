@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useInternalRouter } from "../../../pages/routing";
 import { RootState } from "../../../reducers";
 import { useAppDispatch } from "../../../reducers/store";
-import { closeModal } from "../../../actions/modalAction";
+import { closePostModal } from "../../../actions/modalAction";
 import { createPost } from "../../../actions/postAction";
 interface NewPost {
   title: string;
@@ -50,7 +50,7 @@ function CreatePostModal() {
   };
 
   const handleCloseModal = () => {
-    dispatch(closeModal());
+    dispatch(closePostModal());
     setNewPost({
       title: "",
       picture: "",
@@ -73,7 +73,7 @@ function CreatePostModal() {
     e.preventDefault();
     if (!getUser) {
       navigate.push("/");
-      dispatch(closeModal());
+      dispatch(closePostModal());
       return;
     }
     dispatch(createPost(newPost));
