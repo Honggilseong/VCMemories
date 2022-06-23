@@ -3,9 +3,7 @@ import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { useAppDispatch } from "../../reducers/store";
-import { openModal } from "../../actions/modalAction";
-import { useSelector } from "react-redux";
-import { RootState } from "../../reducers";
+import { openPostModal } from "../../actions/modalAction";
 import { useInternalRouter } from "../../pages/routing";
 
 interface User {
@@ -20,7 +18,6 @@ function Header() {
   const [searchValue, setSearchValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const navigate = useInternalRouter();
-  const modal = useSelector((state: RootState) => state.modal);
 
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -28,8 +25,7 @@ function Header() {
   };
 
   const handleCreatePost = () => {
-    console.log(modal.isModalOpen);
-    dispatch(openModal());
+    dispatch(openPostModal());
   };
 
   const handleClickLogo = () => {
