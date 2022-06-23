@@ -21,13 +21,19 @@ interface Props {
 }
 
 function Post({ post }: Props) {
-  const [likedPost, setLikedPost] = useState<Boolean>(false);
+  const [likedPost, setLikedPost] = useState<boolean>(false);
+  const [isPostInfoOpen, setIsPostInfoOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
 
   const handleDeletePost = (e: any) => {
     e.preventDefault();
     dispatch(deletePost(post._id, getUser.user._id));
+  };
+
+  const handleClickPostInfo = (e: any) => {
+    e.preventDefault();
+    setIsPostInfoOpen((prev) => !prev);
   };
 
   const handleLikePost = (e: any) => {
@@ -49,14 +55,27 @@ function Post({ post }: Props) {
       <div className="h-14 border flex justify-between items-center px-3">
         <div />
         <h1>{post.name}</h1>
-        {post.userId === getUser.user._id && (
-          <div
-            className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center"
-            onClick={handleDeletePost}
-          >
-            <BsThreeDotsVertical size={20} />
-          </div>
-        )}
+
+        <div
+          className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
+          onClick={handleClickPostInfo}
+        >
+          <BsThreeDotsVertical size={20} />
+          {isPostInfoOpen && (
+            <div
+              className={`absolute left-0 border bg-white p-2 ${
+                post.userId === getUser.user._id ? "-bottom-16" : "-bottom-10"
+              }`}
+            >
+              <p>Report</p>
+              {post.userId === getUser.user._id && (
+                <p className="text-red-600" onClick={handleDeletePost}>
+                  Delete
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <div className="max-w-2xl mx-auto">
         <img
