@@ -81,7 +81,7 @@ function CreatePostModal() {
 
   return (
     <Modal
-      isOpen={modal.isModalOpen}
+      isOpen={modal.isPostModalOpen}
       onRequestClose={handleCloseModal}
       contentLabel="Example Modal"
       style={customStyles}
