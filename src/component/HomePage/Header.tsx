@@ -3,7 +3,10 @@ import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { useAppDispatch } from "../../reducers/store";
-import { openPostModal } from "../../actions/modalAction";
+import {
+  openPostModal,
+  openSearchResultsModal,
+} from "../../actions/modalAction";
 import { useInternalRouter } from "../../pages/routing";
 
 interface User {
@@ -21,6 +24,7 @@ function Header() {
 
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
+    dispatch(openSearchResultsModal());
     setSearchValue(event.target.value);
   };
 
