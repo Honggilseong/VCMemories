@@ -1,27 +1,27 @@
 import {
-  OPEN_MODAL,
+  OPEN_POST_MODAL,
   CLOSE_MODAL,
   modalActionDispatch,
 } from "../actions/modalActionDIspatch";
 
 interface InitialState {
-  isModalOpen: boolean;
+  isPostModalOpen: boolean;
 }
 const initialState = {
-  isModalOpen: false,
+  isPostModalOpen: false,
 };
 const ModalReducer = (
   state: InitialState = initialState,
   action: modalActionDispatch
 ) => {
   switch (action.type) {
-    case OPEN_MODAL: {
+    case OPEN_POST_MODAL: {
       console.log("Modal state has changed");
-      return { ...state, isModalOpen: true };
+      return { ...state, isPostModalOpen: true };
     }
     case CLOSE_MODAL: {
       console.log("Modal state has changed");
-      return { ...state, isModalOpen: false };
+      return { ...state, isPostModalOpen: false };
     }
     default:
       return state;

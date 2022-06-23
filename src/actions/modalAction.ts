@@ -1,9 +1,9 @@
 import { Dispatch } from "redux";
-import { CLOSE_MODAL, OPEN_MODAL } from "./modalActionDIspatch";
+import { CLOSE_MODAL, OPEN_POST_MODAL } from "./modalActionDIspatch";
 
-export const openModal = () => (dispatch: Dispatch) => {
+export const openPostModal = () => (dispatch: Dispatch) => {
   dispatch({
-    type: OPEN_MODAL,
+    type: OPEN_POST_MODAL,
   });
 };
 export const closeModal = () => (dispatch: Dispatch) => {
