@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
@@ -8,8 +8,21 @@ interface Props {
 }
 
 function Body({ handleFollowUser }: Props) {
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+
   const userInfo = useSelector((state: RootState) => state.searchUser);
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
+
+  useEffect(() => {
+    const index = userInfo.followers.findIndex((id) => id === getUser.user._id);
+
+    if (index === -1) {
+      setIsFollowing(false);
+    } else {
+      setIsFollowing(true);
+    }
+  }, [userInfo.followers]);
+
   return (
     <section className="w-full h-full">
       <div className="max-w-xl mx-auto">
@@ -34,7 +47,7 @@ function Body({ handleFollowUser }: Props) {
             className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-purple-500 rounded-lg mb-3"
             onClick={() => handleFollowUser(userInfo._id, getUser.user._id)}
           >
-            <p>Follow</p>
+            <p>{isFollowing ? "Unfollow" : "Follow"}</p>
           </div>
           <div className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-blue-700 rounded-lg mb-3">
             <p>Message</p>
