@@ -47,6 +47,10 @@ export const getSearchingUser = (
 export const getAllUsers = (): AxiosPromise => {
   return API.get("/user/getallusers", config);
 };
+
+export const followUser = (id: string, userId: string): AxiosPromise => {
+  return API.patch(`/user/followuser/${id}`, { userId }, config);
+};
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
