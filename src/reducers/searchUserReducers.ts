@@ -1,4 +1,5 @@
 import {
+  FOLLOW_USER,
   searchUserActionDispatch,
   SEARCH_USER,
 } from "./../actions/searchUserActionDispatch";
@@ -40,6 +41,9 @@ const SearchUserReducer = (
 ) => {
   switch (action.type) {
     case SEARCH_USER: {
+      return action.payload;
+    }
+    case FOLLOW_USER: {
       return action.payload;
     }
     default:
