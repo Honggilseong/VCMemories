@@ -1,4 +1,5 @@
 export const SEARCH_USER = "SEARCH_USER";
+export const FOLLOW_USER = "FOLLOW_USER";
 export interface UserPosts {
   title: string;
   picture: string;
@@ -10,7 +11,7 @@ export interface UserPosts {
   likes: string[];
   _id: string;
 }
-export interface GetSearchingUser {
+export interface User {
   _id: string;
   email: string;
   name: string;
@@ -21,7 +22,10 @@ export interface GetSearchingUser {
 }
 export interface getSearchingUser {
   type: typeof SEARCH_USER;
-  payload: GetSearchingUser;
+  payload: User;
 }
-
-export type searchUserActionDispatch = getSearchingUser;
+export interface followUser {
+  type: typeof FOLLOW_USER;
+  payload: User;
+}
+export type searchUserActionDispatch = getSearchingUser | followUser;
