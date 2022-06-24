@@ -3,8 +3,13 @@ import { useSelector } from "react-redux";
 import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
 
-function Body() {
+interface Props {
+  handleFollowUser: (searchUserId: string, userId: string) => void;
+}
+
+function Body({ handleFollowUser }: Props) {
   const userInfo = useSelector((state: RootState) => state.searchUser);
+  const getUser = JSON.parse(localStorage.getItem("profile") || "");
   return (
     <section className="w-full h-full">
       <div className="max-w-xl mx-auto">
@@ -22,6 +27,17 @@ function Body() {
           <div className="flex justify-center items-center flex-col cursor-pointer">
             <h2 className="font-bold text-xl">Following</h2>
             <p>{userInfo.following?.length}</p>
+          </div>
+        </div>
+        <div className="flex text-white">
+          <div
+            className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-purple-500 rounded-lg mb-3"
+            onClick={() => handleFollowUser(userInfo._id, getUser.user._id)}
+          >
+            <p>Follow</p>
+          </div>
+          <div className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-blue-700 rounded-lg mb-3">
+            <p>Message</p>
           </div>
         </div>
         {userInfo.userPosts?.length ? (
