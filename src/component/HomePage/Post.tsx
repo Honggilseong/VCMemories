@@ -5,6 +5,7 @@ import moment from "moment";
 import { useAppDispatch } from "../../reducers/store";
 import { deletePost, likePost } from "../../actions/postAction";
 import { useEffect } from "react";
+import PostCommentsModal from "./Post/PostCommentsModal";
 interface Props {
   post: {
     createdAt: string;
@@ -23,6 +24,8 @@ interface Props {
 function Post({ post }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [isPostInfoOpen, setIsPostInfoOpen] = useState<boolean>(false);
+  const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+  const [commentValue, setCommentValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
 
@@ -41,6 +44,16 @@ function Post({ post }: Props) {
     dispatch(likePost(post._id, getUser.user._id));
   };
 
+  const handleClickComments = (e: any) => {
+    setIsCommentsOpen((prev) => !prev);
+  };
+  const handleLeaveComment = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentValue(e.target.value);
+  };
   useEffect(() => {
     const likedPost = post.likes.findIndex((id) => id === getUser.user._id);
     if (likedPost === -1) {
@@ -102,11 +115,22 @@ function Post({ post }: Props) {
 
           <span>{post.likes.length}</span>
         </div>
-        <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
+        <div
+          className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
+          onClick={handleClickComments}
+        >
           <AiOutlineComment size={30} />
           <span>31</span>
         </div>
       </div>
+      {isCommentsOpen && (
+        <PostCommentsModal
+          setIsCommentsOpen={setIsCommentsOpen}
+          handleLeaveComment={handleLeaveComment}
+          handleInputComment={handleInputComment}
+          commentValue={commentValue}
+        />
+      )}
     </>
   );
 }
