@@ -19,17 +19,15 @@ function Posts() {
   const fetchPosts = useSelector((state: any) => state.post);
   return (
     <div className="max-w-2xl mx-auto">
-      <FullPage>
-        {fetchPosts.length > 0 ? (
-          fetchPosts.map((post: UserPost) => (
-            <Slide key={post._id}>
-              <Post post={post} />
-            </Slide>
-          ))
-        ) : (
-          <p className="text-center">there's no posts</p>
-        )}
-      </FullPage>
+      {fetchPosts.length > 0 ? (
+        fetchPosts.map((post: UserPost) => (
+          <div key={post._id}>
+            <Post post={post} />
+          </div>
+        ))
+      ) : (
+        <p className="text-center">there's no posts</p>
+      )}
     </div>
   );
 }
