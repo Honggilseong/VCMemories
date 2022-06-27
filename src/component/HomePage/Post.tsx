@@ -3,9 +3,10 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineHeart, AiOutlineComment, AiFillHeart } from "react-icons/ai";
 import moment from "moment";
 import { useAppDispatch } from "../../reducers/store";
-import { deletePost, likePost } from "../../actions/postAction";
+import { deletePost, leaveComment, likePost } from "../../actions/postAction";
 import { useEffect } from "react";
 import PostCommentsModal from "./Post/PostCommentsModal";
+import { Comment } from "../../actions/postActionDispatch";
 interface Props {
   post: {
     createdAt: string;
@@ -18,6 +19,7 @@ interface Props {
     _id: string;
     userId: string;
     profilePicture: string;
+    comments: Comment[];
   };
 }
 
@@ -25,9 +27,13 @@ function Post({ post }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [isPostInfoOpen, setIsPostInfoOpen] = useState<boolean>(false);
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
-  const [commentValue, setCommentValue] = useState<string>("");
-  const dispatch = useAppDispatch();
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
+  const [commentValue, setCommentValue] = useState<Comment>({
+    comment: "",
+    commentUserId: getUser.user._id,
+    commentUserName: getUser.user.name,
+  });
+  const dispatch = useAppDispatch();
 
   const handleDeletePost = (e: any) => {
     e.preventDefault();
@@ -49,10 +55,18 @@ function Post({ post }: Props) {
   };
   const handleLeaveComment = (e: any) => {
     e.preventDefault();
+    if (!getUser || !commentValue.comment) return;
+
+    dispatch(leaveComment(post._id, commentValue));
+    setCommentValue({
+      comment: "",
+      commentUserId: getUser.user._id,
+      commentUserName: getUser.user.name,
+    });
   };
 
   const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentValue(e.target.value);
+    setCommentValue({ ...commentValue, comment: e.target.value });
   };
   useEffect(() => {
     const likedPost = post.likes.findIndex((id) => id === getUser.user._id);
@@ -120,17 +134,18 @@ function Post({ post }: Props) {
           onClick={handleClickComments}
         >
           <AiOutlineComment size={30} />
-          <span>31</span>
+          <span>{post.comments.length}</span>
         </div>
       </div>
-      {isCommentsOpen && (
-        <PostCommentsModal
-          setIsCommentsOpen={setIsCommentsOpen}
-          handleLeaveComment={handleLeaveComment}
-          handleInputComment={handleInputComment}
-          commentValue={commentValue}
-        />
-      )}
+
+      <PostCommentsModal
+        comments={post.comments}
+        setIsCommentsOpen={setIsCommentsOpen}
+        isCommentsOpen={isCommentsOpen}
+        handleLeaveComment={handleLeaveComment}
+        handleInputComment={handleInputComment}
+        commentValue={commentValue}
+      />
     </>
   );
 }
