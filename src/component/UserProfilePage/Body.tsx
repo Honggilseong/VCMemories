@@ -55,7 +55,7 @@ function Body({ handleFollowUser }: Props) {
         </div>
         {userInfo.userPosts?.length ? (
           <div className="min-h-[500px] grid grid-cols-3 border gap-1">
-            {userInfo.userPosts?.map((post: NewPost) => (
+            {userInfo.userPosts?.map((post) => (
               <div
                 key={post._id}
                 className="cursor-pointer flex justify-center items-center flex-col"
