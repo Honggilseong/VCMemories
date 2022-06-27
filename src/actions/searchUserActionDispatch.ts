@@ -1,5 +1,10 @@
 export const SEARCH_USER = "SEARCH_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
+interface Comment {
+  commentUserId: string;
+  commentUserName: string;
+  comment: string;
+}
 export interface UserPosts {
   title: string;
   picture: string;
@@ -10,6 +15,7 @@ export interface UserPosts {
   userId: string;
   likes: string[];
   _id: string;
+  comments: Comment[];
 }
 export interface User {
   _id: string;
