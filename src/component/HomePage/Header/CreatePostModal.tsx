@@ -6,6 +6,11 @@ import { RootState } from "../../../reducers";
 import { useAppDispatch } from "../../../reducers/store";
 import { closePostModal } from "../../../actions/modalAction";
 import { createPost } from "../../../actions/postAction";
+interface Comment {
+  commentUserId: string;
+  commentUserName: string;
+  comment: string;
+}
 interface NewPost {
   title: string;
   picture: string;
@@ -15,6 +20,7 @@ interface NewPost {
   profilePicture: string;
   userId: string;
   likes: string[];
+  comments: Comment[];
 }
 
 const customStyles = {
@@ -38,6 +44,7 @@ function CreatePostModal() {
     profilePicture: getUser.user.profilePicture,
     userId: getUser.user._id,
     likes: [],
+    comments: [],
   });
   const navigate = useInternalRouter();
   const modal = useSelector((state: RootState) => state.modal);
@@ -60,6 +67,7 @@ function CreatePostModal() {
       profilePicture: getUser.user.profilePicture,
       userId: getUser.user._id,
       likes: [],
+      comments: [],
     });
   };
 
