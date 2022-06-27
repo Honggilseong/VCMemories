@@ -72,3 +72,13 @@ export const deletePost = (id: string, userId: string): AxiosPromise => {
 export const likePost = (id: string, userId: string): AxiosPromise => {
   return API.patch(`/posts/${id}/likepost`, { userId }, config);
 };
+
+interface Comment {
+  commentUserName: string;
+  commentUserId: string;
+  comment: string;
+}
+
+export const leaveComment = (id: string, comment: Comment): AxiosPromise => {
+  return API.patch(`/posts/${id}/leavecomment`, { comment }, config);
+};
