@@ -1,5 +1,5 @@
-import { FullPage, Slide } from "react-full-page";
 import { useSelector } from "react-redux";
+import { Comment } from "../../actions/postActionDispatch";
 import Post from "./Post";
 
 interface UserPost {
@@ -13,6 +13,7 @@ interface UserPost {
   _id: string;
   userId: string;
   profilePicture: string;
+  comments: Comment[];
 }
 
 function Posts() {
