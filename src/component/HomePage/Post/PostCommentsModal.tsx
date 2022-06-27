@@ -1,22 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "react-modal";
-
-const mockupData = [
-  { id: 1, name: "Mannagh", comment: 0 },
-  { id: 2, name: "McCullogh", comment: 0 },
-  { id: 3, name: "Swyer-Sexey", comment: 0 },
-  { id: 4, name: "Drayton", comment: 0 },
-  {
-    id: 5,
-    name: "Astellffffffffffffffffffffffffffffffffffffffffffff",
-    comment: 0,
-  },
-  { id: 6, name: "Drummond", comment: 0 },
-  { id: 7, name: "Gilstoun", comment: 1 },
-  { id: 8, name: "Blackesland", comment: 1 },
-  { id: 9, name: "Bruhke", comment: 0 },
-  { id: 10, name: "Stapells", comment: 1 },
-];
+import { Comment } from "../../../actions/postActionDispatch";
 const customStyles = {
   content: {
     top: "50%",
@@ -32,23 +16,25 @@ interface Props {
   setIsCommentsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleInputComment: React.ChangeEventHandler<HTMLInputElement>;
   handleLeaveComment: any;
-  commentValue: string;
+  commentValue: Comment;
+  isCommentsOpen: boolean;
+  comments: Comment[];
 }
 function PostCommentsModal({
   setIsCommentsOpen,
   handleInputComment,
   handleLeaveComment,
+  isCommentsOpen,
   commentValue,
+  comments,
 }: Props) {
-  const [isOpen, setIsOpen] = useState(true);
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
   const handleCloseModal = () => {
-    setIsOpen(false);
     setIsCommentsOpen(false);
   };
   return (
     <Modal
-      isOpen={isOpen}
+      isOpen={isCommentsOpen}
       onRequestClose={handleCloseModal}
       contentLabel="Comments Modal"
       style={customStyles}
@@ -69,27 +55,35 @@ function PostCommentsModal({
                 placeholder="Enter your comment"
                 className="w-full p-1 mx-1 focus:outline-none"
                 onChange={handleInputComment}
+                value={commentValue.comment}
               />
             </div>
             <button
-              disabled={commentValue ? true : false}
+              disabled={commentValue.comment ? false : true}
               className={`p-2 rounded-lg text-white self-end ${
-                commentValue ? "bg-purple-500 cursor-pointer" : "bg-gray-400"
+                commentValue.comment ? "bg-purple-500" : "bg-gray-400"
               }`}
+              type="submit"
             >
               Comment
             </button>
           </form>
         </div>
-        <div className="max-h-[300px] overflow-y-scroll">
-          {mockupData.map((comment) => (
-            <div className="overflow-hidden" key={comment.id}>
-              <p className="font-bold">
-                {comment.name}:{" "}
-                <span className="font-normal">{comment.name}</span>
-              </p>
+        <div className="h-[300px] overflow-y-scroll">
+          {comments.length ? (
+            comments.map((comment) => (
+              <div className="overflow-hidden" key={comment._id}>
+                <p className="font-bold">
+                  {comment.commentUserName}:{" "}
+                  <span className="font-normal">{comment.comment}</span>
+                </p>
+              </div>
+            ))
+          ) : (
+            <div className="h-[300px] border flex items-center justify-center">
+              no comments
             </div>
-          ))}
+          )}
         </div>
       </div>
     </Modal>
