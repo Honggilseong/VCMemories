@@ -1,8 +1,10 @@
 import { Dispatch } from "redux";
 import {
+  Comment,
   CREATE_POST,
   DELETE_POST,
   GET_POSTS,
+  LEAVE_COMMENT,
   LIKE_POST,
   NewPost,
 } from "./postActionDispatch";
@@ -44,6 +46,19 @@ export const likePost =
       const { data } = await api.likePost(id, userId);
       dispatch({
         type: LIKE_POST,
+        payload: data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const leaveComment =
+  (id: string, comment: Comment) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.leaveComment(id, comment);
+      dispatch({
+        type: LEAVE_COMMENT,
         payload: data,
       });
     } catch (err) {
