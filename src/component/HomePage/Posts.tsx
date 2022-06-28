@@ -27,7 +27,7 @@ function Posts() {
           </div>
         ))
       ) : (
-        <p className="text-center">there's no posts</p>
+        <p className="text-center">No current posts</p>
       )}
     </div>
   );
