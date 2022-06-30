@@ -7,6 +7,7 @@ import { deletePost, leaveComment, likePost } from "../../actions/postAction";
 import { useEffect } from "react";
 import PostCommentsModal from "./Post/PostCommentsModal";
 import { Comment } from "../../actions/postActionDispatch";
+import { Image } from "cloudinary-react";
 interface Props {
   post: {
     createdAt: string;
@@ -105,10 +106,12 @@ function Post({ post }: Props) {
         </div>
       </div>
       <div className="max-w-2xl mx-auto">
-        <img
-          src={require("../../images/vc.png")}
-          alt="userImage"
-          className="object-cover"
+        <Image
+          key={post.picture}
+          cloudName="djuy3j2qd"
+          publicId={post.picture}
+          className="w-full h-full"
+          crop="scale"
         />
       </div>
       <div className="my-2">
