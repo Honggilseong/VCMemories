@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { useInternalRouter } from "../../../pages/routing";
@@ -6,6 +6,18 @@ import { RootState } from "../../../reducers";
 import { useAppDispatch } from "../../../reducers/store";
 import { closePostModal } from "../../../actions/modalAction";
 import { createPost } from "../../../actions/postAction";
+import DropZone from "./CreatePostModal/DropZone";
+
+interface AcceptedFiles {
+  path: string;
+  preview: string;
+  lastModified: number;
+  lastModifiedDate: Date;
+  name: string;
+  size: number;
+  type: string;
+  webkitRelativePath: string;
+}
 interface Comment {
   commentUserId: string;
   commentUserName: string;
@@ -35,6 +47,7 @@ const customStyles = {
 };
 function CreatePostModal() {
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
+  const [previewImage, setPreviewImage] = useState<any>([]);
   const [newPost, setNewPost] = useState<NewPost>({
     title: "",
     picture: "",
@@ -50,12 +63,14 @@ function CreatePostModal() {
   const modal = useSelector((state: RootState) => state.modal);
   const dispatch = useAppDispatch();
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileBlob = e.target.files![0];
-
-    setNewPost({ ...newPost, picture: URL.createObjectURL(fileBlob) });
-  };
-
+  const onDrop = useCallback((acceptedFiles: AcceptedFiles[]) => {
+    console.log(acceptedFiles);
+    setPreviewImage(
+      acceptedFiles.map((file: any) =>
+        Object.assign(file, { preview: URL.createObjectURL(file) })
+      )
+    );
+  }, []);
   const handleCloseModal = () => {
     dispatch(closePostModal());
     setNewPost({
@@ -69,6 +84,7 @@ function CreatePostModal() {
       likes: [],
       comments: [],
     });
+    setPreviewImage([]);
   };
 
   const handleInputNewUser = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,14 +93,40 @@ function CreatePostModal() {
     console.log(newPost);
   };
 
-  const handleUploadPost = (e: React.MouseEvent<HTMLElement>) => {
+  const handleUploadPost = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (!getUser) {
       navigate.push("/");
       dispatch(closePostModal());
       return;
     }
-    dispatch(createPost(newPost));
+    const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_USERNAME}/upload`;
+    const formData = new FormData();
+    formData.append("file", previewImage[0]);
+    formData.append(
+      "upload_preset",
+      `${process.env.REACT_APP_CLOUDINARY_NAME}`
+    );
+    const response = await fetch(url, {
+      method: "post",
+      body: formData,
+    }).then();
+    const data = await response.json();
+
+    dispatch(createPost({ ...newPost, picture: data.public_id }));
+
+    setNewPost({
+      title: "",
+      picture: "",
+      message: "",
+      tags: [],
+      name: getUser.user.name,
+      profilePicture: getUser.user.profilePicture,
+      userId: getUser.user._id,
+      likes: [],
+      comments: [],
+    });
+    setPreviewImage([]);
   };
 
   return (
@@ -94,17 +136,7 @@ function CreatePostModal() {
       contentLabel="Example Modal"
       style={customStyles}
     >
-      <div
-        className={`w-96 h-96 ${!newPost.picture && "border border-gray-400"}`}
-      >
-        {newPost.picture && (
-          <img
-            src={newPost.picture}
-            alt="userPicture"
-            className="object-cover w-full h-full"
-          />
-        )}
-      </div>
+      <DropZone previewImage={previewImage} onDrop={onDrop} />
       <h2 className="mt-3 text-gray-500">Title</h2>
       <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
         <input
@@ -136,21 +168,6 @@ function CreatePostModal() {
           className="w-full h-full rounded-lg outline-none"
           value={newPost.tags}
           onChange={handleInputNewUser}
-        />
-      </div>
-      <div className="h-12 bg-purple-500 text-white mt-3 rounded-lg">
-        <label
-          htmlFor="pick"
-          className="w-full h-full flex justify-center items-center cursor-pointer"
-        >
-          Upload a image
-        </label>
-        <input
-          type="file"
-          id="pick"
-          className="hidden"
-          accept="image/png, image/jpeg , image/jpg"
-          onChange={handleFile}
         />
       </div>
       <div
