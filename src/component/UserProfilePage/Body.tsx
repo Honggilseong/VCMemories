@@ -1,3 +1,4 @@
+import { Image } from "cloudinary-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NewPost } from "../../actions/postActionDispatch";
@@ -60,8 +61,13 @@ function Body({ handleFollowUser }: Props) {
                 key={post._id}
                 className="cursor-pointer flex justify-center items-center flex-col"
               >
-                <h1>{post.message}</h1>
-                <h2>{post.title}</h2>
+                <Image
+                  key={post.picture}
+                  cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
+                  publicId={post.picture}
+                  className="w-full h-full"
+                  crop="scale"
+                />
               </div>
             ))}
           </div>
