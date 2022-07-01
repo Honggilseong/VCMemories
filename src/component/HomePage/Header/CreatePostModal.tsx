@@ -160,7 +160,7 @@ function CreatePostModal() {
         />
       </div>
       <h2 className="mt-3 text-gray-500">Tags(comma)</h2>
-      <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
+      {/* <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
         <input
           type="text"
           name="tags"
@@ -169,7 +169,7 @@ function CreatePostModal() {
           value={newPost.tags}
           onChange={handleInputNewUser}
         />
-      </div>
+      </div> */}
       <div
         className="h-12 bg-red-400 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer"
         onClick={handleUploadPost}
