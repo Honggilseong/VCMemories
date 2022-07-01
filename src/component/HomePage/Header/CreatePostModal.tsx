@@ -159,8 +159,8 @@ function CreatePostModal() {
           onChange={handleInputNewUser}
         />
       </div>
-      <h2 className="mt-3 text-gray-500">Tags(comma)</h2>
-      {/* <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
+      {/* <h2 className="mt-3 text-gray-500">Tags(comma)</h2>
+      <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
         <input
           type="text"
           name="tags"
