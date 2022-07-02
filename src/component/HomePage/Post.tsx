@@ -36,26 +36,22 @@ function Post({ post }: Props) {
   });
   const dispatch = useAppDispatch();
 
-  const handleDeletePost = (e: any) => {
-    e.preventDefault();
+  const handleDeletePost = () => {
     dispatch(deletePost(post._id, getUser.user._id));
   };
 
-  const handleClickPostInfo = (e: any) => {
-    e.preventDefault();
+  const handleClickPostInfo = () => {
     setIsPostInfoOpen((prev) => !prev);
   };
 
-  const handleLikePost = (e: any) => {
-    e.preventDefault();
+  const handleLikePost = () => {
     dispatch(likePost(post._id, getUser.user._id));
   };
 
-  const handleClickComments = (e: any) => {
+  const handleClickComments = () => {
     setIsCommentsOpen((prev) => !prev);
   };
-  const handleLeaveComment = (e: any) => {
-    e.preventDefault();
+  const handleLeaveComment = () => {
     if (!getUser || !commentValue.comment) return;
 
     dispatch(leaveComment(post._id, commentValue));
