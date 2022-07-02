@@ -5,6 +5,7 @@ import { getUserInfo } from "../../actions/authAction";
 import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
 import { useAppDispatch } from "../../reducers/store";
+import Post from "./Post";
 
 function Body() {
   const dispatch = useAppDispatch();
@@ -35,17 +36,8 @@ function Body() {
         {userInfo.userPosts?.length ? (
           <div className="min-h-[500px] grid grid-cols-3 border gap-1">
             {userInfo.userPosts?.map((post: NewPost) => (
-              <div
-                key={post._id}
-                className="cursor-pointer flex justify-center items-center flex-col"
-              >
-                <Image
-                  key={post.picture}
-                  cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                  publicId={post.picture}
-                  className="w-full h-full"
-                  crop="scale"
-                />
+              <div key={post._id}>
+                <Post post={post} />
               </div>
             ))}
           </div>
