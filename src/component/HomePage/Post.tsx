@@ -105,7 +105,7 @@ function Post({ post }: Props) {
           )}
         </div>
       </div>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl h-[400px] mx-auto">
         <Image
           key={post.picture}
           cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
