@@ -23,7 +23,7 @@ function Post({ post }: any) {
   return (
     <>
       <div
-        className="cursor-pointer flex justify-center items-center flex-col"
+        className="cursor-pointer flex justify-center items-center flex-col h-44 w-44"
         onClick={handleClickDetailPost}
       >
         <Image
