@@ -1,6 +1,7 @@
 export const CREATE_USER = "CREATE_USER";
 export const SIGN_IN = "SIGN_IN";
 export const GET_USER_INFO = "GET_USER_INFO";
+export const DELETE_POST = "DELETE_POST";
 export interface UserInfo {
   email: string;
   password: string;
@@ -46,4 +47,8 @@ export interface getUserInfo {
   type: typeof GET_USER_INFO;
   payload: UserInfo;
 }
-export type authActionDispatch = createUser | signIn | getUserInfo;
+export interface deletePost {
+  type: typeof DELETE_POST;
+  payload: string;
+}
+export type authActionDispatch = createUser | signIn | getUserInfo | deletePost;

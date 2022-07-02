@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import {
   CREATE_USER,
+  DELETE_POST,
   GET_USER_INFO,
   SIGN_IN,
   UserInfo,
@@ -45,3 +46,16 @@ export const getUserInfo = (id: string) => async (dispatch: Dispatch) => {
     console.log(error);
   }
 };
+
+export const deletePost =
+  (id: string, userId: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.deletePost(id, userId);
+      dispatch({
+        type: DELETE_POST,
+        payload: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };

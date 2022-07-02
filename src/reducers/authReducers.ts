@@ -1,6 +1,7 @@
 import {
   authActionDispatch,
   CREATE_USER,
+  DELETE_POST,
   GET_USER_INFO,
   SIGN_IN,
   UserPosts,
@@ -37,6 +38,12 @@ const AuthReducer = (
     }
     case GET_USER_INFO: {
       return { ...state, ...action.payload };
+    }
+    case DELETE_POST: {
+      let userPosts = state.userPosts;
+
+      userPosts = userPosts?.filter((post) => post._id !== action.payload);
+      return { ...state, userPosts };
     }
     default:
       return state;
