@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineHeart, AiOutlineComment, AiFillHeart } from "react-icons/ai";
 import moment from "moment";
@@ -34,14 +34,13 @@ function Post({ post }: Props) {
     commentUserId: getUser.user._id,
     commentUserName: getUser.user.name,
   });
+  const dropDownRef = useRef(
+    null
+  ) as unknown as React.MutableRefObject<HTMLDivElement>;
   const dispatch = useAppDispatch();
 
   const handleDeletePost = () => {
     dispatch(deletePost(post._id, getUser.user._id));
-  };
-
-  const handleClickPostInfo = () => {
-    setIsPostInfoOpen((prev) => !prev);
   };
 
   const handleLikePost = () => {
@@ -74,6 +73,15 @@ function Post({ post }: Props) {
     }
   }, [post.likes]);
 
+  useEffect(() => {
+    const handleClickPostInfo = (e: any) => {
+      if (dropDownRef.current && !dropDownRef.current.contains(e.target))
+        setIsPostInfoOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickPostInfo, false);
+    return () =>
+      document.removeEventListener("mousedown", handleClickPostInfo, false);
+  }, []);
   return (
     <>
       <div className="h-14 border flex justify-between items-center px-3">
@@ -82,7 +90,7 @@ function Post({ post }: Props) {
 
         <div
           className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
-          onClick={handleClickPostInfo}
+          onClick={() => setIsPostInfoOpen((prev) => !prev)}
         >
           <BsThreeDotsVertical size={20} />
           {isPostInfoOpen && (
@@ -90,6 +98,7 @@ function Post({ post }: Props) {
               className={`absolute left-0 border bg-white p-2 ${
                 post.userId === getUser.user._id ? "-bottom-16" : "-bottom-10"
               }`}
+              ref={dropDownRef}
             >
               <p>Report</p>
               {post.userId === getUser.user._id && (
