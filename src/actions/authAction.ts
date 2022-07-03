@@ -4,6 +4,7 @@ import {
   DELETE_POST,
   GET_USER_INFO,
   SIGN_IN,
+  UPLOAD_PROFILE_IMAGE,
   UserInfo,
 } from "./authActionDispatch";
 import * as api from "../api";
@@ -57,5 +58,18 @@ export const deletePost =
       });
     } catch (err) {
       console.log(err);
+    }
+  };
+
+export const uploadProfileImage =
+  (id: string, uploadImage: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.uploadProfileImage(id, uploadImage);
+      dispatch({
+        type: UPLOAD_PROFILE_IMAGE,
+        payload: uploadImage,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };

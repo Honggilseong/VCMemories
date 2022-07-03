@@ -4,6 +4,7 @@ import {
   DELETE_POST,
   GET_USER_INFO,
   SIGN_IN,
+  UPLOAD_PROFILE_IMAGE,
   UserPosts,
 } from "../actions/authActionDispatch";
 
@@ -44,6 +45,10 @@ const AuthReducer = (
 
       userPosts = userPosts?.filter((post) => post._id !== action.payload);
       return { ...state, userPosts };
+    }
+    case UPLOAD_PROFILE_IMAGE: {
+      console.log("updated");
+      return { ...state, profilePicture: action.payload };
     }
     default:
       return state;
