@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { getAllUsers } from "../actions/allUsersAction";
 import { getPosts } from "../actions/postAction";
 import Body from "../component/HomePage/Body";
@@ -8,10 +8,15 @@ import { useAppDispatch } from "../reducers/store";
 
 function HomePage() {
   const dispatch = useAppDispatch();
-
+  const effectRef = useRef(false);
   useEffect(() => {
-    dispatch(getPosts());
-    dispatch(getAllUsers());
+    if (effectRef.current === false) {
+      dispatch(getPosts());
+      dispatch(getAllUsers());
+    }
+    return () => {
+      effectRef.current = true;
+    };
   }, []);
   return (
     <div>
