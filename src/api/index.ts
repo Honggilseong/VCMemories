@@ -51,6 +51,13 @@ export const getAllUsers = (): AxiosPromise => {
 export const followUser = (id: string, userId: string): AxiosPromise => {
   return API.patch(`/user/followuser/${id}`, { userId }, config);
 };
+
+export const uploadProfileImage = (
+  id: string,
+  uploadImage: string
+): AxiosPromise => {
+  return API.patch("/user/uploadprofileimage", { id, uploadImage }, config);
+};
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
