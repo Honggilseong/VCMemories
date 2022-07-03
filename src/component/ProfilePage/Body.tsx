@@ -20,6 +20,7 @@ function Body() {
   useEffect(() => {
     dispatch(getUserInfo(localUser.user._id));
   }, [dispatch]);
+
   return (
     <>
       <section className="w-full h-full">
@@ -70,6 +71,7 @@ function Body() {
       <ProfileImageModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        userInfo={userInfo}
       />
     </>
   );
