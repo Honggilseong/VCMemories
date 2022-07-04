@@ -1,8 +1,10 @@
+import { Image } from "cloudinary-react";
 import React from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
-
+const defaultProfilePicture =
+  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 interface Props {
   handleSearchBar: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleClickSearchingUser: (name: string) => void;
@@ -44,12 +46,16 @@ function SearchBar({
                 onClick={() => handleClickSearchingUser(user.name)}
               >
                 <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                  <img
-                    src={user.profilePicture}
-                    alt="userProfilePicture"
-                    height={64}
-                    width={64}
-                  />
+                  {user.profilePicture === defaultProfilePicture ? (
+                    <img src={user.profilePicture} alt="userProfilePicture" />
+                  ) : (
+                    <Image
+                      cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
+                      publicId={user.profilePicture}
+                      className="w-full h-full"
+                      crop="scale"
+                    />
+                  )}
                 </div>
                 <h2 className="font-bold text-center">{user.name}</h2>
               </div>

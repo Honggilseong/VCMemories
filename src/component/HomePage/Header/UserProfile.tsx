@@ -1,5 +1,8 @@
+import { Image } from "cloudinary-react";
 import React from "react";
 import { useInternalRouter } from "../../../pages/routing";
+const defaultProfilePicture =
+  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 interface User {
   name: string;
   token: string;
@@ -22,12 +25,17 @@ function UserProfile({ user }: Props) {
           onClick={handleUserProfile}
         >
           <h1 className="mr-4">{user.name}</h1>
-          <div className="rounded-full border-2 w-10 h-10 hidden lg:block">
-            <img
-              src={user.profilePicture}
-              alt="userProfilePicture"
-              className="rounded-full"
-            />
+          <div className="rounded-full border-2 w-10 h-10 hidden lg:block overflow-hidden">
+            {user.profilePicture === defaultProfilePicture ? (
+              <img src={user.profilePicture} alt="userProfilePicture" />
+            ) : (
+              <Image
+                cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
+                publicId={user.profilePicture}
+                className="w-full h-full"
+                crop="scale"
+              />
+            )}
           </div>
         </div>
       ) : (
