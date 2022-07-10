@@ -18,7 +18,7 @@ function UserProfile({ user }: Props) {
     navigate.push("/profile");
   };
   return (
-    <div>
+    <div className="ml-6">
       {user ? (
         <div
           className="flex items-center justify-center cursor-pointer"
