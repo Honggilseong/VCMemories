@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
-import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import {
+  MdOutlineAddPhotoAlternate,
+  MdOutlineNotificationsNone,
+} from "react-icons/md";
 import { useAppDispatch } from "../../reducers/store";
 import {
   openPostModal,
@@ -61,6 +64,10 @@ function Header() {
             size={30}
             className="cursor-pointer mr-4"
             onClick={handleCreatePost}
+          />
+          <MdOutlineNotificationsNone
+            size={30}
+            className="cursor-pointer mr-4"
           />
           <UserProfile user={user} />
         </div>
