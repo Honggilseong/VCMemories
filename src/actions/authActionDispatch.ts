@@ -35,6 +35,12 @@ export interface UserPosts {
   _id: string;
   comments: Comment[];
 }
+export interface Notifications {
+  _id: string;
+  read: boolean;
+  sender: string;
+  type: string;
+}
 export interface GetUserInfo {
   _id: string;
   email: string;
@@ -43,6 +49,7 @@ export interface GetUserInfo {
   userPosts: UserPosts[];
   followers: string[];
   following: string[];
+  notifications: Notifications[];
 }
 export interface getUserInfo {
   type: typeof GET_USER_INFO;

@@ -17,6 +17,7 @@ interface InitialState {
   userPosts?: UserPosts[];
   followers?: string[];
   following?: string[];
+  notifications?: Notification[];
 }
 const initialState = {
   name: "",
