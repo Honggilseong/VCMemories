@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
-import {
-  MdOutlineAddPhotoAlternate,
-  MdOutlineNotificationsNone,
-} from "react-icons/md";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { useAppDispatch } from "../../reducers/store";
 import {
   openPostModal,
   openSearchResultsModal,
 } from "../../actions/modalAction";
 import { useInternalRouter } from "../../pages/routing";
+import Notification from "./Header/Notification";
 
 interface User {
   name: string;
@@ -47,7 +45,6 @@ function Header() {
     if (!isAuthenticated) return;
     setUser(isAuthenticated.user);
   }, []);
-
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
       <div className="max-w-7xl flex justify-between h-full items-center mx-auto p-3 xl:p-0">
@@ -65,12 +62,7 @@ function Header() {
             className="cursor-pointer mr-4"
             onClick={handleCreatePost}
           />
-          <div className="relative">
-            <MdOutlineNotificationsNone size={30} className="cursor-pointer" />
-            <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-              99
-            </span>
-          </div>
+          <Notification />
           <UserProfile user={user} />
         </div>
       </div>
