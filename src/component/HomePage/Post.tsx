@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import PostCommentsModal from "./Post/PostCommentsModal";
 import { Comment } from "../../actions/postActionDispatch";
 import { Image } from "cloudinary-react";
+import * as api from "../../api";
+
 interface Props {
   post: {
     createdAt: string;
@@ -45,6 +47,15 @@ function Post({ post }: Props) {
 
   const handleLikePost = () => {
     dispatch(likePost(post._id, getUser.user._id));
+
+    try {
+      api.sendNotification(post.userId, {
+        sender: getUser.user.name,
+        notificationType: "liked",
+      });
+    } catch (error) {
+      console.log(error, "HOME = > Post.tsx, sendNotification");
+    }
   };
 
   const handleClickComments = () => {
