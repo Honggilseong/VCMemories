@@ -39,7 +39,7 @@ export interface Notifications {
   _id: string;
   read: boolean;
   sender: string;
-  type: string;
+  notificationType: string;
 }
 export interface GetUserInfo {
   _id: string;
