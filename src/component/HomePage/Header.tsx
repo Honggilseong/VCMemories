@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
@@ -9,6 +9,7 @@ import {
 } from "../../actions/modalAction";
 import { useInternalRouter } from "../../pages/routing";
 import Notification from "./Header/Notification";
+import { getUserInfo } from "../../actions/authAction";
 
 interface User {
   name: string;
@@ -22,7 +23,7 @@ function Header() {
   const [searchValue, setSearchValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const navigate = useInternalRouter();
-
+  const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     dispatch(openSearchResultsModal());
@@ -41,9 +42,11 @@ function Header() {
     navigate.push(`/user/search/${name}`);
   };
   useEffect(() => {
-    const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
     if (!isAuthenticated) return;
     setUser(isAuthenticated.user);
+  }, []);
+  useEffect(() => {
+    dispatch(getUserInfo(isAuthenticated.user._id));
   }, []);
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
