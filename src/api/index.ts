@@ -16,7 +16,10 @@ interface PostData {
   userId: string;
   likes: string[];
 }
-
+interface NotificationSender {
+  sender: string;
+  notificationType: string;
+}
 const API = axios.create({ baseURL: "http://localhost:5000/" });
 const user = JSON.parse(localStorage.getItem("profile") || "");
 const config = {
@@ -33,6 +36,23 @@ export const signUp = (formData: FormData): AxiosPromise => {
 export const signIn = (formData: FormData): AxiosPromise => {
   return API.post("/user/signin", formData);
 };
+export const sendNotification = (
+  id: string,
+  sender: NotificationSender
+): AxiosPromise => {
+  return API.patch(`/user/${id}/notification`, sender, config);
+};
+
+export const uploadProfileImage = (
+  id: string,
+  uploadImage: string
+): AxiosPromise => {
+  return API.patch("/user/uploadprofileimage", { id, uploadImage }, config);
+};
+
+export const followUser = (id: string, userId: string): AxiosPromise => {
+  return API.patch(`/user/followuser/${id}`, { userId }, config);
+};
 
 export const getUserInfo = (id: string): AxiosPromise => {
   return API.get(`/user/getuserinfo/${id}`, config);
@@ -48,16 +68,6 @@ export const getAllUsers = (): AxiosPromise => {
   return API.get("/user/getallusers", config);
 };
 
-export const followUser = (id: string, userId: string): AxiosPromise => {
-  return API.patch(`/user/followuser/${id}`, { userId }, config);
-};
-
-export const uploadProfileImage = (
-  id: string,
-  uploadImage: string
-): AxiosPromise => {
-  return API.patch("/user/uploadprofileimage", { id, uploadImage }, config);
-};
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
