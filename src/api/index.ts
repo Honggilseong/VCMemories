@@ -36,11 +36,16 @@ export const signUp = (formData: FormData): AxiosPromise => {
 export const signIn = (formData: FormData): AxiosPromise => {
   return API.post("/user/signin", formData);
 };
+
 export const sendNotification = (
   id: string,
   sender: NotificationSender
 ): AxiosPromise => {
   return API.patch(`/user/${id}/notification`, sender, config);
+};
+
+export const readNotification = (id: string): AxiosPromise => {
+  return API.patch(`/user/${id}/readnotification`, {}, config);
 };
 
 export const uploadProfileImage = (
