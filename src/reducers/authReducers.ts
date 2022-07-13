@@ -3,6 +3,8 @@ import {
   CREATE_USER,
   DELETE_POST,
   GET_USER_INFO,
+  Notifications,
+  READ_NOTIFICATIONS,
   SIGN_IN,
   UPLOAD_PROFILE_IMAGE,
   UserPosts,
@@ -17,7 +19,7 @@ interface InitialState {
   userPosts?: UserPosts[];
   followers?: string[];
   following?: string[];
-  notifications?: Notification[];
+  notifications?: Notifications[];
 }
 const initialState = {
   name: "",
@@ -50,6 +52,14 @@ const AuthReducer = (
     case UPLOAD_PROFILE_IMAGE: {
       console.log("updated");
       return { ...state, profilePicture: action.payload };
+    }
+    case READ_NOTIFICATIONS: {
+      return {
+        ...state,
+        notifications: state.notifications?.map((notification) =>
+          !notification.read ? { ...notification, read: true } : notification
+        ),
+      };
     }
     default:
       return state;

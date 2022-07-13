@@ -1,8 +1,10 @@
+import { readNotification } from "./../api/index";
 import { Dispatch } from "redux";
 import {
   CREATE_USER,
   DELETE_POST,
   GET_USER_INFO,
+  READ_NOTIFICATIONS,
   SIGN_IN,
   UPLOAD_PROFILE_IMAGE,
   UserInfo,
@@ -73,3 +75,14 @@ export const uploadProfileImage =
       console.log(error);
     }
   };
+
+export const readNotifications = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    await api.readNotification(id);
+    dispatch({
+      type: READ_NOTIFICATIONS,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
