@@ -70,6 +70,14 @@ function Post({ post }: Props) {
       commentUserId: getUser.user._id,
       commentUserName: getUser.user.name,
     });
+    try {
+      api.sendNotification(post.userId, {
+        sender: getUser.user.name,
+        notificationType: "Left a comment",
+      });
+    } catch (error) {
+      console.log(error, "HOME = > Post.tsx, sendNotification");
+    }
   };
 
   const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
