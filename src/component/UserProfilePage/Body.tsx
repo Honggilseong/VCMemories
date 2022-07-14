@@ -3,27 +3,22 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
+import { GetSearchingUser } from "../../reducers/searchUserReducers";
 
 interface Props {
   handleFollowUser: (searchUserId: string, userId: string) => void;
+  userInfo: GetSearchingUser;
+  isFollowing: boolean;
+  getUser: any;
 }
 
-function Body({ handleFollowUser }: Props) {
-  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+function Body({
+  handleFollowUser,
+  userInfo,
 
-  const userInfo = useSelector((state: RootState) => state.searchUser);
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
-
-  useEffect(() => {
-    const index = userInfo.followers.findIndex((id) => id === getUser.user._id);
-
-    if (index === -1) {
-      setIsFollowing(false);
-    } else {
-      setIsFollowing(true);
-    }
-  }, [userInfo.followers]);
-
+  isFollowing,
+  getUser,
+}: Props) {
   return (
     <section className="w-full h-full">
       <div className="max-w-xl mx-auto">
