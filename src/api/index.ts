@@ -21,7 +21,10 @@ interface NotificationSender {
   notificationType: string;
 }
 const API = axios.create({ baseURL: "http://localhost:5000/" });
-const user = JSON.parse(localStorage.getItem("profile") || "");
+const user = JSON.parse(
+  localStorage.getItem("profile") || '{"user": { "token": "" }}'
+);
+
 const config = {
   headers: {
     "Content-type": "application/json",

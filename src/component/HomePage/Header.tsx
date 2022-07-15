@@ -19,10 +19,14 @@ interface User {
 }
 
 function Header() {
+  const getUser = JSON.parse(
+    localStorage.getItem("profile") || '{"user": { "token": "" }}'
+  );
+  const navigate = useInternalRouter();
+  if (!getUser.user.token) navigate.push("/auth");
   const [user, setUser] = useState<User | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
   const dispatch = useAppDispatch();
-  const navigate = useInternalRouter();
   const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();

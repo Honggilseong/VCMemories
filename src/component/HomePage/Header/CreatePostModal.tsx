@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
-import { useInternalRouter } from "../../../pages/routing";
 import { RootState } from "../../../reducers";
 import { useAppDispatch } from "../../../reducers/store";
 import { closePostModal } from "../../../actions/modalAction";
@@ -46,7 +45,9 @@ const customStyles = {
   },
 };
 function CreatePostModal() {
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
+  const getUser = JSON.parse(
+    localStorage.getItem("profile") || '{"user": { "token": "" }}'
+  );
   const [previewImage, setPreviewImage] = useState<any>([]);
   const [newPost, setNewPost] = useState<NewPost>({
     title: "",
@@ -59,7 +60,6 @@ function CreatePostModal() {
     likes: [],
     comments: [],
   });
-  const navigate = useInternalRouter();
   const modal = useSelector((state: RootState) => state.modal);
   const dispatch = useAppDispatch();
 
@@ -95,11 +95,6 @@ function CreatePostModal() {
 
   const handleUploadPost = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    if (!getUser) {
-      navigate.push("/");
-      dispatch(closePostModal());
-      return;
-    }
     const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_USERNAME}/upload`;
     const formData = new FormData();
     formData.append("file", previewImage[0]);
@@ -127,6 +122,7 @@ function CreatePostModal() {
       comments: [],
     });
     setPreviewImage([]);
+    dispatch(closePostModal());
   };
 
   return (
