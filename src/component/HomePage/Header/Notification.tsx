@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
-import { readNotifications } from "../../../actions/authAction";
+import {
+  deleteNotifications,
+  readNotifications,
+} from "../../../actions/authAction";
 import { useAppDispatch } from "../../../reducers/store";
 export interface Notifications {
   _id: string;
@@ -21,10 +24,12 @@ function Notification() {
   const dispatch = useAppDispatch();
 
   const handleStateNotification = () => {
-    if (notificationsCount) dispatch(readNotifications(getUser.user._id));
+    // if (notificationsCount) dispatch(readNotifications(getUser.user._id));
     setIsOpen((prev) => !prev);
   };
-
+  const handleDeleteNotifications = () => {
+    dispatch(deleteNotifications(getUser.user._id));
+  };
   useEffect(() => {
     const handleClickPostInfo = (e: any) => {
       if (dropDownRef.current && !dropDownRef.current.contains(e.target))
@@ -54,29 +59,38 @@ function Notification() {
         </span>
       ) : null}
       {isOpen ? (
-        user.notifications?.length ? (
-          <div
-            className="absolute -bottom-50 -left-10 bg-white text-black border-purple-500 border z-50"
-            ref={dropDownRef}
-          >
-            {user.notifications?.map((data: any) => (
+        <div
+          className="absolute -bottom-50 -left-20 bg-white text-black border-purple-500 border z-50 w-60"
+          ref={dropDownRef}
+        >
+          {user.notifications?.length ? (
+            <div className="flex justify-end p-2">
+              <p className="cursor-pointer" onClick={handleDeleteNotifications}>
+                Delete all
+              </p>
+            </div>
+          ) : null}
+          {user.notifications?.length ? (
+            user.notifications?.map((data: any) => (
               <div
                 key={data._id}
                 className={`flex items-center p-3 border-2 cursor-pointer ${
                   data.read && "bg-gray-400"
                 }`}
-                ref={dropDownRef}
               >
-                <p className="font-bold mr-2">{data.sender} </p>
-                <p className="mr-2">{data.notificationType}</p>
+                <div className="flex">
+                  <p className="font-bold mr-2">{data.sender} </p>
+                  <p className="mr-2">{data.notificationType}</p>
+                  {data.notificationType === "liked" && <p>your post</p>}
+                </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="absolute -bottom-50 -left-10 bg-white text-black p-3 border-purple-500 border z-50">
-            <p>there's no notifications</p>
-          </div>
-        )
+            ))
+          ) : (
+            <div className="flex items-center justify-center p-5 border-t border-purple-500">
+              <p>There's no notifications</p>
+            </div>
+          )}
+        </div>
       ) : null}
     </div>
   );
