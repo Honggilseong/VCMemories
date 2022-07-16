@@ -2,6 +2,7 @@ import { readNotification } from "./../api/index";
 import { Dispatch } from "redux";
 import {
   CREATE_USER,
+  DELETE_NOTIFICATIONS,
   DELETE_POST,
   GET_USER_INFO,
   READ_NOTIFICATIONS,
@@ -86,3 +87,15 @@ export const readNotifications = (id: string) => async (dispatch: Dispatch) => {
     console.log(error);
   }
 };
+
+export const deleteNotifications =
+  (id: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.deleteNotifications(id);
+      dispatch({
+        type: DELETE_NOTIFICATIONS,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };

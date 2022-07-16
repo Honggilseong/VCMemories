@@ -51,6 +51,10 @@ export const readNotification = (id: string): AxiosPromise => {
   return API.patch(`/user/${id}/readnotification`, {}, config);
 };
 
+export const deleteNotifications = (id: string): AxiosPromise => {
+  return API.patch(`/user/${id}/deletenotifications`, {}, config);
+};
+
 export const uploadProfileImage = (
   id: string,
   uploadImage: string

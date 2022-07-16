@@ -5,6 +5,7 @@ export const GET_USER_INFO = "GET_USER_INFO";
 export const DELETE_POST = "DELETE_POST";
 export const UPLOAD_PROFILE_IMAGE = "UPLOAD_PROFILE_IMAGE";
 export const READ_NOTIFICATIONS = "READ_NOTIFICATIONS";
+export const DELETE_NOTIFICATIONS = "DELETE_NOTIFICATIONS";
 export interface UserInfo {
   email: string;
   password: string;
@@ -68,10 +69,14 @@ export interface uploadProfileImage {
 export interface readNotifications {
   type: typeof READ_NOTIFICATIONS;
 }
+export interface deleteNotifications {
+  type: typeof DELETE_NOTIFICATIONS;
+}
 export type authActionDispatch =
   | createUser
   | signIn
   | getUserInfo
   | deletePost
   | uploadProfileImage
-  | readNotifications;
+  | readNotifications
+  | deleteNotifications;

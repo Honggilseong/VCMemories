@@ -1,6 +1,7 @@
 import {
   authActionDispatch,
   CREATE_USER,
+  DELETE_NOTIFICATIONS,
   DELETE_POST,
   GET_USER_INFO,
   Notifications,
@@ -59,6 +60,13 @@ const AuthReducer = (
         notifications: state.notifications?.map((notification) =>
           !notification.read ? { ...notification, read: true } : notification
         ),
+      };
+    }
+    case DELETE_NOTIFICATIONS: {
+      console.log("Delete Notifications");
+      return {
+        ...state,
+        notifications: [],
       };
     }
     default:
