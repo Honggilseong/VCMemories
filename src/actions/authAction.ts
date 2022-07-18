@@ -5,12 +5,14 @@ import {
   DELETE_NOTIFICATIONS,
   DELETE_POST,
   GET_USER_INFO,
+  LEAVE_COMMENT,
   READ_NOTIFICATIONS,
   SIGN_IN,
   UPLOAD_PROFILE_IMAGE,
   UserInfo,
 } from "./authActionDispatch";
 import * as api from "../api";
+import { Comment } from "./postActionDispatch";
 
 export const createUser =
   (userInfo: UserInfo, navigate: any) => async (dispatch: Dispatch) => {
@@ -97,5 +99,18 @@ export const deleteNotifications =
       });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+export const leaveComment =
+  (id: string, comment: Comment) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.leaveComment(id, comment);
+      dispatch({
+        type: LEAVE_COMMENT,
+        payload: data,
+      });
+    } catch (err) {
+      console.log(err);
     }
   };

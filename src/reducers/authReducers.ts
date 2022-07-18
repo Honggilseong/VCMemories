@@ -4,6 +4,7 @@ import {
   DELETE_NOTIFICATIONS,
   DELETE_POST,
   GET_USER_INFO,
+  LEAVE_COMMENT,
   Notifications,
   READ_NOTIFICATIONS,
   SIGN_IN,
@@ -21,6 +22,7 @@ interface InitialState {
   followers?: string[];
   following?: string[];
   notifications?: Notifications[];
+  _id?: string;
 }
 const initialState = {
   name: "",
@@ -67,6 +69,15 @@ const AuthReducer = (
       return {
         ...state,
         notifications: [],
+      };
+    }
+    case LEAVE_COMMENT: {
+      const { _id } = action.payload;
+      return {
+        ...state,
+        userPosts: state.userPosts?.map((post) =>
+          post._id === _id ? action.payload : post
+        ),
       };
     }
     default:

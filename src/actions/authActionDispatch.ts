@@ -1,4 +1,3 @@
-import { readNotification } from "./../api/index";
 export const CREATE_USER = "CREATE_USER";
 export const SIGN_IN = "SIGN_IN";
 export const GET_USER_INFO = "GET_USER_INFO";
@@ -6,6 +5,7 @@ export const DELETE_POST = "DELETE_POST";
 export const UPLOAD_PROFILE_IMAGE = "UPLOAD_PROFILE_IMAGE";
 export const READ_NOTIFICATIONS = "READ_NOTIFICATIONS";
 export const DELETE_NOTIFICATIONS = "DELETE_NOTIFICATIONS";
+export const LEAVE_COMMENT = "LEAVE_COMMENT";
 export interface UserInfo {
   email: string;
   password: string;
@@ -72,6 +72,10 @@ export interface readNotifications {
 export interface deleteNotifications {
   type: typeof DELETE_NOTIFICATIONS;
 }
+export interface leaveComment {
+  type: typeof LEAVE_COMMENT;
+  payload: UserPosts;
+}
 export type authActionDispatch =
   | createUser
   | signIn
@@ -79,4 +83,5 @@ export type authActionDispatch =
   | deletePost
   | uploadProfileImage
   | readNotifications
-  | deleteNotifications;
+  | deleteNotifications
+  | leaveComment;
