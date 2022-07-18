@@ -24,17 +24,15 @@ function ProfileInfoModal({
   isPostInfoOpen,
   handleClickPostInfo,
   handleDeletePost,
+  handleLeaveComment,
+  commentValue,
+  handleValueComment,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
   const dispatch = useAppDispatch();
   const handleCloseModal = () => {
     setIsModalOpen(false);
-  };
-  const handleLikePost = () => {
-    console.log("liked");
-    return;
-    dispatch(likePost(post._id, getUser.user._id));
   };
   useEffect(() => {
     const likedPost = post.likes.findIndex(
@@ -89,10 +87,7 @@ function ProfileInfoModal({
           <p>{moment(post.createdAt).fromNow()}</p>
         </div>
         <div className="flex">
-          <div
-            className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
-            onClick={handleLikePost}
-          >
+          <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
             {likedPost ? (
               <AiFillHeart size={30} color="red" />
             ) : (
@@ -101,18 +96,37 @@ function ProfileInfoModal({
 
             <span>{post.likes.length}</span>
           </div>
-          <div
-            className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
-            // onClick={handleClickComments}
-          >
+          <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
             <AiOutlineComment size={30} />
             <span>{post.comments.length}</span>
           </div>
         </div>
-        <div className="flex">
+        <form
+          className="flex p-1 border border-purple-500"
+          onSubmit={handleLeaveComment}
+        >
+          <div className="flex-1">
+            <input
+              type="text"
+              className="h-full w-full focus:outline-none"
+              value={commentValue.comment}
+              onChange={handleValueComment}
+            />
+          </div>
+          <button
+            type="submit"
+            className={`p-2 bg-purple-500 text-white rounded-lg ml-1 ${
+              commentValue ? "bg-purple-500" : "bg-gray-400"
+            }`}
+            disabled={commentValue ? false : true}
+          >
+            Comment
+          </button>
+        </form>
+        <div className="my-3">
           {post.comments.length ? (
             post.comments.map((comment: Comment) => (
-              <div className="flex my-3">
+              <div key={comment._id} className="flex">
                 <p className="font-bold mr-2">{comment.commentUserName}:</p>
                 <p>{comment.comment}</p>
               </div>

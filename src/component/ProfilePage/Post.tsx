@@ -1,14 +1,23 @@
 import { Image } from "cloudinary-react";
 import React, { useState } from "react";
-import { deletePost } from "../../actions/authAction";
+import { deletePost, leaveComment } from "../../actions/authAction";
+import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import ProfileInfoModal from "./ProfileInfoModal";
 
-function Post({ post }: any) {
+function Post({ post, userInfo }: any) {
+  const [commentValue, setCommentValue] = useState<Comment>({
+    comment: "",
+    commentUserId: userInfo._id,
+    commentUserName: userInfo.name,
+  });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
   const dispatch = useAppDispatch();
+  const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentValue({ ...commentValue, comment: event.target.value });
+  };
   const handleClickDetailPost = () => {
     setIsModalOpen(true);
   };
@@ -19,6 +28,15 @@ function Post({ post }: any) {
     console.log("deleted");
     dispatch(deletePost(post._id, getUser.user._id));
     setIsModalOpen(false);
+  };
+  const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
+    event.preventDefault();
+    dispatch(leaveComment(post._id, commentValue));
+    setCommentValue({
+      comment: "",
+      commentUserId: userInfo._id,
+      commentUserName: userInfo.name,
+    });
   };
   return (
     <>
@@ -42,6 +60,9 @@ function Post({ post }: any) {
         isPostInfoOpen={isPostInfoOpen}
         handleClickPostInfo={handleClickPostInfo}
         handleDeletePost={handleDeletePost}
+        handleLeaveComment={handleLeaveComment}
+        commentValue={commentValue}
+        handleValueComment={handleValueComment}
       />
     </>
   );

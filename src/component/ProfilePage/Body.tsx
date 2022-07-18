@@ -1,26 +1,18 @@
 import { Image } from "cloudinary-react";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { getUserInfo } from "../../actions/authAction";
 import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
-import { useAppDispatch } from "../../reducers/store";
 import Post from "./Post";
 import ProfileImageModal from "./ProfileImageModal";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
   const userInfo = useSelector((state: RootState) => state.auth);
-  const localUser = JSON.parse(localStorage.getItem("profile") || "");
   const handleOpenUploadProfile = () => {
     setIsModalOpen(true);
   };
-  useEffect(() => {
-    dispatch(getUserInfo(localUser.user._id));
-  }, [dispatch]);
-
   return (
     <>
       <section className="w-full h-full">
@@ -57,7 +49,7 @@ function Body() {
             <div className="min-h-[500px] grid grid-cols-3 border gap-1">
               {userInfo.userPosts?.map((post: NewPost) => (
                 <div key={post._id}>
-                  <Post post={post} />
+                  <Post post={post} userInfo={userInfo} />
                 </div>
               ))}
             </div>
