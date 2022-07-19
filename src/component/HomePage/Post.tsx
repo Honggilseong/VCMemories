@@ -1,6 +1,11 @@
 import React, { useRef, useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { AiOutlineHeart, AiOutlineComment, AiFillHeart } from "react-icons/ai";
+import { BsThreeDotsVertical, BsFillTrashFill } from "react-icons/bs";
+import {
+  AiOutlineHeart,
+  AiOutlineComment,
+  AiFillHeart,
+  AiFillFlag,
+} from "react-icons/ai";
 import moment from "moment";
 import { useAppDispatch } from "../../reducers/store";
 import { deletePost, leaveComment, likePost } from "../../actions/postAction";
@@ -178,7 +183,6 @@ function Post({ post }: Props) {
       <div className="h-14 border flex justify-between items-center px-3">
         <div />
         <h1>{post.name}</h1>
-
         <div
           className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
           onClick={() => setIsPostInfoOpen((prev) => !prev)}
@@ -187,17 +191,24 @@ function Post({ post }: Props) {
           {isPostInfoOpen && (
             <div
               className={`absolute left-0 border bg-white p-2 ${
-                post.userId === getUser.user._id ? "-bottom-16" : "-bottom-10"
+                post.userId === getUser.user._id ? "-bottom-20" : "-bottom-14"
               }`}
               ref={dropDownRef}
             >
-              <div onClick={handleClickReport}>
+              <div
+                onClick={handleClickReport}
+                className="flex justify-center items-center mb-3"
+              >
+                <AiFillFlag size={20} className="mr-2" />
                 <p>Report</p>
               </div>
               {post.userId === getUser.user._id && (
-                <p className="text-red-600" onClick={handleDeletePost}>
-                  Delete
-                </p>
+                <div className="flex justify-center items-center">
+                  <BsFillTrashFill size={20} className="mr-2" color="red" />
+                  <p className="text-red-600" onClick={handleDeletePost}>
+                    Delete
+                  </p>
+                </div>
               )}
             </div>
           )}
