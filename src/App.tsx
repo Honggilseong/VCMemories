@@ -6,7 +6,8 @@ import { useAppDispatch } from "./reducers/store";
 import { closeSearchResultsModal } from "./actions/modalAction";
 import { useSelector } from "react-redux";
 import { RootState } from "./reducers";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 Modal.setAppElement("#root");
 function App() {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ function App() {
     <div onClick={handleCloseModals}>
       <Routes />
       <CreatePostModal />
+      <ToastContainer />
     </div>
   );
 }
