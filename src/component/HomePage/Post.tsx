@@ -9,6 +9,7 @@ import PostCommentsModal from "./Post/PostCommentsModal";
 import { Comment } from "../../actions/postActionDispatch";
 import { Image } from "cloudinary-react";
 import * as api from "../../api";
+import PostReportModal from "./Post/PostReportModal";
 
 interface Props {
   post: {
@@ -25,22 +26,38 @@ interface Props {
     comments: Comment[];
   };
 }
-
+interface ReportsList {
+  reasons: string[];
+  selected: string;
+}
 function Post({ post }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [isPostInfoOpen, setIsPostInfoOpen] = useState<boolean>(false);
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+  const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
     commentUserId: getUser.user._id,
     commentUserName: getUser.user.name,
   });
+  const [reportsList, setReportsList] = useState<ReportsList>({
+    reasons: [
+      "Posting annoying content",
+      "Posting spam",
+      "Posting inappropriate content",
+      "This profile is pretending to be someone else",
+      "Might be posting my intellectual property without authorization",
+    ],
+    selected: "",
+  });
   const dropDownRef = useRef(
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
   const dispatch = useAppDispatch();
-
+  const handleClickReport = () => {
+    setIsReportOpen((prev) => !prev);
+  };
   const handleDeletePost = () => {
     dispatch(deletePost(post._id, getUser.user._id));
   };
@@ -119,7 +136,9 @@ function Post({ post }: Props) {
               }`}
               ref={dropDownRef}
             >
-              <p>Report</p>
+              <div onClick={handleClickReport}>
+                <p>Report</p>
+              </div>
               {post.userId === getUser.user._id && (
                 <p className="text-red-600" onClick={handleDeletePost}>
                   Delete
@@ -164,7 +183,12 @@ function Post({ post }: Props) {
           <span>{post.comments.length}</span>
         </div>
       </div>
-
+      <PostReportModal
+        setIsReportOpen={setIsReportOpen}
+        isReportOpen={isReportOpen}
+        setReportsList={setReportsList}
+        reportsList={reportsList}
+      />
       <PostCommentsModal
         comments={post.comments}
         setIsCommentsOpen={setIsCommentsOpen}
