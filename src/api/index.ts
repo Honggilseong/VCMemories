@@ -111,3 +111,9 @@ interface Comment {
 export const leaveComment = (id: string, comment: Comment): AxiosPromise => {
   return API.patch(`/posts/${id}/leavecomment`, { comment }, config);
 };
+
+//report
+
+export const reportPost = (post: any): AxiosPromise => {
+  return API.post("/report/", { post }, config);
+};
