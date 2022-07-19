@@ -10,6 +10,9 @@ import { Comment } from "../../actions/postActionDispatch";
 import { Image } from "cloudinary-react";
 import * as api from "../../api";
 import PostReportModal from "./Post/PostReportModal";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../reducers";
 
 interface Props {
   post: {
@@ -34,8 +37,10 @@ function Post({ post }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [isPostInfoOpen, setIsPostInfoOpen] = useState<boolean>(false);
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+  const [isReportLoading, setIsReportLoading] = useState<boolean>(false);
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem("profile") || "");
+  const userInfo = useSelector((state: RootState) => state.auth);
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
     commentUserId: getUser.user._id,
@@ -55,9 +60,56 @@ function Post({ post }: Props) {
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
   const dispatch = useAppDispatch();
+
+  const handleSubmitReport = () => {
+    if (!reportsList.selected)
+      return toast.error("No reason", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    setIsReportLoading(true);
+
+    try {
+      api.reportPost({
+        ...post,
+        reportUserId: userInfo._id,
+        reportReason: reportsList.selected,
+      });
+      toast.success("Thank you for reporting a post", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setIsReportLoading(false);
+      setIsReportOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("No reason", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setIsReportOpen(false);
+    }
+  };
+
   const handleClickReport = () => {
     setIsReportOpen((prev) => !prev);
   };
+
   const handleDeletePost = () => {
     dispatch(deletePost(post._id, getUser.user._id));
   };
@@ -78,6 +130,7 @@ function Post({ post }: Props) {
   const handleClickComments = () => {
     setIsCommentsOpen((prev) => !prev);
   };
+
   const handleLeaveComment = () => {
     if (!getUser || !commentValue.comment) return;
 
@@ -100,6 +153,7 @@ function Post({ post }: Props) {
   const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue({ ...commentValue, comment: e.target.value });
   };
+
   useEffect(() => {
     const likedPost = post.likes.findIndex((id) => id === getUser.user._id);
     if (likedPost === -1) {
@@ -118,6 +172,7 @@ function Post({ post }: Props) {
     return () =>
       document.removeEventListener("mousedown", handleClickPostInfo, false);
   }, []);
+
   return (
     <>
       <div className="h-14 border flex justify-between items-center px-3">
@@ -188,6 +243,8 @@ function Post({ post }: Props) {
         isReportOpen={isReportOpen}
         setReportsList={setReportsList}
         reportsList={reportsList}
+        handleSubmitReport={handleSubmitReport}
+        isReportLoading={isReportLoading}
       />
       <PostCommentsModal
         comments={post.comments}

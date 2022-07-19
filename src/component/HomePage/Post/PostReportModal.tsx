@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 
 const customStyles = {
@@ -18,9 +18,11 @@ interface ReportsList {
 }
 interface Props {
   isReportOpen: boolean;
+  isReportLoading: boolean;
   setIsReportOpen: React.Dispatch<React.SetStateAction<boolean>>;
   reportsList: ReportsList;
   setReportsList: React.Dispatch<React.SetStateAction<ReportsList>>;
+  handleSubmitReport: () => void;
 }
 
 function PostReportModal({
@@ -28,18 +30,15 @@ function PostReportModal({
   setIsReportOpen,
   reportsList,
   setReportsList,
+  handleSubmitReport,
+  isReportLoading,
 }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSelectReason = (event: any) => {
     setReportsList({ ...reportsList, selected: event.target.value });
   };
   const handleCloseModal = () => {
     setIsReportOpen(false);
     setReportsList({ ...reportsList, selected: "" });
-  };
-  const handleSubmitReport = () => {
-    setIsLoading(true);
-    setIsLoading(false);
   };
 
   return (
@@ -71,11 +70,11 @@ function PostReportModal({
         ))}
         <div
           className={`flex items-center justify-center p-3 mt-10 text-white rounded-lg ${
-            isLoading ? "bg-gray-300" : "bg-red-500 cursor-pointer"
+            isReportLoading ? "bg-gray-300" : "bg-red-500 cursor-pointer"
           }`}
           onClick={handleSubmitReport}
         >
-          <p>{isLoading ? "Reporting..." : "Report"}</p>
+          <p>{isReportLoading ? "Reporting..." : "Report"}</p>
         </div>
         <div
           className="bg-gray-400 text-white p-3 rounded-lg cursor-pointer flex items-center justify-center mt-3"
