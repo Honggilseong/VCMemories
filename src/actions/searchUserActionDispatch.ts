@@ -1,5 +1,14 @@
+import { NewPost } from "./postActionDispatch";
+
 export const SEARCH_USER = "SEARCH_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
+export const LEAVE_COMMENT = "LEAVE_COMMENT";
+export interface Notifications {
+  _id: string;
+  read: boolean;
+  sender: string;
+  notificationType: string;
+}
 interface Comment {
   commentUserId: string;
   commentUserName: string;
@@ -25,6 +34,7 @@ export interface User {
   userPosts: UserPosts[];
   followers: string[];
   following: string[];
+  notifications: Notifications[];
 }
 export interface getSearchingUser {
   type: typeof SEARCH_USER;
@@ -34,4 +44,11 @@ export interface followUser {
   type: typeof FOLLOW_USER;
   payload: User;
 }
-export type searchUserActionDispatch = getSearchingUser | followUser;
+export interface leaveComment {
+  type: typeof LEAVE_COMMENT;
+  payload: NewPost;
+}
+export type searchUserActionDispatch =
+  | getSearchingUser
+  | followUser
+  | leaveComment;

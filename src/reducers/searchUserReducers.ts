@@ -1,9 +1,15 @@
 import {
   FOLLOW_USER,
+  LEAVE_COMMENT,
   searchUserActionDispatch,
   SEARCH_USER,
 } from "./../actions/searchUserActionDispatch";
-
+export interface Notifications {
+  _id: string;
+  read: boolean;
+  sender: string;
+  notificationType: string;
+}
 export interface UserPosts {
   title: string;
   picture: string;
@@ -14,15 +20,17 @@ export interface UserPosts {
   userId: string;
   likes: string[];
   _id: string;
+  comments: Comment[];
 }
 export interface GetSearchingUser {
-  _id: string;
-  email: string;
   name: string;
+  email: string;
   profilePicture: string;
   userPosts: UserPosts[];
   followers: string[];
   following: string[];
+  notifications: Notifications[];
+  _id: string;
 }
 type SearchUserState = GetSearchingUser;
 const initialState: SearchUserState = {
@@ -33,6 +41,7 @@ const initialState: SearchUserState = {
   userPosts: [],
   followers: [],
   following: [],
+  notifications: [],
 };
 
 const SearchUserReducer = (
@@ -45,6 +54,14 @@ const SearchUserReducer = (
     }
     case FOLLOW_USER: {
       return action.payload;
+    }
+    case LEAVE_COMMENT: {
+      return {
+        ...state,
+        userPosts: state.userPosts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     }
     default:
       return state;
