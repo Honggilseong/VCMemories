@@ -9,22 +9,33 @@ import {
   NewPost,
 } from "./postActionDispatch";
 import * as api from "../api";
+import { toastError, toastSuccess } from "../util/toast";
 
 export const createPost = (newPost: NewPost) => async (dispatch: Dispatch) => {
-  const { data } = await api.createPost(newPost);
+  try {
+    const { data } = await api.createPost(newPost);
 
-  dispatch({
-    type: CREATE_POST,
-    payload: data,
-  });
+    dispatch({
+      type: CREATE_POST,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+    toastError("Sorry something went wrong... please try again... 😢");
+  }
 };
 
 export const getPosts = () => async (dispatch: Dispatch) => {
-  const { data } = await api.getPosts();
-  dispatch({
-    type: GET_POSTS,
-    payload: data,
-  });
+  try {
+    const { data } = await api.getPosts();
+    dispatch({
+      type: GET_POSTS,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+    toastError("Sorry something went wrong... please try again... 😢");
+  }
 };
 
 export const deletePost =
@@ -35,8 +46,10 @@ export const deletePost =
         type: DELETE_POST,
         payload: id,
       });
+      toastSuccess("Success! 😀");
     } catch (err) {
       console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
@@ -50,18 +63,26 @@ export const likePost =
       });
     } catch (err) {
       console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
 export const leaveComment =
-  (id: string, comment: Comment) => async (dispatch: Dispatch) => {
+  (id: string, comment: Comment, postUserId: string, senderName: string) =>
+  async (dispatch: Dispatch) => {
     try {
       const { data } = await api.leaveComment(id, comment);
       dispatch({
         type: LEAVE_COMMENT,
         payload: data,
       });
+      api.sendNotification(postUserId, {
+        sender: senderName,
+        notificationType: "Left a comment",
+      });
+      toastSuccess("Success! 😀");
     } catch (err) {
       console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };

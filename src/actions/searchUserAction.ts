@@ -1,3 +1,4 @@
+import { toastSuccess, toastError } from "./../util/toast";
 import { Dispatch } from "redux";
 import * as api from "../api";
 import { Comment } from "./postActionDispatch";
@@ -17,6 +18,7 @@ export const getSearchingUser =
       });
     } catch (error) {
       console.log(error);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
@@ -28,8 +30,10 @@ export const followUser =
         type: FOLLOW_USER,
         payload: data,
       });
-    } catch (error) {
-      console.log(error);
+      toastSuccess("Now, you are following this user! 😀");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
@@ -41,7 +45,9 @@ export const leaveComment =
         type: LEAVE_COMMENT,
         payload: data,
       });
+      toastSuccess("Success! 😀");
     } catch (err) {
       console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };

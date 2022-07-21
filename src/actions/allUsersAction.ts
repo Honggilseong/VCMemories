@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import * as api from "../api";
+import { toastError } from "../util/toast";
 import { GET_ALL_USERS } from "./allUsersActionDispatch";
 
 export const getAllUsers = () => async (dispatch: Dispatch) => {
@@ -11,5 +12,6 @@ export const getAllUsers = () => async (dispatch: Dispatch) => {
     });
   } catch (error) {
     console.log(error);
+    toastError("Sorry something went wrong... please try again... 😢");
   }
 };

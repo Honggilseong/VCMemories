@@ -13,6 +13,7 @@ import {
 } from "./authActionDispatch";
 import * as api from "../api";
 import { Comment } from "./postActionDispatch";
+import { toastError, toastSuccess } from "../util/toast";
 
 export const createUser =
   (userInfo: UserInfo, navigate: any) => async (dispatch: Dispatch) => {
@@ -25,6 +26,7 @@ export const createUser =
       navigate("/");
     } catch (error) {
       console.log(error);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 export const signIn =
@@ -38,6 +40,7 @@ export const signIn =
       navigate("/");
     } catch (error) {
       console.log(error);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
@@ -50,6 +53,7 @@ export const getUserInfo = (id: string) => async (dispatch: Dispatch) => {
     });
   } catch (error) {
     console.log(error);
+    toastError("Sorry something went wrong... please try again... 😢");
   }
 };
 
@@ -61,8 +65,10 @@ export const deletePost =
         type: DELETE_POST,
         payload: id,
       });
+      toastSuccess("Success! 😀");
     } catch (err) {
       console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
@@ -74,8 +80,10 @@ export const uploadProfileImage =
         type: UPLOAD_PROFILE_IMAGE,
         payload: uploadImage,
       });
+      toastSuccess("Your image has been uploaded successfully 😀");
     } catch (error) {
       console.log(error);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
@@ -87,6 +95,7 @@ export const readNotifications = (id: string) => async (dispatch: Dispatch) => {
     });
   } catch (error) {
     console.log(error);
+    toastError("Sorry something went wrong... please try again... 😢");
   }
 };
 
@@ -99,18 +108,26 @@ export const deleteNotifications =
       });
     } catch (error) {
       console.log(error);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
 
 export const leaveComment =
-  (id: string, comment: Comment) => async (dispatch: Dispatch) => {
+  (id: string, comment: Comment, postUserId: string, senderName: string) =>
+  async (dispatch: Dispatch) => {
     try {
       const { data } = await api.leaveComment(id, comment);
       dispatch({
         type: LEAVE_COMMENT,
         payload: data,
       });
+      api.sendNotification(postUserId, {
+        sender: senderName,
+        notificationType: "Left a comment",
+      });
+      toastSuccess("Success! 😀");
     } catch (err) {
       console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };
