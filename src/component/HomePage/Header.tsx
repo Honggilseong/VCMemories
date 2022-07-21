@@ -84,7 +84,7 @@ function Header() {
             onClick={handleCreatePost}
           />
           <Notification />
-          <UserProfile user={user} />
+          <UserProfile />
         </div>
       </div>
     </header>

@@ -1,37 +1,31 @@
 import { Image } from "cloudinary-react";
-import React from "react";
+import { useSelector } from "react-redux";
 import { useInternalRouter } from "../../../pages/routing";
+import { RootState } from "../../../reducers/store";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
-interface User {
-  name: string;
-  token: string;
-  email: string;
-  profilePicture: string;
-}
-interface Props {
-  user: User | null;
-}
-function UserProfile({ user }: Props) {
+
+function UserProfile() {
   const navigate = useInternalRouter();
+  const authUser = useSelector((state: RootState) => state.auth);
   const handleUserProfile = () => {
     navigate.push("/profile");
   };
   return (
     <div className="ml-6">
-      {user ? (
+      {authUser ? (
         <div
           className="flex items-center justify-center cursor-pointer"
           onClick={handleUserProfile}
         >
-          <h1 className="mr-4">{user.name}</h1>
+          <h1 className="mr-4">{authUser.name}</h1>
           <div className="rounded-full border-2 w-10 h-10 hidden lg:block overflow-hidden">
-            {user.profilePicture === defaultProfilePicture ? (
-              <img src={user.profilePicture} alt="userProfilePicture" />
+            {authUser.profilePicture === defaultProfilePicture ? (
+              <img src={authUser.profilePicture} alt="userProfilePicture" />
             ) : (
               <Image
                 cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                publicId={user.profilePicture}
+                publicId={authUser.profilePicture}
                 className="w-full h-full"
                 crop="scale"
               />
