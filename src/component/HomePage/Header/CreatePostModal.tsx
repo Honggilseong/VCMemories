@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../../reducers/store";
 import { closePostModal } from "../../../actions/modalAction";
 import { createPost } from "../../../actions/postAction";
 import DropZone from "./CreatePostModal/DropZone";
+import { toastError } from "../../../util/toast";
 
 interface AcceptedFiles {
   path: string;
@@ -95,6 +96,10 @@ function CreatePostModal() {
 
   const handleUploadPost = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    if (!previewImage[0]) {
+      toastError("You have to upload your image!");
+      return;
+    }
     const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_USERNAME}/upload`;
     const formData = new FormData();
     formData.append("file", previewImage[0]);
@@ -102,13 +107,17 @@ function CreatePostModal() {
       "upload_preset",
       `${process.env.REACT_APP_CLOUDINARY_NAME}`
     );
-    const response = await fetch(url, {
-      method: "post",
-      body: formData,
-    }).then();
-    const data = await response.json();
-
-    dispatch(createPost({ ...newPost, picture: data.public_id }));
+    try {
+      const response = await fetch(url, {
+        method: "post",
+        body: formData,
+      }).then();
+      const data = await response.json();
+      dispatch(createPost({ ...newPost, picture: data.public_id }));
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
 
     setNewPost({
       title: "",
