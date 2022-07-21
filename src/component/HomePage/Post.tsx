@@ -136,23 +136,17 @@ function Post({ post }: Props) {
     setIsCommentsOpen((prev) => !prev);
   };
 
-  const handleLeaveComment = () => {
+  const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     if (!getUser || !commentValue.comment) return;
-
-    dispatch(leaveComment(post._id, commentValue));
+    event.preventDefault();
+    dispatch(
+      leaveComment(post._id, commentValue, post.userId, getUser.user.name)
+    );
     setCommentValue({
       comment: "",
       commentUserId: getUser.user._id,
       commentUserName: getUser.user.name,
     });
-    try {
-      api.sendNotification(post.userId, {
-        sender: getUser.user.name,
-        notificationType: "Left a comment",
-      });
-    } catch (error) {
-      console.log(error, "HOME = > Post.tsx, sendNotification");
-    }
   };
 
   const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {

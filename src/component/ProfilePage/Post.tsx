@@ -31,7 +31,7 @@ function Post({ post, userInfo }: any) {
   };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-    dispatch(leaveComment(post._id, commentValue));
+    dispatch(leaveComment(post._id, commentValue, post.userId, userInfo.name));
     setCommentValue({
       comment: "",
       commentUserId: userInfo._id,

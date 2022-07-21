@@ -11,7 +11,6 @@ function Post({ post, user }: any) {
     commentUserId: user._id,
     commentUserName: user.name,
   });
-  console.log(commentValue);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
 
@@ -30,7 +29,7 @@ function Post({ post, user }: any) {
   };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-    dispatch(leaveComment(post._id, commentValue));
+    dispatch(leaveComment(post._id, commentValue, post.userId, user.name));
     setCommentValue({
       comment: "",
       commentUserId: user._id,
