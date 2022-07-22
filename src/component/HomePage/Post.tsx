@@ -164,13 +164,17 @@ function Post({ post }: Props) {
 
   useEffect(() => {
     const handleClickPostInfo = (e: any) => {
-      if (dropDownRef.current && !dropDownRef.current.contains(e.target))
+      if (
+        isPostInfoOpen &&
+        dropDownRef.current &&
+        !dropDownRef.current.contains(e.target)
+      )
         setIsPostInfoOpen(false);
     };
     document.addEventListener("mousedown", handleClickPostInfo, false);
     return () =>
       document.removeEventListener("mousedown", handleClickPostInfo, false);
-  }, []);
+  }, [isPostInfoOpen]);
 
   return (
     <>
@@ -180,6 +184,7 @@ function Post({ post }: Props) {
         <div
           className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
           onClick={() => setIsPostInfoOpen((prev) => !prev)}
+          ref={dropDownRef}
         >
           <BsThreeDotsVertical size={20} />
           {isPostInfoOpen && (
@@ -187,7 +192,6 @@ function Post({ post }: Props) {
               className={`absolute left-0 border bg-white p-2 ${
                 post.userId === getUser.user._id ? "-bottom-20" : "-bottom-14"
               }`}
-              ref={dropDownRef}
             >
               <div
                 onClick={handleClickReport}
