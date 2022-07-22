@@ -1,8 +1,10 @@
+import { Image } from "cloudinary-react";
 import { useSelector } from "react-redux";
 import { GetSearchingUser } from "../../reducers/searchUserReducers";
 import { RootState } from "../../reducers/store";
 import Post from "./Post";
-
+const defaultProfilePicture =
+  "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 interface Props {
   handleFollowUser: (searchUserId: string, userId: string) => void;
   searchUserInfo: GetSearchingUser;
@@ -21,12 +23,21 @@ function Body({
     <section className="w-full h-full">
       <div className="max-w-xl mx-auto">
         <div className="w-full border-b-purple-500 border-b flex items-center flex-col">
-          <div className="w-36 h-36 rounded-full overflow-hidden border-8 border-green-500 mt-5 cursor-pointer">
-            <img src={searchUserInfo.profilePicture} alt="userProfilePicture" />
+          <div className="w-36 h-36 rounded-full overflow-hidden border-8 border-green-500 mt-5 cursor-pointer mb-5">
+            {searchUserInfo.profilePicture === defaultProfilePicture ? (
+              <img
+                src={searchUserInfo.profilePicture}
+                alt="userProfilePicture"
+              />
+            ) : (
+              <Image
+                cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
+                publicId={searchUserInfo.profilePicture}
+                className="w-full h-full"
+                crop="scale"
+              />
+            )}
           </div>
-          <h1 className="font-bold text-3xl mt-5 mb-5">
-            {searchUserInfo.name}
-          </h1>
         </div>
         <div className="flex justify-evenly mt-5 mb-5">
           <div className="flex justify-center items-center flex-col cursor-pointer">
