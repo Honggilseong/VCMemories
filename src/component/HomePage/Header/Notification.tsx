@@ -24,8 +24,9 @@ function Notification() {
   const dispatch = useAppDispatch();
 
   const handleStateNotification = () => {
-    // if (notificationsCount) dispatch(readNotifications(getUser.user._id));
     setIsOpen((prev) => !prev);
+    if (notificationsCount && isOpen)
+      dispatch(readNotifications(getUser.user._id));
   };
   const handleDeleteNotifications = () => {
     dispatch(deleteNotifications(getUser.user._id));
@@ -38,6 +39,8 @@ function Notification() {
         !dropDownRef.current.contains(e.target)
       )
         setIsOpen(false);
+      if (notificationsCount && isOpen)
+        dispatch(readNotifications(getUser.user._id));
     };
     document.addEventListener("mousedown", handleClickPostInfo);
     return () => document.removeEventListener("mousedown", handleClickPostInfo);
