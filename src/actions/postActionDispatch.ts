@@ -3,6 +3,7 @@ export const GET_POSTS = "GET_POSTS";
 export const DELETE_POST = "DELETE_POST";
 export const LIKE_POST = "LIKE_POST";
 export const LEAVE_COMMENT = "LEAVE_COMMENT";
+export const RESET_POSTS = "RESET_POSTS";
 export interface Comment {
   commentUserId: string;
   commentUserName: string;
@@ -48,9 +49,13 @@ export interface leaveComment {
   type: typeof LEAVE_COMMENT;
   payload: NewPost;
 }
+export interface resetPosts {
+  type: typeof RESET_POSTS;
+}
 export type postActionDispatch =
   | createPost
   | getPosts
   | deletePost
   | likePost
-  | leaveComment;
+  | leaveComment
+  | resetPosts;

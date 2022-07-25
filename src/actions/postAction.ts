@@ -7,6 +7,7 @@ import {
   LEAVE_COMMENT,
   LIKE_POST,
   NewPost,
+  RESET_POSTS,
 } from "./postActionDispatch";
 import * as api from "../api";
 import { toastError, toastSuccess } from "../util/toast";
@@ -25,18 +26,19 @@ export const createPost = (newPost: NewPost) => async (dispatch: Dispatch) => {
   }
 };
 
-export const getPosts = () => async (dispatch: Dispatch) => {
-  try {
-    const { data } = await api.getPosts();
-    dispatch({
-      type: GET_POSTS,
-      payload: data,
-    });
-  } catch (err) {
-    console.log(err);
-    toastError("Sorry something went wrong... please try again... 😢");
-  }
-};
+export const getPosts =
+  (followingUsers: string[]) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.getPosts(followingUsers);
+      dispatch({
+        type: GET_POSTS,
+        payload: data,
+      });
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry we couldn't get the posts please try again... 😢");
+    }
+  };
 
 export const deletePost =
   (id: string, userId: string) => async (dispatch: Dispatch) => {
@@ -86,3 +88,9 @@ export const leaveComment =
       toastError("Sorry something went wrong... please try again... 😢");
     }
   };
+
+export const resetPosts = () => (dispatch: Dispatch) => {
+  dispatch({
+    type: RESET_POSTS,
+  });
+};

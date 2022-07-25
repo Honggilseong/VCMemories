@@ -5,6 +5,7 @@ import {
   LEAVE_COMMENT,
   LIKE_POST,
   postActionDispatch,
+  RESET_POSTS,
 } from "../actions/postActionDispatch";
 import { CREATE_POST } from "../actions/postActionDispatch";
 
@@ -47,6 +48,9 @@ const PostReducer = (
       return state.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
+    }
+    case RESET_POSTS: {
+      return initialState;
     }
     default:
       return state;
