@@ -19,7 +19,9 @@ function AuthPage() {
     name: "",
   });
   const dispatch = useAppDispatch();
+  const isAuthenticated = localStorage.getItem("profile") ?? "";
   const { push } = useInternalRouter();
+  if (isAuthenticated) push("/");
 
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
