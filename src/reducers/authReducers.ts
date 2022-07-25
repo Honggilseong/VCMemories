@@ -8,6 +8,7 @@ import {
   Notifications,
   READ_NOTIFICATIONS,
   SIGN_IN,
+  SIGN_OUT,
   UPLOAD_PROFILE_IMAGE,
   UserPosts,
 } from "../actions/authActionDispatch";
@@ -42,6 +43,10 @@ const AuthReducer = (
     case SIGN_IN: {
       localStorage.setItem("profile", JSON.stringify(action.payload));
       return { ...state, userData: action.payload };
+    }
+    case SIGN_OUT: {
+      localStorage.removeItem("profile");
+      return { ...initialState };
     }
     case GET_USER_INFO: {
       return { ...state, ...action.payload };

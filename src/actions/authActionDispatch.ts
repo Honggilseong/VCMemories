@@ -1,5 +1,6 @@
 export const CREATE_USER = "CREATE_USER";
 export const SIGN_IN = "SIGN_IN";
+export const SIGN_OUT = "SIGN_OUT";
 export const GET_USER_INFO = "GET_USER_INFO";
 export const DELETE_POST = "DELETE_POST";
 export const UPLOAD_PROFILE_IMAGE = "UPLOAD_PROFILE_IMAGE";
@@ -20,6 +21,9 @@ export interface createUser {
 export interface signIn {
   type: typeof SIGN_IN;
   payload: UserInfo;
+}
+export interface signOut {
+  type: typeof SIGN_OUT;
 }
 interface Comment {
   commentUserId: string;
@@ -79,6 +83,7 @@ export interface leaveComment {
 export type authActionDispatch =
   | createUser
   | signIn
+  | signOut
   | getUserInfo
   | deletePost
   | uploadProfileImage

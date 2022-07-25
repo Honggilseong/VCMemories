@@ -8,6 +8,7 @@ import {
   LEAVE_COMMENT,
   READ_NOTIFICATIONS,
   SIGN_IN,
+  SIGN_OUT,
   UPLOAD_PROFILE_IMAGE,
   UserInfo,
 } from "./authActionDispatch";
@@ -43,6 +44,11 @@ export const signIn =
       toastError("Sorry something went wrong... please try again... 😢");
     }
   };
+export const signOut = () => (dispatch: Dispatch) => {
+  dispatch({
+    type: SIGN_OUT,
+  });
+};
 
 export const getUserInfo = (id: string) => async (dispatch: Dispatch) => {
   try {
