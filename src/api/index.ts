@@ -84,8 +84,8 @@ export const getAllUsers = (): AxiosPromise => {
 export const createPost = (postData: PostData): AxiosPromise => {
   return API.post("/posts/createpost", postData, config);
 };
-export const getPosts = (): AxiosPromise => {
-  return API.get("/posts/", config);
+export const getPosts = (followingUsers: string[]): AxiosPromise => {
+  return API.post("/posts/", followingUsers, config);
 };
 
 export const deletePost = (id: string, userId: string): AxiosPromise => {
