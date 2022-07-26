@@ -1,6 +1,7 @@
 import { Image } from "cloudinary-react";
 import React from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
+import { TiDeleteOutline } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
 const defaultProfilePicture =
@@ -8,6 +9,7 @@ const defaultProfilePicture =
 interface Props {
   handleSearchBar: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleClickSearchingUser: (name: string) => void;
+  handleClearSearchValue: () => void;
   searchValue: string;
 }
 
@@ -15,6 +17,7 @@ function SearchBar({
   handleSearchBar,
   searchValue,
   handleClickSearchingUser,
+  handleClearSearchValue,
 }: Props) {
   const allUsers = useSelector((state: RootState) => state.allUsers);
   const modal = useSelector((state: RootState) => state.modal);
@@ -28,7 +31,16 @@ function SearchBar({
           onChange={handleSearchBar}
           value={searchValue}
         />
-        <BiSearchAlt2 color="black" size="20px" cursor="pointer" />
+        {searchValue ? (
+          <TiDeleteOutline
+            color="black"
+            size="20px"
+            cursor="pointer"
+            onClick={handleClearSearchValue}
+          />
+        ) : (
+          <BiSearchAlt2 color="black" size="20px" cursor="pointer" />
+        )}
       </div>
       {modal.isSearchResultsModalOpen && (
         <div className="border absolute -bottom-[18rem] -left-12 rounded-lg h-72 overflow-hidden w-[300px] bg-white ">

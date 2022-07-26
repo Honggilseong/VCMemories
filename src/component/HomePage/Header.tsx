@@ -23,7 +23,9 @@ function Header() {
     dispatch(openSearchResultsModal());
     setSearchValue(event.target.value);
   };
-
+  const handleClearSearchValue = () => {
+    setSearchValue("");
+  };
   const handleCreatePost = () => {
     dispatch(openPostModal());
   };
@@ -49,6 +51,7 @@ function Header() {
           handleSearchBar={handleSearchBar}
           searchValue={searchValue}
           handleClickSearchingUser={handleClickSearchingUser}
+          handleClearSearchValue={handleClearSearchValue}
         />
         <div className="flex justify-center items-center">
           <MdOutlineAddPhotoAlternate
