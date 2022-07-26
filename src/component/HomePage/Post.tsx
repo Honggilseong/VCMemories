@@ -180,7 +180,7 @@ function Post({ post }: Props) {
     <>
       <div className="h-14 border flex justify-between items-center px-3">
         <div />
-        <h1>{post.name}</h1>
+        <h1 className="font-bold">{post.name}</h1>
         <div
           className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
           onClick={() => setIsPostInfoOpen((prev) => !prev)}
@@ -222,9 +222,12 @@ function Post({ post }: Props) {
         />
       </div>
       <div className="my-2">
+        <h2 className="font-bold text-lg">{post.title}</h2>
         <p>{post.message}</p>
         <p>{post.tags.map((tag: string) => tag)}</p>
-        <p>{moment(post.createdAt).fromNow()}</p>
+        <p className="text-gray-500 text-sm">
+          {moment(post.createdAt).fromNow()}
+        </p>
       </div>
       <div className="flex">
         <div
