@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createUser, signIn } from "../actions/authAction";
 import AuthPageForm from "../component/AuthPage/AuthPageForm";
 import { useAppDispatch } from "../reducers/store";
@@ -21,7 +21,6 @@ function AuthPage() {
   const dispatch = useAppDispatch();
   const isAuthenticated = localStorage.getItem("profile") ?? "";
   const { push } = useInternalRouter();
-  if (isAuthenticated) push("/");
 
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
@@ -50,6 +49,9 @@ function AuthPage() {
     });
   };
 
+  useEffect(() => {
+    if (isAuthenticated) push("/");
+  }, []);
   const props = {
     handleSignUp,
     handleShowPassword,
