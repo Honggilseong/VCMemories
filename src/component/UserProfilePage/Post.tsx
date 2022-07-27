@@ -1,6 +1,6 @@
 import { Image } from "cloudinary-react";
 import React, { useState } from "react";
-import { leaveComment } from "../../actions/authAction";
+import { leaveComment } from "../../actions/searchUserAction";
 import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import UserProfileInfoModal from "./UserProfileInfoModal";
@@ -38,7 +38,8 @@ function Post({ post, authUser }: any) {
           commentUserName: authUser.name,
         },
         post.userId,
-        authUser.name
+        authUser.name,
+        post.picture
       )
     );
     setCommentValue({

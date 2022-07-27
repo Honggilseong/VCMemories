@@ -39,7 +39,8 @@ function Post({ post, authUser }: any) {
           commentUserName: authUser.name,
         },
         post.userId,
-        authUser.name
+        authUser.name,
+        post.picture
       )
     );
     setCommentValue({

@@ -96,12 +96,15 @@ export const leaveComment =
         type: LEAVE_COMMENT,
         payload: data,
       });
-      api.sendNotification(postUserId, {
-        sender: senderName,
-        notificationType: "Left a comment",
-        image,
-      });
-      toastSuccess("Success! 😀");
+      if (comment.commentUserId !== postUserId) {
+        console.log("send notification");
+        api.sendNotification(postUserId, {
+          sender: senderName,
+          notificationType: "Left a comment",
+          image,
+        });
+      }
+      toastSuccess("Your comment has been left successfully 😀");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");

@@ -119,7 +119,13 @@ export const deleteNotifications =
   };
 
 export const leaveComment =
-  (id: string, comment: Comment, postUserId: string, senderName: string) =>
+  (
+    id: string,
+    comment: Comment,
+    postUserId: string,
+    senderName: string,
+    image: string
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       const { data } = await api.leaveComment(id, comment);
@@ -127,11 +133,15 @@ export const leaveComment =
         type: LEAVE_COMMENT,
         payload: data,
       });
-      api.sendNotification(postUserId, {
-        sender: senderName,
-        notificationType: "Left a comment",
-      });
-      toastSuccess("Success! 😀");
+      if (comment.commentUserId !== postUserId) {
+        console.log("send notification");
+        api.sendNotification(postUserId, {
+          sender: senderName,
+          notificationType: "Left a comment",
+          image,
+        });
+      }
+      toastSuccess("Your comment has been left successfully 😀");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");

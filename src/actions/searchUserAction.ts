@@ -38,14 +38,29 @@ export const followUser =
   };
 
 export const leaveComment =
-  (id: string, comment: Comment) => async (dispatch: Dispatch) => {
+  (
+    id: string,
+    comment: Comment,
+    postUserId: string,
+    senderName: string,
+    image: string
+  ) =>
+  async (dispatch: Dispatch) => {
     try {
       const { data } = await api.leaveComment(id, comment);
       dispatch({
         type: LEAVE_COMMENT,
         payload: data,
       });
-      toastSuccess("Success! 😀");
+      if (comment.commentUserId !== postUserId) {
+        console.log("send notification");
+        api.sendNotification(postUserId, {
+          sender: senderName,
+          notificationType: "Left a comment",
+          image,
+        });
+      }
+      toastSuccess("Your comment has been left successfully 😀");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
