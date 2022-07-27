@@ -23,13 +23,14 @@ interface InitialState {
   followers?: string[];
   following?: string[];
   notifications?: Notifications[];
-  _id?: string;
+  _id: string;
 }
 const initialState = {
   name: "",
   email: "",
   password: "",
   token: "",
+  _id: "",
 };
 const AuthReducer = (
   state: InitialState = initialState,
