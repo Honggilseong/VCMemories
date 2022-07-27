@@ -24,10 +24,16 @@ export const createUser =
         type: CREATE_USER,
         payload: data,
       });
+      console.log(data);
+      const userData = await api.getUserInfo(data.user._id);
+      dispatch({
+        type: GET_USER_INFO,
+        payload: userData.data,
+      });
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toastError("Sorry something went wrong... please try again... 😢");
+      toastError(error.response.data.message);
     }
   };
 export const signIn =
@@ -38,10 +44,16 @@ export const signIn =
         type: SIGN_IN,
         payload: data,
       });
+      console.log(data);
+      const userData = await api.getUserInfo(data.user._id);
+      dispatch({
+        type: GET_USER_INFO,
+        payload: userData.data,
+      });
       navigate("/");
     } catch (error) {
       console.log(error);
-      toastError("Sorry something went wrong... please try again... 😢");
+      toastError("Your email or password is wrong... please try again...");
     }
   };
 export const signOut = () => (dispatch: Dispatch) => {
