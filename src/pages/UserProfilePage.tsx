@@ -12,8 +12,9 @@ function UserProfilePage() {
   const dispatch = useAppDispatch();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const searchUserInfo = useSelector((state: any) => state.searchUser);
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
+
   const handleFollowUser = (searchUserId: string, userId: string) => {
+    const getUser = JSON.parse(localStorage.getItem("profile") || "");
     if (!isFollowing) {
       try {
         api.sendNotification(searchUserId, {
@@ -26,7 +27,9 @@ function UserProfilePage() {
     }
     dispatch(followUser(searchUserId, userId));
   };
+
   useEffect(() => {
+    const getUser = JSON.parse(localStorage.getItem("profile") || "");
     const index = searchUserInfo.followers.findIndex(
       (id: string) => id === getUser.user._id
     );
@@ -47,7 +50,6 @@ function UserProfilePage() {
         handleFollowUser={handleFollowUser}
         isFollowing={isFollowing}
         searchUserInfo={searchUserInfo}
-        getUser={getUser}
       />
     </section>
   );
