@@ -27,7 +27,7 @@ function AuthPageForm({
   isSignUp,
 }: Props) {
   return (
-    <div className="flex flex-row justify-center border-r-2 w-[550px]">
+    <div className="flex flex-row justify-center w-[550px]">
       <div>
         <h1 className="font-bold text-3xl mt-36 text-center">
           {isSignUp ? "Sign Up" : "Sign In"}
