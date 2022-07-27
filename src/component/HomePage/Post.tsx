@@ -18,6 +18,7 @@ import PostReportModal from "./Post/PostReportModal";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
+import { toastError, toastSuccess } from "../../util/toast";
 
 interface Props {
   post: {
@@ -44,12 +45,11 @@ function Post({ post }: Props) {
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
   const [isReportLoading, setIsReportLoading] = useState<boolean>(false);
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
-  const userInfo = useSelector((state: RootState) => state.auth);
+  const authUser = useSelector((state: RootState) => state.auth);
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
-    commentUserId: getUser.user._id,
-    commentUserName: getUser.user.name,
+    commentUserId: "",
+    commentUserName: "",
   });
   const [reportsList, setReportsList] = useState<ReportsList>({
     reasons: [
@@ -67,46 +67,21 @@ function Post({ post }: Props) {
   const dispatch = useAppDispatch();
 
   const handleSubmitReport = () => {
-    if (!reportsList.selected)
-      return toast.error("No reason", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    if (!reportsList.selected) return toastError("No reason");
     setIsReportLoading(true);
 
     try {
       api.reportPost({
         ...post,
-        reportUserId: userInfo._id,
+        reportUserId: authUser._id,
         reportReason: reportsList.selected,
       });
-      toast.success("Thank you for reporting a post", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toastSuccess("Thank you for reporting a post");
       setIsReportLoading(false);
       setIsReportOpen(false);
     } catch (error) {
       console.log(error);
-      toast.error("No reason", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toastError("Sorry, Something went wrong... try again...");
       setIsReportOpen(false);
     }
   };
@@ -116,20 +91,13 @@ function Post({ post }: Props) {
   };
 
   const handleDeletePost = () => {
-    dispatch(deletePost(post._id, getUser.user._id));
+    dispatch(deletePost(post._id, authUser._id));
   };
 
   const handleLikePost = () => {
-    dispatch(likePost(post._id, getUser.user._id));
-
-    try {
-      api.sendNotification(post.userId, {
-        sender: getUser.user.name,
-        notificationType: "liked",
-      });
-    } catch (error) {
-      console.log(error, "HOME = > Post.tsx, sendNotification");
-    }
+    dispatch(
+      likePost(post._id, authUser._id, post.userId, authUser.name, post.picture)
+    );
   };
 
   const handleClickComments = () => {
@@ -137,15 +105,25 @@ function Post({ post }: Props) {
   };
 
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
-    if (!getUser || !commentValue.comment) return;
+    if (!commentValue.comment) return;
     event.preventDefault();
     dispatch(
-      leaveComment(post._id, commentValue, post.userId, getUser.user.name)
+      leaveComment(
+        post._id,
+        {
+          ...commentValue,
+          commentUserId: authUser._id,
+          commentUserName: authUser.name,
+        },
+        post.userId,
+        authUser.name,
+        post.picture
+      )
     );
     setCommentValue({
       comment: "",
-      commentUserId: getUser.user._id,
-      commentUserName: getUser.user.name,
+      commentUserId: "",
+      commentUserName: "",
     });
   };
 
@@ -154,7 +132,7 @@ function Post({ post }: Props) {
   };
 
   useEffect(() => {
-    const likedPost = post.likes.findIndex((id) => id === getUser.user._id);
+    const likedPost = post.likes.findIndex((id) => id === authUser._id);
     if (likedPost === -1) {
       setLikedPost(false);
     } else {
@@ -190,7 +168,7 @@ function Post({ post }: Props) {
           {isPostInfoOpen && (
             <div
               className={`absolute left-0 border bg-white p-2 ${
-                post.userId === getUser.user._id ? "-bottom-20" : "-bottom-14"
+                post.userId === authUser._id ? "-bottom-20" : "-bottom-14"
               }`}
             >
               <div
@@ -200,7 +178,7 @@ function Post({ post }: Props) {
                 <AiFillFlag size={20} className="mr-2" />
                 <p>Report</p>
               </div>
-              {post.userId === getUser.user._id && (
+              {post.userId === authUser._id && (
                 <div className="flex justify-center items-center">
                   <BsFillTrashFill size={20} className="mr-2" color="red" />
                   <p className="text-red-600" onClick={handleDeletePost}>
