@@ -47,6 +47,7 @@ const customStyles = {
 };
 function CreatePostModal() {
   const [previewImage, setPreviewImage] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newPost, setNewPost] = useState<NewPost>({
     title: "",
     picture: "",
@@ -97,6 +98,7 @@ function CreatePostModal() {
       toastError("You have to upload your image!");
       return;
     }
+    setIsLoading(true);
     const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_USERNAME}/upload`;
     const formData = new FormData();
     formData.append("file", previewImage[0]);
@@ -119,9 +121,11 @@ function CreatePostModal() {
           userId: userInfo.user._id,
         })
       );
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
+      setIsLoading(false);
     }
     setNewPost({
       title: "",
@@ -178,12 +182,18 @@ function CreatePostModal() {
           onChange={handleInputNewUser}
         />
       </div> */}
-      <div
-        className="h-12 bg-red-400 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer"
-        onClick={handleUploadPost}
-      >
-        <p>Upload your post</p>
-      </div>
+      {isLoading ? (
+        <div className="h-12 bg-gray-400 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer">
+          <p>Uploading...</p>
+        </div>
+      ) : (
+        <div
+          className="h-12 bg-red-400 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer"
+          onClick={handleUploadPost}
+        >
+          <p>Upload your post</p>
+        </div>
+      )}
       <div
         className="h-12 bg-gray-500 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer"
         onClick={handleCloseModal}
