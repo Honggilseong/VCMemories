@@ -5,11 +5,11 @@ import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import UserProfileInfoModal from "./UserProfileInfoModal";
 
-function Post({ post, user }: any) {
+function Post({ post, authUser }: any) {
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
-    commentUserId: user._id,
-    commentUserName: user.name,
+    commentUserId: "",
+    commentUserName: "",
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
@@ -29,11 +29,22 @@ function Post({ post, user }: any) {
   };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-    dispatch(leaveComment(post._id, commentValue, post.userId, user.name));
+    dispatch(
+      leaveComment(
+        post._id,
+        {
+          ...commentValue,
+          commentUserId: authUser._id,
+          commentUserName: authUser.name,
+        },
+        post.userId,
+        authUser.name
+      )
+    );
     setCommentValue({
       comment: "",
-      commentUserId: user._id,
-      commentUserName: user.name,
+      commentUserId: "",
+      commentUserName: "",
     });
   };
   return (
@@ -51,7 +62,7 @@ function Post({ post, user }: any) {
         />
       </div>
       <UserProfileInfoModal
-        user={user}
+        authUser={authUser}
         post={post}
         handleCloseModal={handleCloseModal}
         isModalOpen={isModalOpen}

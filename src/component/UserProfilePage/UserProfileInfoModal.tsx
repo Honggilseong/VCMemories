@@ -25,11 +25,11 @@ function UserProfileInfoModal({
   commentValue,
   handleValueComment,
   handleCloseModal,
-  user,
+  authUser,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   useEffect(() => {
-    const likedPost = post.likes.findIndex((id: string) => id === user._id);
+    const likedPost = post.likes.findIndex((id: string) => id === authUser._id);
     if (likedPost === -1) {
       setLikedPost(false);
     } else {

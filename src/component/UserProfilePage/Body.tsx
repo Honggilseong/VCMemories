@@ -9,15 +9,9 @@ interface Props {
   handleFollowUser: (searchUserId: string, userId: string) => void;
   searchUserInfo: GetSearchingUser;
   isFollowing: boolean;
-  getUser: any;
 }
 
-function Body({
-  handleFollowUser,
-  searchUserInfo,
-  isFollowing,
-  getUser,
-}: Props) {
+function Body({ handleFollowUser, searchUserInfo, isFollowing }: Props) {
   const authUser = useSelector((state: RootState) => state.auth);
   return (
     <section className="w-full h-full">
@@ -52,9 +46,7 @@ function Body({
         <div className="flex text-white">
           <div
             className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-purple-500 rounded-lg mb-3"
-            onClick={() =>
-              handleFollowUser(searchUserInfo._id, getUser.user._id)
-            }
+            onClick={() => handleFollowUser(searchUserInfo._id, authUser._id)}
           >
             <p>{isFollowing ? "Unfollow" : "Follow"}</p>
           </div>
@@ -66,7 +58,7 @@ function Body({
           <div className="min-h-[500px] grid grid-cols-3 border gap-1">
             {searchUserInfo.userPosts?.map((post) => (
               <div key={post._id}>
-                <Post post={post} user={authUser} />
+                <Post post={post} authUser={authUser} />
               </div>
             ))}
           </div>
