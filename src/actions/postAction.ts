@@ -66,11 +66,13 @@ export const likePost =
   async (dispatch: Dispatch) => {
     try {
       const { data } = await api.likePost(id, userId);
-      api.sendNotification(postUserId, {
-        sender: senderName,
-        notificationType: "liked your Post",
-        image,
-      });
+      if (userId !== postUserId) {
+        api.sendNotification(postUserId, {
+          sender: senderName,
+          notificationType: "liked your Post",
+          image,
+        });
+      }
       dispatch({
         type: LIKE_POST,
         payload: data,
