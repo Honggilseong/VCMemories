@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import SearchBar from "./Header/SearchBar";
 import UserProfile from "./Header/UserProfile";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { useAppDispatch } from "../../reducers/store";
+import { RootState, useAppDispatch } from "../../reducers/store";
 import {
   openPostModal,
   openSearchResultsModal,
@@ -10,14 +10,13 @@ import {
 import { useInternalRouter } from "../../pages/routing";
 import Notification from "./Header/Notification";
 import { getUserInfo } from "../../actions/authAction";
+import { useSelector } from "react-redux";
 
 function Header() {
   const navigate = useInternalRouter();
   const [searchValue, setSearchValue] = useState<string>("");
   const dispatch = useAppDispatch();
-  const isAuthenticated = JSON.parse(
-    localStorage.getItem("profile") || '{"user": { "token": "" }}'
-  );
+  const authUser = useSelector((state: RootState) => state.auth);
   const handleSearchBar = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     dispatch(openSearchResultsModal());
@@ -38,9 +37,9 @@ function Header() {
     navigate.push(`/user/search/${name}`);
   };
   useEffect(() => {
-    if (isAuthenticated.user._id)
-      dispatch(getUserInfo(isAuthenticated.user._id));
-  }, []);
+    const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
+    dispatch(getUserInfo(isAuthenticated.user._id));
+  }, [authUser]);
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
       <div className="max-w-7xl flex justify-between h-full items-center mx-auto p-3 xl:p-0">
