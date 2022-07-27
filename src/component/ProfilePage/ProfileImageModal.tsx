@@ -24,7 +24,7 @@ interface AcceptedFiles {
   type: string;
   webkitRelativePath: string;
 }
-function ProfileImageModal({ isModalOpen, setIsModalOpen, userInfo }: any) {
+function ProfileImageModal({ isModalOpen, setIsModalOpen, authUser }: any) {
   const [previewImage, setPreviewImage] = useState<any>([]);
   const onDrop = useCallback((acceptedFiles: AcceptedFiles[]) => {
     console.log(acceptedFiles);
@@ -50,7 +50,7 @@ function ProfileImageModal({ isModalOpen, setIsModalOpen, userInfo }: any) {
         body: formData,
       }).then();
       const data = await response.json();
-      dispatch(uploadProfileImage(userInfo._id, data.public_id));
+      dispatch(uploadProfileImage(authUser._id, data.public_id));
       setIsModalOpen(false);
       setPreviewImage([]);
     } catch (error) {

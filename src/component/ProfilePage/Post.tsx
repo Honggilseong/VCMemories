@@ -5,15 +5,15 @@ import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import ProfileInfoModal from "./ProfileInfoModal";
 
-function Post({ post, userInfo }: any) {
+function Post({ post, authUser }: any) {
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
-    commentUserId: userInfo._id,
-    commentUserName: userInfo.name,
+    commentUserId: "",
+    commentUserName: "",
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
+
   const dispatch = useAppDispatch();
   const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue({ ...commentValue, comment: event.target.value });
@@ -25,17 +25,27 @@ function Post({ post, userInfo }: any) {
     setPostInfoOpen((prev) => !prev);
   };
   const handleDeletePost = () => {
-    console.log("deleted");
-    dispatch(deletePost(post._id, getUser.user._id));
+    dispatch(deletePost(post._id, authUser._id));
     setIsModalOpen(false);
   };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-    dispatch(leaveComment(post._id, commentValue, post.userId, userInfo.name));
+    dispatch(
+      leaveComment(
+        post._id,
+        {
+          ...commentValue,
+          commentUserId: authUser._id,
+          commentUserName: authUser.name,
+        },
+        post.userId,
+        authUser.name
+      )
+    );
     setCommentValue({
       comment: "",
-      commentUserId: userInfo._id,
-      commentUserName: userInfo.name,
+      commentUserId: "",
+      commentUserName: "",
     });
   };
   return (

@@ -13,7 +13,7 @@ const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const userInfo = useSelector((state: RootState) => state.auth);
+  const authUser = useSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useInternalRouter();
   const handleClickSignOut = () => {
@@ -41,34 +41,34 @@ function Body() {
               className="w-36 h-36 rounded-full overflow-hidden border-8 border-green-500 mt-5 cursor-pointer"
               onClick={handleOpenUploadProfile}
             >
-              {userInfo.profilePicture === defaultProfilePicture ? (
-                <img src={userInfo.profilePicture} alt="userProfilePicture" />
+              {authUser.profilePicture === defaultProfilePicture ? (
+                <img src={authUser.profilePicture} alt="userProfilePicture" />
               ) : (
                 <Image
                   cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                  publicId={userInfo.profilePicture}
+                  publicId={authUser.profilePicture}
                   className="w-full h-full"
                   crop="scale"
                 />
               )}
             </div>
-            <h1 className="font-bold text-3xl mt-5 mb-5">{userInfo.name}</h1>
+            <h1 className="font-bold text-3xl mt-5 mb-5">{authUser.name}</h1>
           </div>
           <div className="flex justify-evenly mt-5 mb-5">
             <div className="flex justify-center items-center flex-col cursor-pointer">
               <h2 className="font-bold text-xl">Followers</h2>
-              <p>{userInfo.followers?.length}</p>
+              <p>{authUser.followers?.length}</p>
             </div>
             <div className="flex justify-center items-center flex-col cursor-pointer">
               <h2 className="font-bold text-xl">Following</h2>
-              <p>{userInfo.following?.length}</p>
+              <p>{authUser.following?.length}</p>
             </div>
           </div>
-          {userInfo.userPosts?.length ? (
+          {authUser.userPosts?.length ? (
             <div className="min-h-[500px] grid grid-cols-3 border gap-1">
-              {userInfo.userPosts?.map((post: NewPost) => (
+              {authUser.userPosts?.map((post: NewPost) => (
                 <div key={post._id}>
-                  <Post post={post} userInfo={userInfo} />
+                  <Post post={post} authUser={authUser} />
                 </div>
               ))}
             </div>
@@ -82,7 +82,7 @@ function Body() {
       <ProfileImageModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        userInfo={userInfo}
+        authUser={authUser}
       />
     </>
   );

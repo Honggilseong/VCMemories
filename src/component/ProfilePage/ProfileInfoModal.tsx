@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "react-modal";
+import { useSelector } from "react-redux";
 import { likePost } from "../../actions/postAction";
 import { Comment } from "../../actions/postActionDispatch";
-import { useAppDispatch } from "../../reducers/store";
+import { RootState, useAppDispatch } from "../../reducers/store";
 const customStyles = {
   content: {
     top: "50%",
@@ -29,15 +30,12 @@ function ProfileInfoModal({
   handleValueComment,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
-  const dispatch = useAppDispatch();
+  const authUser = useSelector((state: RootState) => state.auth);
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    const likedPost = post.likes.findIndex(
-      (id: string) => id === getUser.user._id
-    );
+    const likedPost = post.likes.findIndex((id: string) => id === authUser._id);
     if (likedPost === -1) {
       setLikedPost(false);
     } else {
@@ -63,7 +61,7 @@ function ProfileInfoModal({
             <BsThreeDotsVertical size={20} />
             {isPostInfoOpen && (
               <div className="absolute -left-2 border bg-white p-2 -bottom-10">
-                {post.userId === getUser.user._id && (
+                {post.userId === authUser._id && (
                   <p className="text-red-600" onClick={handleDeletePost}>
                     Delete
                   </p>
