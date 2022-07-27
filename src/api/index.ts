@@ -19,6 +19,7 @@ interface PostData {
 interface NotificationSender {
   sender: string;
   notificationType: string;
+  image?: string;
 }
 const API = axios.create({ baseURL: "http://localhost:5000/" });
 const user = JSON.parse(
