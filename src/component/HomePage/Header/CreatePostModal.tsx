@@ -84,6 +84,7 @@ function CreatePostModal() {
       comments: [],
     });
     setPreviewImage([]);
+    setIsLoading(false);
   };
 
   const handleInputNewUser = (e: React.ChangeEvent<HTMLInputElement>) => {
