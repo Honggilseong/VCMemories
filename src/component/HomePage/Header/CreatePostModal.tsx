@@ -46,18 +46,15 @@ const customStyles = {
   },
 };
 function CreatePostModal() {
-  const getUser = JSON.parse(
-    localStorage.getItem("profile") || '{"user": { "token": "" }}'
-  );
   const [previewImage, setPreviewImage] = useState<any>([]);
   const [newPost, setNewPost] = useState<NewPost>({
     title: "",
     picture: "",
     message: "",
     tags: [],
-    name: getUser.user.name,
-    profilePicture: getUser.user.profilePicture,
-    userId: getUser.user._id,
+    name: "",
+    profilePicture: "",
+    userId: "",
     likes: [],
     comments: [],
   });
@@ -79,9 +76,9 @@ function CreatePostModal() {
       picture: "",
       message: "",
       tags: [],
-      name: getUser.user.name,
-      profilePicture: getUser.user.profilePicture,
-      userId: getUser.user._id,
+      name: "",
+      profilePicture: "",
+      userId: "",
       likes: [],
       comments: [],
     });
@@ -107,33 +104,39 @@ function CreatePostModal() {
       "upload_preset",
       `${process.env.REACT_APP_CLOUDINARY_NAME}`
     );
+    const userInfo = JSON.parse(localStorage.getItem("profile") || "");
     try {
       const response = await fetch(url, {
         method: "post",
         body: formData,
       }).then();
       const data = await response.json();
-      dispatch(createPost({ ...newPost, picture: data.public_id }));
+      dispatch(
+        createPost({
+          ...newPost,
+          name: userInfo.user.name,
+          picture: data.public_id,
+          userId: userInfo.user._id,
+        })
+      );
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
     }
-
     setNewPost({
       title: "",
       picture: "",
       message: "",
       tags: [],
-      name: getUser.user.name,
-      profilePicture: getUser.user.profilePicture,
-      userId: getUser.user._id,
+      name: "",
+      profilePicture: "",
+      userId: "",
       likes: [],
       comments: [],
     });
     setPreviewImage([]);
     dispatch(closePostModal());
   };
-
   return (
     <Modal
       isOpen={modal.isPostModalOpen}
