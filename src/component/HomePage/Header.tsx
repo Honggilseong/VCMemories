@@ -38,7 +38,7 @@ function Header() {
   };
   useEffect(() => {
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
-    dispatch(getUserInfo(isAuthenticated.user._id));
+    if (isAuthenticated) dispatch(getUserInfo(isAuthenticated.user._id));
   }, [authUser]);
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
