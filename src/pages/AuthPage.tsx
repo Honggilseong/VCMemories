@@ -3,6 +3,7 @@ import { createUser, signIn } from "../actions/authAction";
 import AuthPageForm from "../component/AuthPage/AuthPageForm";
 import { useAppDispatch } from "../reducers/store";
 import { useInternalRouter } from "./routing";
+const authPageImg = require("../images/authpageimg.png");
 
 interface UserInfo {
   email: string;
@@ -63,9 +64,13 @@ function AuthPage() {
   };
 
   return (
-    <div className="w-screen h-screen flex">
-      <AuthPageForm {...props} />
-      <div className="flex-1">Background</div>
+    <div className="w-screen h-screen flex flex-1">
+      <div className="flex-[0.3] border-r-2 border-gray-800">
+        <AuthPageForm {...props} />
+      </div>
+      <div className="flex-[0.7] h-screen w-full">
+        <img src={authPageImg} alt="authpageimg" className="w-full h-full" />
+      </div>
     </div>
   );
 }
