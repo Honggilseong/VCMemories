@@ -56,9 +56,21 @@ export const deletePost =
   };
 
 export const likePost =
-  (id: string, userId: string) => async (dispatch: Dispatch) => {
+  (
+    id: string,
+    userId: string,
+    postUserId: string,
+    senderName: string,
+    image: string
+  ) =>
+  async (dispatch: Dispatch) => {
     try {
       const { data } = await api.likePost(id, userId);
+      api.sendNotification(postUserId, {
+        sender: senderName,
+        notificationType: "liked your Post",
+        image,
+      });
       dispatch({
         type: LIKE_POST,
         payload: data,
@@ -70,7 +82,13 @@ export const likePost =
   };
 
 export const leaveComment =
-  (id: string, comment: Comment, postUserId: string, senderName: string) =>
+  (
+    id: string,
+    comment: Comment,
+    postUserId: string,
+    senderName: string,
+    image: string
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       const { data } = await api.leaveComment(id, comment);
@@ -81,6 +99,7 @@ export const leaveComment =
       api.sendNotification(postUserId, {
         sender: senderName,
         notificationType: "Left a comment",
+        image,
       });
       toastSuccess("Success! 😀");
     } catch (err) {
