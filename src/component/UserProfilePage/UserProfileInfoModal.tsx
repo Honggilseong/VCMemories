@@ -26,6 +26,7 @@ function UserProfileInfoModal({
   handleValueComment,
   handleCloseModal,
   authUser,
+  handleLikePost,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   useEffect(() => {
@@ -75,7 +76,10 @@ function UserProfileInfoModal({
           <p>{moment(post.createdAt).fromNow()}</p>
         </div>
         <div className="flex">
-          <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
+          <div
+            className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
+            onClick={handleLikePost}
+          >
             {likedPost ? (
               <AiFillHeart size={30} color="red" />
             ) : (
@@ -96,6 +100,7 @@ function UserProfileInfoModal({
           <div className="flex-1">
             <input
               type="text"
+              placeholder="Add a comment"
               className="h-full w-full focus:outline-none"
               value={commentValue.comment}
               onChange={handleValueComment}
@@ -121,7 +126,7 @@ function UserProfileInfoModal({
             ))
           ) : (
             <div className="h-20 flex justify-center items-center">
-              <p>There's no comments</p>
+              <p>No comments yet</p>
             </div>
           )}
         </div>

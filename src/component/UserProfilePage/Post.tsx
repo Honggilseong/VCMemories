@@ -1,6 +1,6 @@
 import { Image } from "cloudinary-react";
 import React, { useState } from "react";
-import { leaveComment } from "../../actions/searchUserAction";
+import { leaveComment, likePost } from "../../actions/searchUserAction";
 import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import UserProfileInfoModal from "./UserProfileInfoModal";
@@ -26,6 +26,11 @@ function Post({ post, authUser }: any) {
   };
   const handleClickPostInfo = () => {
     setPostInfoOpen((prev) => !prev);
+  };
+  const handleLikePost = () => {
+    dispatch(
+      likePost(post._id, authUser._id, post.userId, authUser.name, post.picture)
+    );
   };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
@@ -73,6 +78,7 @@ function Post({ post, authUser }: any) {
         handleLeaveComment={handleLeaveComment}
         commentValue={commentValue}
         handleValueComment={handleValueComment}
+        handleLikePost={handleLikePost}
       />
     </>
   );
