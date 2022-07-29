@@ -55,7 +55,7 @@ function Body({ handleFollowUser, searchUserInfo, isFollowing }: Props) {
           </div>
         </div>
         {searchUserInfo.userPosts?.length ? (
-          <div className="min-h-[500px] grid grid-cols-3 border gap-1">
+          <div className="min-h-[500px] grid grid-cols-3 gap-4">
             {searchUserInfo.userPosts?.map((post) => (
               <div key={post._id}>
                 <Post post={post} authUser={authUser} />

@@ -65,7 +65,7 @@ function Body() {
             </div>
           </div>
           {authUser.userPosts?.length ? (
-            <div className="min-h-[500px] grid grid-cols-3 border gap-1">
+            <div className="min-h-[500px] grid grid-cols-3 gap-4">
               {authUser.userPosts?.map((post: NewPost) => (
                 <div key={post._id}>
                   <Post post={post} authUser={authUser} />
