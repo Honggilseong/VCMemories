@@ -37,6 +37,7 @@ export interface UserPosts {
   tags: string[];
   name: string;
   profilePicture: string;
+  createdAt: string;
   userId: string;
   likes: string[];
   _id: string;
