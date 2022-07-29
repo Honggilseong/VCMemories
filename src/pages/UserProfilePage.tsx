@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../component/HomePage/Header";
 import Body from "../component/UserProfilePage/Body";
 import { useParams } from "react-router-dom";
-import { useAppDispatch } from "../reducers/store";
+import { RootState, useAppDispatch } from "../reducers/store";
 import { followUser, getSearchingUser } from "../actions/searchUserAction";
 import * as api from "../api";
 import { useSelector } from "react-redux";
@@ -12,13 +12,13 @@ function UserProfilePage() {
   const dispatch = useAppDispatch();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const searchUserInfo = useSelector((state: any) => state.searchUser);
+  const authUser = useSelector((state: RootState) => state.auth);
 
   const handleFollowUser = (searchUserId: string, userId: string) => {
-    const getUser = JSON.parse(localStorage.getItem("profile") || "");
     if (!isFollowing) {
       try {
         api.sendNotification(searchUserId, {
-          sender: getUser.user.name,
+          sender: authUser.name,
           notificationType: "Started following you",
         });
       } catch (error) {
@@ -29,9 +29,9 @@ function UserProfilePage() {
   };
 
   useEffect(() => {
-    const getUser = JSON.parse(localStorage.getItem("profile") || "");
+    console.log(searchUserInfo.followers, authUser._id);
     const index = searchUserInfo.followers.findIndex(
-      (id: string) => id === getUser.user._id
+      (id: string) => id === authUser._id
     );
 
     if (index === -1) {
