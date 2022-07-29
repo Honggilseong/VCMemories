@@ -22,12 +22,12 @@ function Posts() {
     <div className="max-w-2xl mx-auto">
       {fetchPosts.length > 0 ? (
         fetchPosts.map((post: UserPost) => (
-          <div key={post._id}>
+          <div key={post._id} className="mb-10">
             <Post post={post} />
           </div>
         ))
       ) : (
-        <p className="text-center">No current posts</p>
+        <p className="text-center">No posts</p>
       )}
     </div>
   );
