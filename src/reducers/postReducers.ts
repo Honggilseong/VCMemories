@@ -29,11 +29,9 @@ const PostReducer = (
 ) => {
   switch (action.type) {
     case CREATE_POST: {
-      console.log("createPost", action.payload, state);
-      return [...state, action.payload];
+      return [action.payload, ...state];
     }
     case GET_POSTS: {
-      console.log("getPosts", action.payload);
       return action.payload;
     }
     case DELETE_POST: {
