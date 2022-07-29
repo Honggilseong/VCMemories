@@ -29,7 +29,6 @@ function UserProfilePage() {
   };
 
   useEffect(() => {
-    console.log(searchUserInfo.followers, authUser._id);
     const index = searchUserInfo.followers.findIndex(
       (id: string) => id === authUser._id
     );
