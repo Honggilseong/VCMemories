@@ -1,6 +1,7 @@
 import {
   FOLLOW_USER,
   LEAVE_COMMENT,
+  LIKE_POST,
   searchUserActionDispatch,
   SEARCH_USER,
 } from "./../actions/searchUserActionDispatch";
@@ -56,6 +57,14 @@ const SearchUserReducer = (
       return action.payload;
     }
     case LEAVE_COMMENT: {
+      return {
+        ...state,
+        userPosts: state.userPosts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+    }
+    case LIKE_POST: {
       return {
         ...state,
         userPosts: state.userPosts.map((post) =>

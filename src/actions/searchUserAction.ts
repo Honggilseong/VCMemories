@@ -5,6 +5,7 @@ import { Comment } from "./postActionDispatch";
 import {
   FOLLOW_USER,
   LEAVE_COMMENT,
+  LIKE_POST,
   SEARCH_USER,
 } from "./searchUserActionDispatch";
 
@@ -61,6 +62,34 @@ export const leaveComment =
         });
       }
       toastSuccess("Your comment has been left successfully 😀");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+
+export const likePost =
+  (
+    id: string,
+    userId: string,
+    postUserId: string,
+    senderName: string,
+    image: string
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.likePost(id, userId);
+      if (userId !== postUserId) {
+        api.sendNotification(postUserId, {
+          sender: senderName,
+          notificationType: "liked your Post",
+          image,
+        });
+      }
+      dispatch({
+        type: LIKE_POST,
+        payload: data,
+      });
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
