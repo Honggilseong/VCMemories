@@ -43,16 +43,9 @@ function PostCommentsModal({
         <div className="flex items-center w-full mb-3">
           <form className="w-full flex flex-col" onSubmit={handleLeaveComment}>
             <div className="flex items-center justify-center mb-3 border border-purple-500 p-2">
-              <div className="h-10 w-10 rounded-full overflow-hidden">
-                <img
-                  src={getUser.user.profilePicture}
-                  alt="userProfilePicture"
-                  className="h-10 w-10"
-                />
-              </div>
               <input
                 type="text"
-                placeholder="Enter your comment"
+                placeholder="Add a comment"
                 className="w-full p-1 mx-1 focus:outline-none"
                 onChange={handleInputComment}
                 value={commentValue.comment}
@@ -81,7 +74,7 @@ function PostCommentsModal({
             ))
           ) : (
             <div className="h-[300px] border flex items-center justify-center">
-              no comments
+              <h2 className="font-bold">No comments yet</h2>
             </div>
           )}
         </div>
