@@ -71,9 +71,12 @@ function UserProfileInfoModal({
           />
         </div>
         <div className="my-2">
+          <h2 className="font-bold text-lg">{post.title}</h2>
           <p>{post.message}</p>
           <p>{post.tags.map((tag: string) => tag)}</p>
-          <p>{moment(post.createdAt).fromNow()}</p>
+          <p className="text-gray-500 text-sm">
+            {moment(post.createdAt).fromNow()}
+          </p>
         </div>
         <div className="flex">
           <div

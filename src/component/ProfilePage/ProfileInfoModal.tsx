@@ -80,9 +80,12 @@ function ProfileInfoModal({
           />
         </div>
         <div className="my-2">
+          <h2 className="font-bold text-lg">{post.title}</h2>
           <p>{post.message}</p>
           <p>{post.tags.map((tag: string) => tag)}</p>
-          <p>{moment(post.createdAt).fromNow()}</p>
+          <p className="text-gray-500 text-sm">
+            {moment(post.createdAt).fromNow()}
+          </p>
         </div>
         <div className="flex">
           <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
@@ -106,6 +109,7 @@ function ProfileInfoModal({
           <div className="flex-1">
             <input
               type="text"
+              placeholder="Add a comment"
               className="h-full w-full focus:outline-none"
               value={commentValue.comment}
               onChange={handleValueComment}
@@ -131,7 +135,7 @@ function ProfileInfoModal({
             ))
           ) : (
             <div className="h-20 flex justify-center items-center">
-              <p>There's no comments</p>
+              <p>No comments yet</p>
             </div>
           )}
         </div>
