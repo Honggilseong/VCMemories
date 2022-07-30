@@ -28,6 +28,7 @@ function ProfileInfoModal({
   handleLeaveComment,
   commentValue,
   handleValueComment,
+  handleLikePost,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
@@ -88,7 +89,10 @@ function ProfileInfoModal({
           </p>
         </div>
         <div className="flex">
-          <div className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer">
+          <div
+            className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
+            onClick={handleLikePost}
+          >
             {likedPost ? (
               <AiFillHeart size={30} color="red" />
             ) : (

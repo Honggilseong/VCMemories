@@ -7,6 +7,7 @@ export const UPLOAD_PROFILE_IMAGE = "UPLOAD_PROFILE_IMAGE";
 export const READ_NOTIFICATIONS = "READ_NOTIFICATIONS";
 export const DELETE_NOTIFICATIONS = "DELETE_NOTIFICATIONS";
 export const LEAVE_COMMENT = "LEAVE_COMMENT";
+export const LIKE_POST = "LIKE_POST";
 export interface UserInfo {
   email: string;
   password: string;
@@ -81,6 +82,10 @@ export interface leaveComment {
   type: typeof LEAVE_COMMENT;
   payload: UserPosts;
 }
+export interface likePost {
+  type: typeof LIKE_POST;
+  payload: UserPosts;
+}
 export type authActionDispatch =
   | createUser
   | signIn
@@ -90,4 +95,5 @@ export type authActionDispatch =
   | uploadProfileImage
   | readNotifications
   | deleteNotifications
-  | leaveComment;
+  | leaveComment
+  | likePost;

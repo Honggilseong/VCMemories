@@ -1,6 +1,6 @@
 import { Image } from "cloudinary-react";
 import React, { useState } from "react";
-import { deletePost, leaveComment } from "../../actions/authAction";
+import { deletePost, leaveComment, likePost } from "../../actions/authAction";
 import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import ProfileInfoModal from "./ProfileInfoModal";
@@ -27,6 +27,11 @@ function Post({ post, authUser }: any) {
   const handleDeletePost = () => {
     dispatch(deletePost(post._id, authUser._id));
     setIsModalOpen(false);
+  };
+  const handleLikePost = () => {
+    dispatch(
+      likePost(post._id, authUser._id, post.userId, authUser.name, post.picture)
+    );
   };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
@@ -74,6 +79,7 @@ function Post({ post, authUser }: any) {
         handleLeaveComment={handleLeaveComment}
         commentValue={commentValue}
         handleValueComment={handleValueComment}
+        handleLikePost={handleLikePost}
       />
     </>
   );

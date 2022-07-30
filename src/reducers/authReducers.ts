@@ -5,6 +5,7 @@ import {
   DELETE_POST,
   GET_USER_INFO,
   LEAVE_COMMENT,
+  LIKE_POST,
   Notifications,
   READ_NOTIFICATIONS,
   SIGN_IN,
@@ -78,6 +79,15 @@ const AuthReducer = (
       };
     }
     case LEAVE_COMMENT: {
+      const { _id } = action.payload;
+      return {
+        ...state,
+        userPosts: state.userPosts?.map((post) =>
+          post._id === _id ? action.payload : post
+        ),
+      };
+    }
+    case LIKE_POST: {
       const { _id } = action.payload;
       return {
         ...state,

@@ -1,4 +1,3 @@
-import { readNotification } from "./../api/index";
 import { Dispatch } from "redux";
 import {
   CREATE_USER,
@@ -6,6 +5,7 @@ import {
   DELETE_POST,
   GET_USER_INFO,
   LEAVE_COMMENT,
+  LIKE_POST,
   READ_NOTIFICATIONS,
   SIGN_IN,
   SIGN_OUT,
@@ -154,6 +154,33 @@ export const leaveComment =
         });
       }
       toastSuccess("Your comment has been left successfully 😀");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const likePost =
+  (
+    id: string,
+    userId: string,
+    postUserId: string,
+    senderName: string,
+    image: string
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.likePost(id, userId);
+      if (userId !== postUserId) {
+        api.sendNotification(postUserId, {
+          sender: senderName,
+          notificationType: "liked your Post",
+          image,
+        });
+      }
+      dispatch({
+        type: LIKE_POST,
+        payload: data,
+      });
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
