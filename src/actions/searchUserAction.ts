@@ -31,7 +31,6 @@ export const followUser =
         type: FOLLOW_USER,
         payload: data,
       });
-      toastSuccess("Now, you are following this user! 😀");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
