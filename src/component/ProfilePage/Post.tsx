@@ -15,24 +15,30 @@ function Post({ post, authUser }: any) {
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+
   const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue({ ...commentValue, comment: event.target.value });
   };
+
   const handleClickDetailPost = () => {
     setIsModalOpen(true);
   };
+
   const handleClickPostInfo = () => {
     setPostInfoOpen((prev) => !prev);
   };
+
   const handleDeletePost = () => {
     dispatch(deletePost(post._id, authUser._id));
     setIsModalOpen(false);
   };
+
   const handleLikePost = () => {
     dispatch(
       likePost(post._id, authUser._id, post.userId, authUser.name, post.picture)
     );
   };
+
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
     dispatch(

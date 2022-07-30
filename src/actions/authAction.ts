@@ -24,7 +24,6 @@ export const createUser =
         type: CREATE_USER,
         payload: data,
       });
-      console.log(data);
       const userData = await api.getUserInfo(data.user._id);
       dispatch({
         type: GET_USER_INFO,
@@ -44,7 +43,6 @@ export const signIn =
         type: SIGN_IN,
         payload: data,
       });
-      console.log(data);
       const userData = await api.getUserInfo(data.user._id);
       dispatch({
         type: GET_USER_INFO,
@@ -146,7 +144,6 @@ export const leaveComment =
         payload: data,
       });
       if (comment.commentUserId !== postUserId) {
-        console.log("send notification");
         api.sendNotification(postUserId, {
           sender: senderName,
           notificationType: "Left a comment",
@@ -159,6 +156,7 @@ export const leaveComment =
       toastError("Sorry something went wrong... please try again... 😢");
     }
   };
+
 export const likePost =
   (
     id: string,

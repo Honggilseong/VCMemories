@@ -88,11 +88,10 @@ const AuthReducer = (
       };
     }
     case LIKE_POST: {
-      const { _id } = action.payload;
       return {
         ...state,
         userPosts: state.userPosts?.map((post) =>
-          post._id === _id ? action.payload : post
+          post._id === action.payload._id ? action.payload : post
         ),
       };
     }

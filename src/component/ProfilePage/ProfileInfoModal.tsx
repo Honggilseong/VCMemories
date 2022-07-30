@@ -32,9 +32,11 @@ function ProfileInfoModal({
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
   useEffect(() => {
     const likedPost = post.likes.findIndex((id: string) => id === authUser._id);
     if (likedPost === -1) {
