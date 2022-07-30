@@ -45,14 +45,14 @@ function Body({ handleFollowUser, searchUserInfo, isFollowing }: Props) {
         </div>
         <div className="flex text-white">
           <div
-            className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-purple-500 rounded-lg mb-3"
+            className="flex-1 p-3 flex items-center justify-center cursor-pointer bg-purple-500 rounded-lg mb-3"
             onClick={() => handleFollowUser(searchUserInfo._id, authUser._id)}
           >
             <p>{isFollowing ? "Unfollow" : "Follow"}</p>
           </div>
-          <div className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-blue-700 rounded-lg mb-3">
+          {/* <div className="flex-[0.5] p-3 flex items-center justify-center cursor-pointer bg-blue-700 rounded-lg mb-3">
             <p>Message</p>
-          </div>
+          </div> */}
         </div>
         {searchUserInfo.userPosts?.length ? (
           <div className="min-h-[500px] grid grid-cols-3 gap-4">
