@@ -100,7 +100,7 @@ function Notification() {
             ))
           ) : (
             <div className="flex items-center justify-center p-5 border-t border-purple-500">
-              <p>There's no notifications</p>
+              <p>No notifications</p>
             </div>
           )}
         </div>
