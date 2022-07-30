@@ -5,6 +5,7 @@ interface UserInfo {
   email: string;
   password: string;
   name: string;
+  confirmPassword: string;
 }
 
 interface Props {
@@ -63,6 +64,19 @@ function AuthPageForm({
             isPassword
             handleShowPassword={handleShowPassword}
           />
+          {isSignUp && (
+            <Input
+              label="Confirm password"
+              name="confirmPassword"
+              type="password"
+              placeholder="Enter your password"
+              onChange={handleInputUserInfo}
+              value={userInfo.confirmPassword}
+              showPassword={showPassword}
+              isPassword
+              handleShowPassword={handleShowPassword}
+            />
+          )}
           <button
             className="cursor-pointer bg-purple-500 flex items-center justify-center text-white h-11 mt-5 rounded-lg w-full"
             type="submit"

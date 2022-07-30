@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createUser, signIn } from "../actions/authAction";
 import AuthPageForm from "../component/AuthPage/AuthPageForm";
 import { useAppDispatch } from "../reducers/store";
+import { toastError } from "../util/toast";
 import { useInternalRouter } from "./routing";
 const authPageImg = require("../images/authpageimg.png");
 
@@ -9,6 +10,7 @@ interface UserInfo {
   email: string;
   password: string;
   name: string;
+  confirmPassword: string;
 }
 
 function AuthPage() {
@@ -18,6 +20,7 @@ function AuthPage() {
     password: "",
     email: "",
     name: "",
+    confirmPassword: "",
   });
   const dispatch = useAppDispatch();
   const isAuthenticated = localStorage.getItem("profile") ?? "";
@@ -26,7 +29,11 @@ function AuthPage() {
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
     if (isSignUp) {
-      dispatch(createUser(userInfo, push));
+      if (userInfo.password === userInfo.confirmPassword) {
+        dispatch(createUser(userInfo, push));
+      } else {
+        toastError("Please check your password again");
+      }
     } else {
       dispatch(signIn(userInfo, push));
     }
@@ -47,6 +54,7 @@ function AuthPage() {
       password: "",
       email: "",
       name: "",
+      confirmPassword: "",
     });
   };
 
