@@ -2,7 +2,9 @@ import { Route, Routes as ReactRouterRoutes } from "react-router-dom";
 import ProtectedRoute from "../hooks/ProtectedRoute";
 import AuthPage from "./AuthPage";
 import HomePage from "./HomePage";
+import PrivacyPolicy from "./PrivacyPolicy";
 import ProfilePage from "./ProfilePage";
+import TermsConditions from "./TermsConditions";
 import UserProfilePage from "./UserProfilePage";
 
 function Routes() {
@@ -33,6 +35,8 @@ function Routes() {
           </ProtectedRoute>
         }
       />
+      <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+      <Route path="/termsconditions" element={<TermsConditions />} />
     </ReactRouterRoutes>
   );
 }
