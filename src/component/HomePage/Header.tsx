@@ -37,8 +37,10 @@ function Header() {
     navigate.push(`/user/search/${name}`);
   };
   useEffect(() => {
+    const checkAuth = localStorage.getItem("profile") ?? "";
+    if (!checkAuth) return;
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
-    if (isAuthenticated) dispatch(getUserInfo(isAuthenticated.user._id));
+    dispatch(getUserInfo(isAuthenticated.user._id));
   }, [authUser]);
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
