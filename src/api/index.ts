@@ -21,8 +21,7 @@ interface NotificationSender {
   notificationType: string;
   image?: string;
 }
-const API = axios.create({ baseURL: "http://localhost:5000/" });
-
+const API = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 //user
 export const signUp = (formData: FormData): AxiosPromise => {
   return API.post("/user/signup", formData);
