@@ -57,7 +57,9 @@ function AuthPage() {
       confirmPassword: "",
     });
   };
-
+  const handleClickTermsOrPrivacy = (name: string) => {
+    push(name);
+  };
   useEffect(() => {
     if (isAuthenticated) push("/");
   }, []);
@@ -66,6 +68,7 @@ function AuthPage() {
     handleShowPassword,
     handleInputUserInfo,
     handleSubmit,
+    handleClickTermsOrPrivacy,
     userInfo,
     showPassword,
     isSignUp,

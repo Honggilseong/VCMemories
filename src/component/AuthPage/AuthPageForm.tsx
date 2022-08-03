@@ -13,6 +13,7 @@ interface Props {
   handleShowPassword: () => void;
   handleInputUserInfo: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<EventTarget>) => void;
+  handleClickTermsOrPrivacy: (name: string) => void;
   userInfo: UserInfo;
   showPassword: boolean;
   isSignUp: boolean;
@@ -23,6 +24,7 @@ function AuthPageForm({
   handleShowPassword,
   handleInputUserInfo,
   handleSubmit,
+  handleClickTermsOrPrivacy,
   userInfo,
   showPassword,
   isSignUp,
@@ -30,7 +32,31 @@ function AuthPageForm({
   return (
     <div className="flex flex-row justify-center w-[550px]">
       <div>
-        <h1 className="font-bold text-3xl mt-36 text-center">
+        {isSignUp && (
+          <div className="w-[300px] mt-36 text-center mb-10">
+            <p>
+              By continuing, you are setting up a VCMemories account and agree
+              to our{" "}
+              <span
+                className="cursor-pointer text-blue-600"
+                onClick={() => handleClickTermsOrPrivacy("/termsconditions")}
+              >
+                User Agreement
+              </span>{" "}
+              and{" "}
+              <span
+                className="cursor-pointer text-blue-600"
+                onClick={() => handleClickTermsOrPrivacy("/privacypolicy")}
+              >
+                Privacy Policy
+              </span>
+              .
+            </p>
+          </div>
+        )}
+        <h1
+          className={`font-bold text-3xl text-center ${!isSignUp && "mt-36"}`}
+        >
           {isSignUp ? "Sign Up" : "Sign In"}
         </h1>
         <div className="border w-[300px] mt-5 mb-5 border-purple-500" />
