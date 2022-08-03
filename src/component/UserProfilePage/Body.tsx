@@ -64,7 +64,7 @@ function Body({ handleFollowUser, searchUserInfo, isFollowing }: Props) {
           </div>
         ) : (
           <div className="h-[500px] justify-center items-center flex border">
-            <p>The user never posted</p>
+            <p>User has no posts</p>
           </div>
         )}
       </div>

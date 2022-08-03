@@ -74,7 +74,7 @@ function Body() {
             </div>
           ) : (
             <div className="h-[500px] justify-center items-center flex border">
-              <p>You never posted</p>
+              <p>No Posts</p>
             </div>
           )}
         </div>
