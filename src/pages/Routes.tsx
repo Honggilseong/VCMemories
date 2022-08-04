@@ -6,6 +6,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import ProfilePage from "./ProfilePage";
 import TermsConditions from "./TermsConditions";
 import UserProfilePage from "./UserProfilePage";
+import UserSettings from "./UserSettings";
 
 function Routes() {
   return (
@@ -37,6 +38,14 @@ function Routes() {
       />
       <Route path="/privacypolicy" element={<PrivacyPolicy />} />
       <Route path="/termsconditions" element={<TermsConditions />} />
+      <Route
+        path="/usersettings"
+        element={
+          <ProtectedRoute>
+            <UserSettings />
+          </ProtectedRoute>
+        }
+      />
     </ReactRouterRoutes>
   );
 }
