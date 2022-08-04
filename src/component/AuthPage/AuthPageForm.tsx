@@ -71,7 +71,7 @@ function AuthPageForm({
           />
           {isSignUp && (
             <Input
-              label="Name"
+              label="Username"
               name="name"
               type="text"
               placeholder="Enter your name"
