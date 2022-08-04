@@ -1,8 +1,6 @@
 import { Image } from "cloudinary-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { signOut } from "../../actions/authAction";
-import { resetPosts } from "../../actions/postAction";
 import { NewPost } from "../../actions/postActionDispatch";
 import { useInternalRouter } from "../../pages/routing";
 import { RootState } from "../../reducers";
@@ -14,12 +12,10 @@ const defaultProfilePicture =
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
-  const dispatch = useAppDispatch();
-  const navigate = useInternalRouter();
-  const handleClickSignOut = () => {
-    dispatch(signOut());
-    dispatch(resetPosts());
-    navigate.push("/auth");
+  const { push } = useInternalRouter();
+
+  const handleClickSettings = () => {
+    push("/usersettings");
   };
   const handleOpenUploadProfile = () => {
     setIsModalOpen(true);
@@ -30,10 +26,10 @@ function Body() {
         <div className="max-w-xl mx-auto">
           <div className="flex flex-row-reverse text-white">
             <div
-              className="p-1 bg-red-500 rounded-lg cursor-pointer mt-2"
-              onClick={handleClickSignOut}
+              className="p-2 bg-gray-400 rounded-lg cursor-pointer mt-2"
+              onClick={handleClickSettings}
             >
-              <p className="">Sign Out</p>
+              <p>Settings</p>
             </div>
           </div>
           <div className="w-full border-b-purple-500 border-b flex items-center flex-col">
