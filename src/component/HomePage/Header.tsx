@@ -41,7 +41,7 @@ function Header() {
     if (!checkAuth) return;
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
     dispatch(getUserInfo(isAuthenticated.user._id));
-  }, [authUser]);
+  }, [dispatch]);
   return (
     <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
       <div className="max-w-7xl flex justify-between h-full items-center mx-auto p-3 xl:p-0">
