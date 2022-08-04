@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Routes from "./pages/Routes";
 import Modal from "react-modal";
 import CreatePostModal from "./component/HomePage/Header/CreatePostModal";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useAppDispatch } from "./reducers/store";
 import { closeSearchResultsModal } from "./actions/modalAction";
 import { useSelector } from "react-redux";
@@ -19,7 +19,6 @@ function App() {
   };
   useEffect(() => {
     ReactGA.initialize(process.env.REACT_APP_TRACKING_ID || "");
-    ReactGA.pageview("Init page view");
   }, []);
   return (
     <div onClick={handleCloseModals}>
