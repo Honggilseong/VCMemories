@@ -52,10 +52,10 @@ function ProfileInfoModal({
       contentLabel="Example Modal"
       style={customStyles}
     >
-      <div className="max-h-[550px]">
+      <div className="h-[750px] overflow-auto">
         <div className="h-14 border flex justify-between items-center px-3">
           <div />
-          <h1>{post.name}</h1>
+          <h1 className="font-bold">{post.name}</h1>
 
           <div
             className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
@@ -73,7 +73,7 @@ function ProfileInfoModal({
             )}
           </div>
         </div>
-        <div className="h-96 w-96 mx-auto">
+        <div className="h-[450px] w-[800px]">
           <Image
             key={post.picture}
             cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
