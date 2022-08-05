@@ -134,7 +134,16 @@ export const getAllUsers = (): AxiosPromise => {
   };
   return API.get("/user/getallusers", config);
 };
-
+export const deleteUser = (id: string): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.delete(`/user/deleteaccount/${id}`, config);
+};
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
