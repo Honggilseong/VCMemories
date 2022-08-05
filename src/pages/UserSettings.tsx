@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { signOut } from "../actions/authAction";
+import { deleteUser, signOut } from "../actions/authAction";
 import { resetPosts } from "../actions/postAction";
 import Header from "../component/HomePage/Header";
 import Body from "../component/UserSettings/Body";
@@ -20,6 +20,12 @@ function UserSettings() {
     dispatch(resetPosts());
     push("/auth");
   };
+  const handleDeleteUser = () => {
+    const localUserInfo = JSON.parse(localStorage.getItem("profile") || "");
+    dispatch(deleteUser(authUser._id, localUserInfo.user._id));
+    dispatch(resetPosts());
+    push("/auth");
+  };
   return (
     <div>
       <Header />
@@ -28,6 +34,7 @@ function UserSettings() {
         settingState={settingState}
         handleClickSignOut={handleClickSignOut}
         handleClickSettings={handleClickSettings}
+        handleDeleteUser={handleDeleteUser}
       />
     </div>
   );
