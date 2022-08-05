@@ -3,6 +3,7 @@ import {
   CREATE_USER,
   DELETE_NOTIFICATIONS,
   DELETE_POST,
+  DELETE_USER,
   GET_USER_INFO,
   LEAVE_COMMENT,
   LIKE_POST,
@@ -182,5 +183,24 @@ export const likePost =
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const deleteUser =
+  (id: string, localId: string) => async (dispatch: Dispatch) => {
+    if (id !== localId)
+      return toastError(
+        "Sorry something went wrong... please sign-in again... 😢"
+      );
+    try {
+      await api.deleteUser(id);
+      dispatch({
+        type: DELETE_USER,
+      });
+      toastSuccess("Your account has been deleted successfully");
+    } catch (err) {
+      console.log(err);
+      toastError(
+        "Sorry we couldn't delete your account... please try again... 😢"
+      );
     }
   };

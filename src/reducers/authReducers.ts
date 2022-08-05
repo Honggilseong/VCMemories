@@ -3,6 +3,7 @@ import {
   CREATE_USER,
   DELETE_NOTIFICATIONS,
   DELETE_POST,
+  DELETE_USER,
   GET_USER_INFO,
   LEAVE_COMMENT,
   LIKE_POST,
@@ -94,6 +95,10 @@ const AuthReducer = (
           post._id === action.payload._id ? action.payload : post
         ),
       };
+    }
+    case DELETE_USER: {
+      localStorage.removeItem("profile");
+      return { ...initialState };
     }
     default:
       return state;

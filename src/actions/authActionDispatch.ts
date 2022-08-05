@@ -8,6 +8,7 @@ export const READ_NOTIFICATIONS = "READ_NOTIFICATIONS";
 export const DELETE_NOTIFICATIONS = "DELETE_NOTIFICATIONS";
 export const LEAVE_COMMENT = "LEAVE_COMMENT";
 export const LIKE_POST = "LIKE_POST";
+export const DELETE_USER = "DELETE_USER";
 export interface UserInfo {
   email: string;
   password: string;
@@ -99,6 +100,9 @@ export interface likePost {
   type: typeof LIKE_POST;
   payload: UserPosts;
 }
+export interface deleteUser {
+  type: typeof DELETE_USER;
+}
 
 export type authActionDispatch =
   | createUser
@@ -110,4 +114,5 @@ export type authActionDispatch =
   | readNotifications
   | deleteNotifications
   | leaveComment
-  | likePost;
+  | likePost
+  | deleteUser;
