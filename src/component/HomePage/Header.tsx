@@ -38,7 +38,7 @@ function Header() {
   };
   useEffect(() => {
     const checkAuth = localStorage.getItem("profile") ?? "";
-    if (!checkAuth) return;
+    if (!checkAuth) return navigate.push("/auth");
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
     dispatch(getUserInfo(isAuthenticated.user._id));
   }, [dispatch]);
