@@ -65,7 +65,7 @@ function Notification() {
         </span>
       ) : null}
       {isOpen ? (
-        <div className="absolute -bottom-50 -left-20 bg-white text-black border-purple-500 border z-50 w-60">
+        <div className="absolute -bottom-50 -left-20 bg-white text-black border-purple-500 border z-50 max-w-md max-h-80 overflow-auto">
           {authUser.notifications?.length ? (
             <div className="flex justify-end p-2">
               <p className="cursor-pointer" onClick={handleDeleteNotifications}>
@@ -77,7 +77,7 @@ function Notification() {
             authUser.notifications?.map((data: Notifications) => (
               <div
                 key={data._id}
-                className={`flex items-center p-2 border-2 cursor-pointer ${
+                className={`flex items-center p-2 border-2 cursor-pointer w-full ${
                   data.read && "bg-gray-400"
                 }`}
               >
