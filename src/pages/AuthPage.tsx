@@ -23,7 +23,7 @@ function AuthPage() {
     confirmPassword: "",
   });
   const dispatch = useAppDispatch();
-  const isAuthenticated = localStorage.getItem("profile") ?? "";
+
   const { push } = useInternalRouter();
 
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
@@ -60,9 +60,10 @@ function AuthPage() {
   const handleClickTermsOrPrivacy = (name: string) => {
     push(name);
   };
-  useEffect(() => {
-    if (isAuthenticated) push("/");
-  }, []);
+  // useEffect(() => {
+  //   const isAuthenticated = localStorage.getItem("profile") ?? "";
+  //   if (isAuthenticated) push("/");
+  // }, []);
   const props = {
     handleSignUp,
     handleShowPassword,
