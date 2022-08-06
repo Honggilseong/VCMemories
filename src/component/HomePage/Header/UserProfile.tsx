@@ -18,8 +18,8 @@ function UserProfile() {
           className="flex items-center justify-center cursor-pointer"
           onClick={handleUserProfile}
         >
-          <h1 className="mr-4">{authUser.name}</h1>
-          <div className="rounded-full border-2 w-10 h-10 hidden lg:block overflow-hidden">
+          <h1 className="mr-4 hidden lg:block">{authUser.name}</h1>
+          <div className="rounded-full border-2 w-10 h-10  overflow-hidden">
             {authUser.profilePicture === defaultProfilePicture ? (
               <img src={authUser.profilePicture} alt="userProfilePicture" />
             ) : (
