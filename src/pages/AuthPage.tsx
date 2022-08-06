@@ -29,11 +29,19 @@ function AuthPage() {
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
     if (isSignUp) {
-      if (userInfo.password === userInfo.confirmPassword) {
-        dispatch(createUser(userInfo, push));
-      } else {
-        toastError("Please check your password again");
+      if (!userInfo.email) return toastError("Enter your email");
+      if (!userInfo.name) return toastError("Enter your username");
+      if (userInfo.password !== userInfo.confirmPassword) {
+        return toastError("Please check your password");
       }
+      if (userInfo.name.length > 20)
+        return toastError(
+          "Your username is too long. Use a username that's less than 20 characters"
+        );
+      if (userInfo.name.match(/^[0-9A-Za-z]+$/) === null) {
+        return toastError("We only allow alphabets and numbers for username");
+      }
+      dispatch(createUser(userInfo, push));
     } else {
       dispatch(signIn(userInfo, push));
     }
