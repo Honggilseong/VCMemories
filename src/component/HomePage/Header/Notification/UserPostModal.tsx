@@ -64,14 +64,14 @@ function UserPostModal({
       style={customStyles}
     >
       {modalPost ? (
-        <div className="h-[750px] overflow-auto">
+        <div className="lg:h-[750px] w-full h-[500px] overflow-auto">
           <div className="h-14 border flex justify-between items-center px-3">
             <div />
             <h1 className="font-bold">{modalPost.name}</h1>
 
             <div />
           </div>
-          <div className="h-[450px] w-[800px]">
+          <div className="h-[450px] lg:w-[800px] w-full">
             <Image
               key={modalPost.picture}
               cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
