@@ -156,7 +156,7 @@ function Post({ post }: Props) {
 
   return (
     <>
-      <div className="h-14 w-[800px] border flex justify-between items-center px-3">
+      <div className="h-14 w-full xl:w-[800px] border flex justify-between items-center px-3">
         <div />
         <h1 className="font-bold">{post.name}</h1>
         <div
@@ -190,7 +190,7 @@ function Post({ post }: Props) {
           )}
         </div>
       </div>
-      <div className="w-[800px] h-[500px] mx-auto">
+      <div className="w-full xl:w-[800px] h-[500px] mx-auto">
         <Image
           key={post.picture}
           cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
@@ -207,7 +207,7 @@ function Post({ post }: Props) {
           {moment(post.createdAt).fromNow()}
         </p>
       </div>
-      <div className="flex w-[800px]">
+      <div className="flex w-full xl:w-[800px]">
         <div
           className="flex-[0.5] justify-center flex items-center h-14 border cursor-pointer"
           onClick={handleLikePost}

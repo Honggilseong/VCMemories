@@ -39,7 +39,7 @@ function PostCommentsModal({
       contentLabel="Comments Modal"
       style={customStyles}
     >
-      <div className="w-[500px]">
+      <div className="md:w-[500px] w-full">
         <div className="flex items-center w-full mb-3">
           <form className="w-full flex flex-col" onSubmit={handleLeaveComment}>
             <div className="flex items-center justify-center mb-3 border border-purple-500 p-2">

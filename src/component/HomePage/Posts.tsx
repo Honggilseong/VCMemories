@@ -19,7 +19,7 @@ interface UserPost {
 function Posts() {
   const fetchPosts = useSelector((state: any) => state.post);
   return (
-    <div className="max-w-[800px] mx-auto">
+    <div className="max-w-[800px] mx-auto p-3 xl:p-0">
       {fetchPosts.length > 0 ? (
         fetchPosts.map((post: UserPost) => (
           <div key={post._id} className="mb-10">

@@ -57,7 +57,7 @@ function Header() {
         <div className="flex justify-center items-center">
           <MdOutlineAddPhotoAlternate
             size={30}
-            className="cursor-pointer mr-4 hidden xl:block"
+            className="cursor-pointer mr-4"
             onClick={handleCreatePost}
           />
           <Notification />

@@ -61,15 +61,15 @@ function Body() {
             </div>
           </div>
           {authUser.userPosts?.length ? (
-            <div className="min-h-[500px] grid grid-cols-3 gap-4">
+            <div className="md:min-h-[500px] xl:grid-cols-3 xl:gap-4 grid grid-cols-2 gap-1 w-full">
               {authUser.userPosts?.map((post: NewPost) => (
-                <div key={post._id}>
+                <div key={post._id} className="mx-auto">
                   <Post post={post} authUser={authUser} />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="h-[500px] justify-center items-center flex border">
+            <div className="xl:h-[500px] w-full justify-center items-center flex border">
               <p>No Posts</p>
             </div>
           )}
