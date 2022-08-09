@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { toastError, toastSuccess } from "../../util/toast";
+import { useInternalRouter } from "../../pages/routing";
 
 interface Props {
   post: {
@@ -46,6 +47,7 @@ function Post({ post }: Props) {
   const [isReportLoading, setIsReportLoading] = useState<boolean>(false);
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
+  const { push } = useInternalRouter();
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
     commentUserId: "",
@@ -139,7 +141,9 @@ function Post({ post }: Props) {
       setLikedPost(true);
     }
   }, [post.likes]);
-
+  const handleClickUsername = (name: string) => {
+    push(`/user/search/${name}`);
+  };
   useEffect(() => {
     const handleClickPostInfo = (e: any) => {
       if (
@@ -158,7 +162,12 @@ function Post({ post }: Props) {
     <>
       <div className="h-14 w-full xl:w-[800px] border flex justify-between items-center px-3">
         <div />
-        <h1 className="font-bold">{post.name}</h1>
+        <h1
+          className="font-bold cursor-pointer"
+          onClick={() => handleClickUsername(post.name)}
+        >
+          {post.name}
+        </h1>
         <div
           className="cursor-pointer hover:bg-slate-300 rounded-full h-7 w-7 flex justify-center items-center relative"
           onClick={() => setIsPostInfoOpen((prev) => !prev)}
