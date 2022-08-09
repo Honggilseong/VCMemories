@@ -32,6 +32,9 @@ function Body({ handleFollowUser, searchUserInfo, isFollowing }: Props) {
               />
             )}
           </div>
+          <h1 className="font-bold text-3xl mt-5 mb-5">
+            {searchUserInfo.name}
+          </h1>
         </div>
         <div className="flex justify-evenly mt-5 mb-5">
           <div className="flex justify-center items-center flex-col cursor-pointer">
