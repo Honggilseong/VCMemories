@@ -43,7 +43,7 @@ function SearchBar({
         )}
       </div>
       {modal.isSearchResultsModalOpen && (
-        <div className="border absolute -bottom-[18rem] -left-12 rounded-lg h-72 overflow-hidden w-[300px] bg-white ">
+        <div className="border absolute -bottom-[25rem] -left-12 rounded-lg w-[300px] h-[400px] overflow-auto bg-white ">
           {allUsers
             .filter((user) =>
               user.name
