@@ -71,17 +71,15 @@ function Header() {
             handleClearSearchValue={handleClearSearchValue}
           />
           <div className="flex justify-center items-center">
-            <MdSearch
-              size={30}
-              className="cursor-pointer mr-4 lg:hidden"
-              onClick={handleClickMobileSearch}
-            />
-
-            <MdOutlineAddPhotoAlternate
-              size={30}
-              className="cursor-pointer mr-4"
-              onClick={handleCreatePost}
-            />
+            <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full lg:hidden">
+              <MdSearch size={30} onClick={handleClickMobileSearch} />
+            </div>
+            <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full">
+              <MdOutlineAddPhotoAlternate
+                size={30}
+                onClick={handleCreatePost}
+              />
+            </div>
             <Notification />
             <UserProfile />
           </div>
