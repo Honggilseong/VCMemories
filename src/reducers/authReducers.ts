@@ -26,6 +26,8 @@ interface InitialState {
   following?: string[];
   notifications?: Notifications[];
   _id: string;
+  isPrivate?: boolean;
+  userTitle?: string;
 }
 const initialState = {
   name: "",
