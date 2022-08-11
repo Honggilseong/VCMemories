@@ -144,6 +144,66 @@ export const deleteUser = (id: string): AxiosPromise => {
   };
   return API.delete(`/user/deleteaccount/${id}`, config);
 };
+export const sendFollowRequest = (
+  id: string,
+  senderData: any
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/user/${id}/followrequest`, { senderData }, config);
+};
+export const acceptFollowRequest = (
+  id: string,
+  userId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/user/${id}/acceptfollowrequest`, { userId }, config);
+};
+export const deleteFollowRequest = (
+  id: string,
+  userId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/user/${id}/deletefollowrequest`, { userId }, config);
+};
+export const switchAccountState = (id: string): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/user/${id}/switchaccountstate`, {}, config);
+};
+export const deleteAllFollowRequests = (id: string): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/user/${id}/deleteallfollowrequests`, {}, config);
+};
+
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
