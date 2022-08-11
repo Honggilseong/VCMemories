@@ -2,27 +2,43 @@ import { Image } from "cloudinary-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { NewPost } from "../../actions/postActionDispatch";
-import { useInternalRouter } from "../../pages/routing";
 import { RootState } from "../../reducers";
-import { useAppDispatch } from "../../reducers/store";
 import Post from "./Post";
+import ProfileFollowRequestsModal from "./ProfileFollowRequestsModal";
 import ProfileImageModal from "./ProfileImageModal";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
-function Body() {
+interface Props {
+  handleClickSettings: () => void;
+  handleOpenFollowRequests: () => void;
+  setIsFollowRequestsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isFollowRequestsModalOpen: boolean;
+}
+function Body({
+  handleOpenFollowRequests,
+  handleClickSettings,
+  isFollowRequestsModalOpen,
+  setIsFollowRequestsModalOpen,
+}: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const authUser = useSelector((state: RootState) => state.auth);
-  const { push } = useInternalRouter();
 
-  const handleClickSettings = () => {
-    push("/usersettings");
-  };
+  const authUser = useSelector((state: RootState) => state.auth);
+
   const handleOpenUploadProfile = () => {
     setIsModalOpen(true);
   };
+
   return (
     <>
       <section className="w-full h-full">
+        {authUser.followRequests?.length ? (
+          <div
+            className="w-full h-10 border-b border-yellow-400 flex items-center justify-center bg-yellow-200 cursor-pointer"
+            onClick={handleOpenFollowRequests}
+          >
+            <p className="font-bold">Follow requests</p>
+          </div>
+        ) : null}
         <div className="max-w-xl mx-auto">
           <div className="flex flex-row-reverse text-white">
             <div
@@ -75,6 +91,11 @@ function Body() {
           )}
         </div>
       </section>
+      <ProfileFollowRequestsModal
+        setIsFollowRequestsModalOpen={setIsFollowRequestsModalOpen}
+        isFollowRequestsModalOpen={isFollowRequestsModalOpen}
+        authUser={authUser}
+      />
       <ProfileImageModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
