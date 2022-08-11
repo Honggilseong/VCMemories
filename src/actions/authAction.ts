@@ -1,6 +1,9 @@
 import { Dispatch } from "redux";
 import {
+  ACCEPT_FOLLOW_REQUEST,
   CREATE_USER,
+  DELETE_ALL_FOLLOW_REQUESTS,
+  DELETE_FOLLOW_REQUEST,
   DELETE_NOTIFICATIONS,
   DELETE_POST,
   DELETE_USER,
@@ -10,6 +13,7 @@ import {
   READ_NOTIFICATIONS,
   SIGN_IN,
   SIGN_OUT,
+  SWITCH_ACCOUNT_STATE,
   UPLOAD_PROFILE_IMAGE,
   UserInfo,
 } from "./authActionDispatch";
@@ -202,5 +206,71 @@ export const deleteUser =
       toastError(
         "Sorry we couldn't delete your account... please try again... 😢"
       );
+    }
+  };
+export const sendFollowRequest = async (id: string, senderData: any) => {
+  try {
+    await api.sendFollowRequest(id, senderData);
+
+    toastSuccess("Your request has been delivered successfully");
+  } catch (err: any) {
+    console.log(err);
+    toastError(
+      err.response.data.message
+        ? err.response.data.message
+        : "we couldn't receive your request... please try again... 😢"
+    );
+  }
+};
+export const acceptFollowRequest =
+  (id: string, userId: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.acceptFollowRequest(id, userId);
+      dispatch({
+        type: ACCEPT_FOLLOW_REQUEST,
+        payload: userId,
+      });
+      toastSuccess("Accepted!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const deleteFollowRequest =
+  (id: string, userId: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.deleteFollowRequest(id, userId);
+      dispatch({
+        type: DELETE_FOLLOW_REQUEST,
+        payload: userId,
+      });
+      toastSuccess("Deleted!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const switchAccountState =
+  (id: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.switchAccountState(id);
+      dispatch({
+        type: SWITCH_ACCOUNT_STATE,
+      });
+      toastSuccess("Switched your state!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const deleteAllFollowRequests =
+  (id: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.deleteAllFollowRequests(id);
+      dispatch({
+        type: DELETE_ALL_FOLLOW_REQUESTS,
+      });
+    } catch (err) {
+      console.log(err);
     }
   };

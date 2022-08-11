@@ -9,6 +9,11 @@ export const DELETE_NOTIFICATIONS = "DELETE_NOTIFICATIONS";
 export const LEAVE_COMMENT = "LEAVE_COMMENT";
 export const LIKE_POST = "LIKE_POST";
 export const DELETE_USER = "DELETE_USER";
+export const SEND_FOLLOW_REQUEST = "SEND_FOLLOW_REQUEST";
+export const ACCEPT_FOLLOW_REQUEST = "ACCEPT_FOLLOW_REQUEST";
+export const DELETE_FOLLOW_REQUEST = "DELETE_FOLLOW_REQUEST";
+export const SWITCH_ACCOUNT_STATE = "SWITCH_ACCOUNT_STATE";
+export const DELETE_ALL_FOLLOW_REQUESTS = "DELETE_ALL_FOLLOW_REQUESTS";
 export interface UserInfo {
   email: string;
   password: string;
@@ -56,7 +61,18 @@ export interface Notifications {
   sender: string;
   notificationType: string;
 }
-
+export interface FollowRequests {
+  _id: string;
+  username: string;
+  profileImage: string;
+  userId: string;
+}
+export interface BlockUsers {
+  _id: string;
+  username: string;
+  profileImage: string;
+  userId: string;
+}
 export interface GetUserInfo {
   _id: string;
   email: string;
@@ -66,6 +82,10 @@ export interface GetUserInfo {
   followers: string[];
   following: string[];
   notifications: Notifications[];
+  isPrivate: boolean;
+  userTitle: string;
+  followRequests: FollowRequests[];
+  blockUsers: BlockUsers[];
 }
 
 export interface getUserInfo {
@@ -103,7 +123,23 @@ export interface likePost {
 export interface deleteUser {
   type: typeof DELETE_USER;
 }
-
+export interface sendFollowRequest {
+  type: typeof SEND_FOLLOW_REQUEST;
+}
+export interface acceptFollowRequest {
+  type: typeof ACCEPT_FOLLOW_REQUEST;
+  payload: string;
+}
+export interface deleteFollowRequest {
+  type: typeof DELETE_FOLLOW_REQUEST;
+  payload: string;
+}
+export interface switchAccountState {
+  type: typeof SWITCH_ACCOUNT_STATE;
+}
+export interface deleteAllFollowRequests {
+  type: typeof DELETE_ALL_FOLLOW_REQUESTS;
+}
 export type authActionDispatch =
   | createUser
   | signIn
@@ -115,4 +151,9 @@ export type authActionDispatch =
   | deleteNotifications
   | leaveComment
   | likePost
-  | deleteUser;
+  | deleteUser
+  | sendFollowRequest
+  | acceptFollowRequest
+  | deleteFollowRequest
+  | switchAccountState
+  | deleteAllFollowRequests;

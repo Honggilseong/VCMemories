@@ -1,4 +1,5 @@
 import {
+  ACCEPT_FOLLOW_REQUEST,
   authActionDispatch,
   CREATE_USER,
   DELETE_NOTIFICATIONS,
@@ -12,9 +13,17 @@ import {
   SIGN_IN,
   SIGN_OUT,
   UPLOAD_PROFILE_IMAGE,
+  DELETE_FOLLOW_REQUEST,
   UserPosts,
+  SWITCH_ACCOUNT_STATE,
+  DELETE_ALL_FOLLOW_REQUESTS,
 } from "../actions/authActionDispatch";
-
+interface FollowRequests {
+  _id: string;
+  userId: string;
+  username: string;
+  profileImage: string;
+}
 interface InitialState {
   name: string;
   email: string;
@@ -28,6 +37,7 @@ interface InitialState {
   _id: string;
   isPrivate?: boolean;
   userTitle?: string;
+  followRequests?: FollowRequests[];
 }
 const initialState = {
   name: "",
@@ -101,6 +111,35 @@ const AuthReducer = (
     case DELETE_USER: {
       localStorage.removeItem("profile");
       return { ...initialState };
+    }
+    case ACCEPT_FOLLOW_REQUEST: {
+      return {
+        ...state,
+        followRequests: state.followRequests.filter(
+          (request) => request.userId !== action.payload
+        ),
+        followers: [...state.followers, action.payload],
+      };
+    }
+    case DELETE_FOLLOW_REQUEST: {
+      return {
+        ...state,
+        followRequests: state.followRequests.filter(
+          (request) => request.userId !== action.payload
+        ),
+      };
+    }
+    case SWITCH_ACCOUNT_STATE: {
+      return {
+        ...state,
+        isPrivate: !state.isPrivate,
+      };
+    }
+    case DELETE_ALL_FOLLOW_REQUESTS: {
+      return {
+        ...state,
+        followRequests: [],
+      };
     }
     default:
       return state;
