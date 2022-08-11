@@ -6,6 +6,7 @@ import { RootState, useAppDispatch } from "../reducers/store";
 import { followUser, getSearchingUser } from "../actions/searchUserAction";
 import * as api from "../api";
 import { useSelector } from "react-redux";
+import { sendFollowRequest } from "../actions/authAction";
 
 function UserProfilePage() {
   const { username } = useParams();
@@ -15,17 +16,30 @@ function UserProfilePage() {
   const authUser = useSelector((state: RootState) => state.auth);
 
   const handleFollowUser = (searchUserId: string, userId: string) => {
-    if (!isFollowing) {
-      try {
-        api.sendNotification(searchUserId, {
-          sender: authUser.name,
-          notificationType: "Started following you",
-        });
-      } catch (error) {
-        console.log(error, "UserProfile = > sendNotification");
+    if (searchUserInfo.isPrivate) {
+      const senderInfo = {
+        username: authUser.name,
+        userId: authUser._id,
+        profileImage: authUser.profilePicture,
+      };
+      if (!isFollowing) {
+        sendFollowRequest(searchUserId, senderInfo);
+      } else {
+        dispatch(followUser(searchUserId, userId));
       }
+    } else {
+      if (!isFollowing) {
+        try {
+          api.sendNotification(searchUserId, {
+            sender: authUser.name,
+            notificationType: "Started following you",
+          });
+        } catch (error) {
+          console.log(error, "UserProfile = > sendNotification");
+        }
+      }
+      dispatch(followUser(searchUserId, userId));
     }
-    dispatch(followUser(searchUserId, userId));
   };
 
   useEffect(() => {
