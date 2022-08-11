@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { deleteUser, signOut } from "../actions/authAction";
+import {
+  deleteAllFollowRequests,
+  deleteUser,
+  signOut,
+  switchAccountState,
+} from "../actions/authAction";
 import { resetPosts } from "../actions/postAction";
 import Header from "../component/HomePage/Header";
 import Body from "../component/UserSettings/Body";
@@ -9,6 +14,7 @@ import { useInternalRouter } from "./routing";
 
 function UserSettings() {
   const [settingState, setSettingState] = useState<string>("accountSettings");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
@@ -26,6 +32,14 @@ function UserSettings() {
     dispatch(resetPosts());
     push("/auth");
   };
+  const handleClickAccountState = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    if (authUser.followRequests.length && authUser.isPrivate)
+      dispatch(deleteAllFollowRequests(authUser._id));
+    dispatch(switchAccountState(authUser._id));
+    setIsLoading(false);
+  };
   return (
     <div>
       <Header />
@@ -35,6 +49,7 @@ function UserSettings() {
         handleClickSignOut={handleClickSignOut}
         handleClickSettings={handleClickSettings}
         handleDeleteUser={handleDeleteUser}
+        handleClickAccountState={handleClickAccountState}
       />
     </div>
   );
