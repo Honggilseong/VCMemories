@@ -12,6 +12,7 @@ function UserProfilePage() {
   const { username } = useParams();
   const dispatch = useAppDispatch();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchUserInfo = useSelector((state: any) => state.searchUser);
   const authUser = useSelector((state: RootState) => state.auth);
 
@@ -54,7 +55,9 @@ function UserProfilePage() {
     }
   }, [searchUserInfo.followers]);
   useEffect(() => {
+    setIsLoading(true);
     dispatch(getSearchingUser(username));
+    setIsLoading(false);
   }, [dispatch, username]);
   return (
     <section>
@@ -63,6 +66,7 @@ function UserProfilePage() {
         handleFollowUser={handleFollowUser}
         isFollowing={isFollowing}
         searchUserInfo={searchUserInfo}
+        isLoading={isLoading}
       />
     </section>
   );
