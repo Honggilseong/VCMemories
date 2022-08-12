@@ -1,10 +1,10 @@
 import {
   Comment,
-  DELETE_POST,
   GET_POSTS,
-  LEAVE_COMMENT,
-  LIKE_POST,
+  POST_LEAVE_COMMENT,
+  POST_LIKE_POST,
   postActionDispatch,
+  POST_DELETE_POST,
   RESET_POSTS,
 } from "../actions/postActionDispatch";
 import { CREATE_POST } from "../actions/postActionDispatch";
@@ -34,15 +34,15 @@ const PostReducer = (
     case GET_POSTS: {
       return action.payload;
     }
-    case DELETE_POST: {
+    case POST_DELETE_POST: {
       return state.filter((post) => post._id !== action.payload);
     }
-    case LIKE_POST: {
+    case POST_LIKE_POST: {
       return state.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
     }
-    case LEAVE_COMMENT: {
+    case POST_LEAVE_COMMENT: {
       return state.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );

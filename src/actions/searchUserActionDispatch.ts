@@ -2,8 +2,8 @@ import { NewPost } from "./postActionDispatch";
 
 export const SEARCH_USER = "SEARCH_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
-export const LEAVE_COMMENT = "LEAVE_COMMENT";
-export const LIKE_POST = "LIKE_POST";
+export const SEARCH_LEAVE_COMMENT = "SEARCH_LEAVE_COMMENT";
+export const SEARCH_LIKE_POST = "SEARCH_LIKE_POST";
 export interface Notifications {
   _id: string;
   read: boolean;
@@ -46,11 +46,11 @@ export interface followUser {
   payload: User;
 }
 export interface leaveComment {
-  type: typeof LEAVE_COMMENT;
+  type: typeof SEARCH_LEAVE_COMMENT;
   payload: NewPost;
 }
 export interface likePost {
-  type: typeof LIKE_POST;
+  type: typeof SEARCH_LIKE_POST;
   payload: NewPost;
 }
 export type searchUserActionDispatch =

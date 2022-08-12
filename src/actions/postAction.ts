@@ -2,10 +2,10 @@ import { Dispatch } from "redux";
 import {
   Comment,
   CREATE_POST,
-  DELETE_POST,
+  POST_DELETE_POST,
   GET_POSTS,
-  LEAVE_COMMENT,
-  LIKE_POST,
+  POST_LEAVE_COMMENT,
+  POST_LIKE_POST,
   NewPost,
   RESET_POSTS,
 } from "./postActionDispatch";
@@ -45,7 +45,7 @@ export const deletePost =
     try {
       await api.deletePost(id, userId);
       dispatch({
-        type: DELETE_POST,
+        type: POST_DELETE_POST,
         payload: id,
       });
       toastSuccess("Success! 😀");
@@ -74,7 +74,7 @@ export const likePost =
         });
       }
       dispatch({
-        type: LIKE_POST,
+        type: POST_LIKE_POST,
         payload: data,
       });
     } catch (err) {
@@ -95,7 +95,7 @@ export const leaveComment =
     try {
       const { data } = await api.leaveComment(id, comment);
       dispatch({
-        type: LEAVE_COMMENT,
+        type: POST_LEAVE_COMMENT,
         payload: data,
       });
       if (comment.commentUserId !== postUserId) {

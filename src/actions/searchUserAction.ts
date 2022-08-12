@@ -4,8 +4,8 @@ import * as api from "../api";
 import { Comment } from "./postActionDispatch";
 import {
   FOLLOW_USER,
-  LEAVE_COMMENT,
-  LIKE_POST,
+  SEARCH_LEAVE_COMMENT,
+  SEARCH_LIKE_POST,
   SEARCH_USER,
 } from "./searchUserActionDispatch";
 
@@ -49,7 +49,7 @@ export const leaveComment =
     try {
       const { data } = await api.leaveComment(id, comment);
       dispatch({
-        type: LEAVE_COMMENT,
+        type: SEARCH_LEAVE_COMMENT,
         payload: data,
       });
       if (comment.commentUserId !== postUserId) {
@@ -86,7 +86,7 @@ export const likePost =
         });
       }
       dispatch({
-        type: LIKE_POST,
+        type: SEARCH_LIKE_POST,
         payload: data,
       });
     } catch (err) {

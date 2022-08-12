@@ -3,11 +3,9 @@ import {
   authActionDispatch,
   CREATE_USER,
   DELETE_NOTIFICATIONS,
-  DELETE_POST,
+  USER_DELETE_POST,
   DELETE_USER,
   GET_USER_INFO,
-  LEAVE_COMMENT,
-  LIKE_POST,
   Notifications,
   READ_NOTIFICATIONS,
   SIGN_IN,
@@ -17,6 +15,8 @@ import {
   UserPosts,
   SWITCH_ACCOUNT_STATE,
   DELETE_ALL_FOLLOW_REQUESTS,
+  USER_LEAVE_COMMENT,
+  USER_LIKE_POST,
 } from "../actions/authActionDispatch";
 interface FollowRequests {
   _id: string;
@@ -66,7 +66,7 @@ const AuthReducer = (
     case GET_USER_INFO: {
       return { ...state, ...action.payload };
     }
-    case DELETE_POST: {
+    case USER_DELETE_POST: {
       let userPosts = state.userPosts;
 
       userPosts = userPosts?.filter((post) => post._id !== action.payload);
@@ -91,7 +91,7 @@ const AuthReducer = (
         notifications: [],
       };
     }
-    case LEAVE_COMMENT: {
+    case USER_LEAVE_COMMENT: {
       const { _id } = action.payload;
       return {
         ...state,
@@ -100,7 +100,7 @@ const AuthReducer = (
         ),
       };
     }
-    case LIKE_POST: {
+    case USER_LIKE_POST: {
       return {
         ...state,
         userPosts: state.userPosts?.map((post) =>

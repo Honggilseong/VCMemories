@@ -2,12 +2,12 @@ export const CREATE_USER = "CREATE_USER";
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_OUT = "SIGN_OUT";
 export const GET_USER_INFO = "GET_USER_INFO";
-export const DELETE_POST = "DELETE_POST";
+export const USER_DELETE_POST = "USER_DELETE_POST";
 export const UPLOAD_PROFILE_IMAGE = "UPLOAD_PROFILE_IMAGE";
 export const READ_NOTIFICATIONS = "READ_NOTIFICATIONS";
 export const DELETE_NOTIFICATIONS = "DELETE_NOTIFICATIONS";
-export const LEAVE_COMMENT = "LEAVE_COMMENT";
-export const LIKE_POST = "LIKE_POST";
+export const USER_LEAVE_COMMENT = "USER_LEAVE_COMMENT";
+export const USER_LIKE_POST = "USER_LIKE_POST";
 export const DELETE_USER = "DELETE_USER";
 export const SEND_FOLLOW_REQUEST = "SEND_FOLLOW_REQUEST";
 export const ACCEPT_FOLLOW_REQUEST = "ACCEPT_FOLLOW_REQUEST";
@@ -94,7 +94,7 @@ export interface getUserInfo {
 }
 
 export interface deletePost {
-  type: typeof DELETE_POST;
+  type: typeof USER_DELETE_POST;
   payload: string;
 }
 
@@ -112,12 +112,12 @@ export interface deleteNotifications {
 }
 
 export interface leaveComment {
-  type: typeof LEAVE_COMMENT;
+  type: typeof USER_LEAVE_COMMENT;
   payload: UserPosts;
 }
 
 export interface likePost {
-  type: typeof LIKE_POST;
+  type: typeof USER_LIKE_POST;
   payload: UserPosts;
 }
 export interface deleteUser {

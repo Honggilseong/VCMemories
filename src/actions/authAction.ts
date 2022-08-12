@@ -5,17 +5,17 @@ import {
   DELETE_ALL_FOLLOW_REQUESTS,
   DELETE_FOLLOW_REQUEST,
   DELETE_NOTIFICATIONS,
-  DELETE_POST,
+  USER_DELETE_POST,
   DELETE_USER,
   GET_USER_INFO,
-  LEAVE_COMMENT,
-  LIKE_POST,
   READ_NOTIFICATIONS,
   SIGN_IN,
   SIGN_OUT,
   SWITCH_ACCOUNT_STATE,
   UPLOAD_PROFILE_IMAGE,
   UserInfo,
+  USER_LEAVE_COMMENT,
+  USER_LIKE_POST,
 } from "./authActionDispatch";
 import * as api from "../api";
 import { Comment } from "./postActionDispatch";
@@ -83,7 +83,7 @@ export const deletePost =
     try {
       await api.deletePost(id, userId);
       dispatch({
-        type: DELETE_POST,
+        type: USER_DELETE_POST,
         payload: id,
       });
       toastSuccess("Success! 😀");
@@ -145,7 +145,7 @@ export const leaveComment =
     try {
       const { data } = await api.leaveComment(id, comment);
       dispatch({
-        type: LEAVE_COMMENT,
+        type: USER_LEAVE_COMMENT,
         payload: data,
       });
       if (comment.commentUserId !== postUserId) {
@@ -181,7 +181,7 @@ export const likePost =
         });
       }
       dispatch({
-        type: LIKE_POST,
+        type: USER_LIKE_POST,
         payload: data,
       });
     } catch (err) {

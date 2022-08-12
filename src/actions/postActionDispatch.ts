@@ -1,8 +1,8 @@
 export const CREATE_POST = "CREATE_POST";
 export const GET_POSTS = "GET_POSTS";
-export const DELETE_POST = "DELETE_POST";
-export const LIKE_POST = "LIKE_POST";
-export const LEAVE_COMMENT = "LEAVE_COMMENT";
+export const POST_DELETE_POST = "POST_DELETE_POST";
+export const POST_LIKE_POST = "POST_LIKE_POST";
+export const POST_LEAVE_COMMENT = "POST_LEAVE_COMMENT";
 export const RESET_POSTS = "RESET_POSTS";
 export interface Comment {
   commentUserId: string;
@@ -36,17 +36,17 @@ export interface getPosts {
 }
 
 export interface deletePost {
-  type: typeof DELETE_POST;
+  type: typeof POST_DELETE_POST;
   payload: string;
 }
 
 export interface likePost {
-  type: typeof LIKE_POST;
+  type: typeof POST_LIKE_POST;
   payload: NewPost;
 }
 
 export interface leaveComment {
-  type: typeof LEAVE_COMMENT;
+  type: typeof POST_LEAVE_COMMENT;
   payload: NewPost;
 }
 export interface resetPosts {
