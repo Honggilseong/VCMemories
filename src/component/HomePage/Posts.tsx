@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Comment } from "../../actions/postActionDispatch";
 import Post from "./Post";
-
+const noPostImg = require("../../images/nopostimg.png");
 interface UserPost {
   createdAt: string;
   likes: string[];
@@ -27,7 +27,18 @@ function Posts() {
           </div>
         ))
       ) : (
-        <p className="text-center">No posts</p>
+        <div className="flex justify-center w-full mt-5 flex-col">
+          <h2 className="text-center font-bold text-2xl">
+            Welcome To VCMemories
+          </h2>
+          <p className="text-center mt-3">
+            Want to follow your friends? Use the search bar to find your
+            friends!
+          </p>
+          <div className="w-full xl:w-[800px] mt-10">
+            <img src={noPostImg} alt="noPostImg" />
+          </div>
+        </div>
       )}
     </div>
   );
