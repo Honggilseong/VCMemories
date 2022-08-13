@@ -8,7 +8,12 @@ import {
 } from "react-icons/ai";
 import moment from "moment";
 import { useAppDispatch } from "../../reducers/store";
-import { deletePost, leaveComment, likePost } from "../../actions/postAction";
+import {
+  deletePost,
+  deleteUserComment,
+  leaveComment,
+  likePost,
+} from "../../actions/postAction";
 import { useEffect } from "react";
 import PostCommentsModal from "./Post/PostCommentsModal";
 import { Comment } from "../../actions/postActionDispatch";
@@ -105,7 +110,9 @@ function Post({ post }: Props) {
   const handleClickComments = () => {
     setIsCommentsOpen((prev) => !prev);
   };
-
+  const handleDeleteUserComment = (commentId: string) => {
+    dispatch(deleteUserComment(post._id, commentId));
+  };
   const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
     if (!commentValue.comment) return;
     event.preventDefault();
@@ -252,6 +259,8 @@ function Post({ post }: Props) {
         handleLeaveComment={handleLeaveComment}
         handleInputComment={handleInputComment}
         commentValue={commentValue}
+        authUser={authUser}
+        handleDeleteUserComment={handleDeleteUserComment}
       />
     </>
   );

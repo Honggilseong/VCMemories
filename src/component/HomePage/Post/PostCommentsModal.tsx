@@ -19,6 +19,8 @@ interface Props {
   commentValue: Comment;
   isCommentsOpen: boolean;
   comments: Comment[];
+  authUser: any;
+  handleDeleteUserComment: (commentId: string) => void;
 }
 function PostCommentsModal({
   setIsCommentsOpen,
@@ -27,8 +29,9 @@ function PostCommentsModal({
   isCommentsOpen,
   commentValue,
   comments,
+  authUser,
+  handleDeleteUserComment,
 }: Props) {
-  const getUser = JSON.parse(localStorage.getItem("profile") || "");
   const handleCloseModal = () => {
     setIsCommentsOpen(false);
   };
@@ -65,11 +68,22 @@ function PostCommentsModal({
         <div className="h-[300px] overflow-y-scroll">
           {comments.length ? (
             comments.map((comment) => (
-              <div className="overflow-hidden" key={comment._id}>
+              <div
+                className="overflow-hidden group flex justify-between py-[1px] px-1 items-center"
+                key={comment._id}
+              >
                 <p className="font-bold">
                   {comment.commentUserName}:{" "}
                   <span className="font-normal">{comment.comment}</span>
                 </p>
+                {comment.commentUserId === authUser._id && (
+                  <div
+                    className="flex text-sm cursor-pointer group-hover:opacity-100 opacity-0 text-gray-500"
+                    onClick={() => handleDeleteUserComment(comment._id)}
+                  >
+                    <p className="font-bold">X</p>
+                  </div>
+                )}
               </div>
             ))
           ) : (
