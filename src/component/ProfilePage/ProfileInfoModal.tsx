@@ -5,9 +5,8 @@ import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
-import { likePost } from "../../actions/postAction";
 import { Comment } from "../../actions/postActionDispatch";
-import { RootState, useAppDispatch } from "../../reducers/store";
+import { RootState } from "../../reducers/store";
 const customStyles = {
   content: {
     top: "50%",
@@ -29,6 +28,7 @@ function ProfileInfoModal({
   commentValue,
   handleValueComment,
   handleLikePost,
+  handleDeleteUserComment,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
@@ -134,9 +134,24 @@ function ProfileInfoModal({
         <div className="my-3">
           {post.comments.length ? (
             post.comments.map((comment: Comment) => (
-              <div key={comment._id} className="flex">
-                <p className="font-bold mr-2">{comment.commentUserName}:</p>
-                <p>{comment.comment}</p>
+              <div
+                key={comment._id}
+                className="group flex justify-between py-[1px] px-1 items-center"
+              >
+                <div className="flex">
+                  <p className="font-bold mr-2">{comment.commentUserName}:</p>
+                  <p>{comment.comment}</p>
+                </div>
+                {comment.commentUserId === authUser._id && (
+                  <div
+                    className="flex text-sm cursor-pointer group-hover:opacity-100 opacity-0 text-gray-500"
+                    onClick={() =>
+                      handleDeleteUserComment(post._id, comment._id)
+                    }
+                  >
+                    <p className="font-bold">X</p>
+                  </div>
+                )}
               </div>
             ))
           ) : (
