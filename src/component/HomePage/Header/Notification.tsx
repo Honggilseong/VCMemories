@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
 import {
   deleteNotifications,
+  deleteUserComment,
   leaveComment,
   likePost,
   readNotifications,
@@ -35,6 +36,15 @@ function Notification() {
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
   const dispatch = useAppDispatch();
+  const handleDeleteUserComment = (postId: string, commentId: string) => {
+    dispatch(deleteUserComment(postId, commentId));
+    setModalPost({
+      ...modalPost,
+      comments: modalPost.comments.filter(
+        (comment: any) => comment._id !== commentId
+      ),
+    });
+  };
   const handleLeaveComment = (
     event: React.FormEvent<EventTarget>,
     postId: string,
@@ -150,7 +160,7 @@ function Notification() {
           />
         </div>
         {notificationsCount ? (
-          <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full border border-white">
+          <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/8 -translate-y-1/8 bg-red-600 rounded-full border border-white">
             {notificationsCount}
           </span>
         ) : null}
@@ -209,6 +219,7 @@ function Notification() {
         commentValue={commentValue}
         authUser={authUser}
         handleLeaveComment={handleLeaveComment}
+        handleDeleteUserComment={handleDeleteUserComment}
       />
     </>
   );

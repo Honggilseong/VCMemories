@@ -2,7 +2,6 @@ import { Image } from "cloudinary-react";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "react-modal";
 import { Comment } from "../../../../actions/postActionDispatch";
 const customStyles = {
@@ -33,6 +32,7 @@ interface Props {
     postUserId: string,
     postPicture: string
   ) => void;
+  handleDeleteUserComment: (postId: string, commentId: string) => void;
 }
 function UserPostModal({
   isUserPostModalOpen,
@@ -43,6 +43,7 @@ function UserPostModal({
   handleLikePost,
   authUser,
   handleLeaveComment,
+  handleDeleteUserComment,
 }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   useEffect(() => {
@@ -145,9 +146,24 @@ function UserPostModal({
           <div className="my-3">
             {modalPost.comments.length ? (
               modalPost.comments.map((comment: Comment) => (
-                <div key={comment._id} className="flex">
-                  <p className="font-bold mr-2">{comment.commentUserName}:</p>
-                  <p>{comment.comment}</p>
+                <div
+                  key={comment._id}
+                  className="group flex justify-between py-[1px] px-1 items-center"
+                >
+                  <div className="flex">
+                    <p className="font-bold mr-2">{comment.commentUserName}:</p>
+                    <p>{comment.comment}</p>
+                  </div>
+                  {comment.commentUserId === authUser._id && (
+                    <div
+                      className="flex text-sm cursor-pointer group-hover:opacity-100 opacity-0 text-gray-500"
+                      onClick={() =>
+                        handleDeleteUserComment(modalPost._id, comment._id)
+                      }
+                    >
+                      <p className="font-bold">X</p>
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
