@@ -16,6 +16,7 @@ import {
   UserInfo,
   USER_LEAVE_COMMENT,
   USER_LIKE_POST,
+  USER_DELETE_COMMENT,
 } from "./authActionDispatch";
 import * as api from "../api";
 import { Comment } from "./postActionDispatch";
@@ -272,5 +273,22 @@ export const deleteAllFollowRequests =
       });
     } catch (err) {
       console.log(err);
+    }
+  };
+
+export const deleteUserComment =
+  (postId: string, commentId: string) => async (dispatch: Dispatch) => {
+    const IDs = {
+      postId,
+      commentId,
+    };
+    console.log(commentId);
+    try {
+      await api.deleteUserComment(postId, commentId);
+      dispatch({ type: USER_DELETE_COMMENT, payload: IDs });
+      toastSuccess("Deleted your comment!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
     }
   };

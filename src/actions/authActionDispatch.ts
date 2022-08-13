@@ -14,6 +14,7 @@ export const ACCEPT_FOLLOW_REQUEST = "ACCEPT_FOLLOW_REQUEST";
 export const DELETE_FOLLOW_REQUEST = "DELETE_FOLLOW_REQUEST";
 export const SWITCH_ACCOUNT_STATE = "SWITCH_ACCOUNT_STATE";
 export const DELETE_ALL_FOLLOW_REQUESTS = "DELETE_ALL_FOLLOW_REQUESTS";
+export const USER_DELETE_COMMENT = "USER_DELETE_COMMENT";
 export interface UserInfo {
   email: string;
   password: string;
@@ -36,6 +37,7 @@ export interface signOut {
 }
 
 interface Comment {
+  _id: string;
   commentUserId: string;
   commentUserName: string;
   comment: string;
@@ -140,6 +142,14 @@ export interface switchAccountState {
 export interface deleteAllFollowRequests {
   type: typeof DELETE_ALL_FOLLOW_REQUESTS;
 }
+interface UserDeleteComment {
+  postId: string;
+  commentId: string;
+}
+export interface deleteUserComment {
+  type: typeof USER_DELETE_COMMENT;
+  payload: UserDeleteComment;
+}
 export type authActionDispatch =
   | createUser
   | signIn
@@ -156,4 +166,5 @@ export type authActionDispatch =
   | acceptFollowRequest
   | deleteFollowRequest
   | switchAccountState
-  | deleteAllFollowRequests;
+  | deleteAllFollowRequests
+  | deleteUserComment;

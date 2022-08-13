@@ -17,6 +17,7 @@ import {
   DELETE_ALL_FOLLOW_REQUESTS,
   USER_LEAVE_COMMENT,
   USER_LIKE_POST,
+  USER_DELETE_COMMENT,
 } from "../actions/authActionDispatch";
 interface FollowRequests {
   _id: string;
@@ -139,6 +140,22 @@ const AuthReducer = (
       return {
         ...state,
         followRequests: [],
+      };
+    }
+    case USER_DELETE_COMMENT: {
+      const { postId, commentId } = action.payload;
+      return {
+        ...state,
+        userPosts: state.userPosts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                comments: post.comments.filter(
+                  (comment) => comment._id !== commentId
+                ),
+              }
+            : post
+        ),
       };
     }
     default:
