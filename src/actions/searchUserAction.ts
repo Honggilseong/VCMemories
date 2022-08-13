@@ -4,6 +4,7 @@ import * as api from "../api";
 import { Comment } from "./postActionDispatch";
 import {
   FOLLOW_USER,
+  SEARCH_DELETE_COMMENT,
   SEARCH_LEAVE_COMMENT,
   SEARCH_LIKE_POST,
   SEARCH_USER,
@@ -89,6 +90,22 @@ export const likePost =
         type: SEARCH_LIKE_POST,
         payload: data,
       });
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+
+export const deleteUserComment =
+  (postId: string, commentId: string) => async (dispatch: Dispatch) => {
+    const IDs = {
+      postId,
+      commentId,
+    };
+    try {
+      await api.deleteUserComment(postId, commentId);
+      dispatch({ type: SEARCH_DELETE_COMMENT, payload: IDs });
+      toastSuccess("Deleted your comment!");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");

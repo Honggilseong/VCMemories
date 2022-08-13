@@ -1,9 +1,11 @@
+import { Comment } from "../actions/postActionDispatch";
 import {
   FOLLOW_USER,
   SEARCH_LEAVE_COMMENT,
   SEARCH_LIKE_POST,
   searchUserActionDispatch,
   SEARCH_USER,
+  SEARCH_DELETE_COMMENT,
 } from "./../actions/searchUserActionDispatch";
 export interface Notifications {
   _id: string;
@@ -73,6 +75,22 @@ const SearchUserReducer = (
         ...state,
         userPosts: state.userPosts.map((post) =>
           post._id === action.payload._id ? action.payload : post
+        ),
+      };
+    }
+    case SEARCH_DELETE_COMMENT: {
+      const { postId, commentId } = action.payload;
+      return {
+        ...state,
+        userPosts: state.userPosts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                comments: post.comments.filter(
+                  (comment) => comment._id !== commentId
+                ),
+              }
+            : post
         ),
       };
     }

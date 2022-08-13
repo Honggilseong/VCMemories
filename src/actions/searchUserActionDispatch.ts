@@ -4,6 +4,7 @@ export const SEARCH_USER = "SEARCH_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
 export const SEARCH_LEAVE_COMMENT = "SEARCH_LEAVE_COMMENT";
 export const SEARCH_LIKE_POST = "SEARCH_LIKE_POST";
+export const SEARCH_DELETE_COMMENT = "SEARCH_DELETE_COMMENT";
 export interface Notifications {
   _id: string;
   read: boolean;
@@ -53,8 +54,17 @@ export interface likePost {
   type: typeof SEARCH_LIKE_POST;
   payload: NewPost;
 }
+interface DeleteComment {
+  postId: string;
+  commentId: string;
+}
+export interface deleteUserComment {
+  type: typeof SEARCH_DELETE_COMMENT;
+  payload: DeleteComment;
+}
 export type searchUserActionDispatch =
   | getSearchingUser
   | followUser
   | leaveComment
-  | likePost;
+  | likePost
+  | deleteUserComment;
