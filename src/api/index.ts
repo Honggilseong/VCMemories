@@ -275,6 +275,19 @@ export const leaveComment = (id: string, comment: Comment): AxiosPromise => {
   };
   return API.patch(`/posts/${id}/leavecomment`, { comment }, config);
 };
+export const deleteUserComment = (
+  id: string,
+  commentId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  return API.delete(`/posts/${id}/deleteusercomment`, {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+    data: { commentId },
+  });
+};
 
 //report
 
