@@ -8,6 +8,7 @@ import {
   POST_LIKE_POST,
   NewPost,
   RESET_POSTS,
+  POST_DELETE_COMMENT,
 } from "./postActionDispatch";
 import * as api from "../api";
 import { toastError, toastSuccess } from "../util/toast";
@@ -118,3 +119,19 @@ export const resetPosts = () => (dispatch: Dispatch) => {
     type: RESET_POSTS,
   });
 };
+
+export const deleteUserComment =
+  (postId: string, commentId: string) => async (dispatch: Dispatch) => {
+    const IDs = {
+      postId,
+      commentId,
+    };
+    try {
+      await api.deleteUserComment(postId, commentId);
+      dispatch({ type: POST_DELETE_COMMENT, payload: IDs });
+      toastSuccess("Deleted your comment!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };

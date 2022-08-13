@@ -4,6 +4,7 @@ export const POST_DELETE_POST = "POST_DELETE_POST";
 export const POST_LIKE_POST = "POST_LIKE_POST";
 export const POST_LEAVE_COMMENT = "POST_LEAVE_COMMENT";
 export const RESET_POSTS = "RESET_POSTS";
+export const POST_DELETE_COMMENT = "POST_DELETE_COMMENT";
 export interface Comment {
   commentUserId: string;
   commentUserName: string;
@@ -52,10 +53,19 @@ export interface leaveComment {
 export interface resetPosts {
   type: typeof RESET_POSTS;
 }
+interface DeleteComment {
+  postId: string;
+  commentId: string;
+}
+export interface deleteUserComment {
+  type: typeof POST_DELETE_COMMENT;
+  payload: DeleteComment;
+}
 export type postActionDispatch =
   | createPost
   | getPosts
   | deletePost
   | likePost
   | leaveComment
-  | resetPosts;
+  | resetPosts
+  | deleteUserComment;

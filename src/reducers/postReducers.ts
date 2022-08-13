@@ -6,6 +6,7 @@ import {
   postActionDispatch,
   POST_DELETE_POST,
   RESET_POSTS,
+  POST_DELETE_COMMENT,
 } from "../actions/postActionDispatch";
 import { CREATE_POST } from "../actions/postActionDispatch";
 
@@ -49,6 +50,19 @@ const PostReducer = (
     }
     case RESET_POSTS: {
       return initialState;
+    }
+    case POST_DELETE_COMMENT: {
+      const { postId, commentId } = action.payload;
+      return state.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              comments: post.comments.filter(
+                (comment) => comment._id !== commentId
+              ),
+            }
+          : post
+      );
     }
     default:
       return state;
