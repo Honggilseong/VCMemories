@@ -52,7 +52,7 @@ function Body({
               <div className="w-full flex items-center justify-between">
                 <p>Private Account</p>
                 <div className="flex flex-col items-center">
-                  <p className="text-sm">Now state</p>
+                  <p className="text-sm">Current status</p>
                   <p className="font-bold">
                     {authUser.isPrivate ? (
                       <div

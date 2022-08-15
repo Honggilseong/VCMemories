@@ -219,7 +219,7 @@ export const sendFollowRequest = async (id: string, senderData: any) => {
     toastError(
       err.response.data.message
         ? err.response.data.message
-        : "we couldn't receive your request... please try again... 😢"
+        : "we couldn't delivered your request... please try again... 😢"
     );
   }
 };
@@ -258,7 +258,7 @@ export const switchAccountState =
       dispatch({
         type: SWITCH_ACCOUNT_STATE,
       });
-      toastSuccess("Switched your state!");
+      toastSuccess("Switched your status!");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");
