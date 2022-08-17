@@ -1,6 +1,7 @@
 import { Route, Routes as ReactRouterRoutes } from "react-router-dom";
 import ProtectedRoute from "../hooks/ProtectedRoute";
 import AuthPage from "./AuthPage";
+import HashtagPage from "./HashtagPage";
 import HomePage from "./HomePage";
 import PrivacyPolicy from "./PrivacyPolicy";
 import ProfilePage from "./ProfilePage";
@@ -43,6 +44,14 @@ function Routes() {
         element={
           <ProtectedRoute>
             <UserSettings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/explore/hashtags/:hashtag"
+        element={
+          <ProtectedRoute>
+            <HashtagPage />
           </ProtectedRoute>
         }
       />
