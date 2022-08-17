@@ -216,6 +216,7 @@ export const createPost = (postData: PostData): AxiosPromise => {
   };
   return API.post("/posts/createpost", postData, config);
 };
+
 export const getPosts = (followingUsers: string[]): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
 
@@ -226,6 +227,18 @@ export const getPosts = (followingUsers: string[]): AxiosPromise => {
     },
   };
   return API.post("/posts/", followingUsers, config);
+};
+
+export const getHashtagPosts = (hashtag: string[]): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.get(`/posts/explore/hashtags/${hashtag}`, config);
 };
 
 export const deletePost = (id: string, userId: string): AxiosPromise => {
