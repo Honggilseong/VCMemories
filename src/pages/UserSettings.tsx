@@ -25,6 +25,7 @@ function UserSettings() {
     dispatch(signOut());
     dispatch(resetPosts());
     push("/auth");
+    localStorage.removeItem("recent");
   };
   const handleDeleteUser = () => {
     const localUserInfo = JSON.parse(localStorage.getItem("profile") || "");
