@@ -25,7 +25,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { toastError, toastSuccess } from "../../util/toast";
 import { useInternalRouter } from "../../pages/routing";
-
+import { v4 as uuidv4 } from "uuid";
 interface Props {
   post: {
     createdAt: string;
@@ -135,7 +135,10 @@ function Post({ post }: Props) {
       commentUserName: "",
     });
   };
-
+  const handleClickHashtag = (hashtag: string) => {
+    const removeHashtag = hashtag.replace("#", "");
+    push(`/explore/hashtags/${removeHashtag}`);
+  };
   const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue({ ...commentValue, comment: e.target.value });
   };
@@ -217,7 +220,23 @@ function Post({ post }: Props) {
       </div>
       <div className="my-2">
         <h2 className="font-bold text-lg">{post.title}</h2>
-        <p>{post.message}</p>
+        <p>
+          {post.message.split(" ").map((msg) => {
+            if (msg.startsWith("#")) {
+              return (
+                <span
+                  key={uuidv4()}
+                  className="cursor-pointer text-blue-500"
+                  onClick={() => handleClickHashtag(msg)}
+                >
+                  {msg}{" "}
+                </span>
+              );
+            } else {
+              return msg + " ";
+            }
+          })}
+        </p>
         <p>{post.tags.map((tag: string) => tag)}</p>
         <p className="text-gray-500 text-sm">
           {moment(post.createdAt).fromNow()}
