@@ -7,6 +7,7 @@ import {
   likePost,
 } from "../../actions/authAction";
 import { Comment } from "../../actions/postActionDispatch";
+import { useInternalRouter } from "../../pages/routing";
 import { useAppDispatch } from "../../reducers/store";
 import ProfileInfoModal from "./ProfileInfoModal";
 
@@ -18,7 +19,7 @@ function Post({ post, authUser }: any) {
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
-
+  const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
 
   const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +68,10 @@ function Post({ post, authUser }: any) {
       commentUserName: "",
     });
   };
+  const handleClickHashtag = (hashtag: string) => {
+    const removeHashtag = hashtag.replace("#", "");
+    push(`/explore/hashtags/${removeHashtag}`);
+  };
   return (
     <>
       <div
@@ -94,6 +99,7 @@ function Post({ post, authUser }: any) {
         handleValueComment={handleValueComment}
         handleLikePost={handleLikePost}
         handleDeleteUserComment={handleDeleteUserComment}
+        handleClickHashtag={handleClickHashtag}
       />
     </>
   );

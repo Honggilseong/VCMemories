@@ -5,7 +5,7 @@ import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "react-modal";
 import { Comment } from "../../actions/postActionDispatch";
-
+import { v4 as uuidv4 } from "uuid";
 const customStyles = {
   content: {
     top: "50%",
@@ -28,6 +28,7 @@ function UserProfileInfoModal({
   authUser,
   handleLikePost,
   handleDeleteUserComment,
+  handleClickHashtag,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   useEffect(() => {
@@ -73,7 +74,23 @@ function UserProfileInfoModal({
         </div>
         <div className="my-2">
           <h2 className="font-bold text-lg">{post.title}</h2>
-          <p>{post.message}</p>
+          <p>
+            {post.message.split(" ").map((msg: string) => {
+              if (msg.startsWith("#")) {
+                return (
+                  <span
+                    key={uuidv4()}
+                    className="cursor-pointer text-blue-500"
+                    onClick={() => handleClickHashtag(msg)}
+                  >
+                    {msg}{" "}
+                  </span>
+                );
+              } else {
+                return msg + " ";
+              }
+            })}
+          </p>
           <p>{post.tags.map((tag: string) => tag)}</p>
           <p className="text-gray-500 text-sm">
             {moment(post.createdAt).fromNow()}
