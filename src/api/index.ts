@@ -229,7 +229,7 @@ export const getPosts = (followingUsers: string[]): AxiosPromise => {
   return API.post("/posts/", followingUsers, config);
 };
 
-export const getHashtagPosts = (hashtag: string[]): AxiosPromise => {
+export const getHashtagPosts = (hashtag: string): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
 
   const config = {
