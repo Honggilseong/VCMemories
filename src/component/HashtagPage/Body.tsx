@@ -9,7 +9,6 @@ interface Props {
 
 function Body({ hashtagPosts }: Props) {
   const { hashtag } = useParams();
-  console.log(hashtagPosts);
   return (
     <div className="w-full h-full">
       <div className="h-20 flex justify-center items-center flex-col">
