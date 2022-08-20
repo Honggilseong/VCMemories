@@ -9,6 +9,7 @@ import Notification from "./Header/Notification";
 import { getUserInfo } from "../../actions/authAction";
 import { useSelector } from "react-redux";
 import { Image } from "cloudinary-react";
+
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 interface RecentSearchHistory {
@@ -31,6 +32,7 @@ function Header() {
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
   const dispatch = useAppDispatch();
   const allUsers = useSelector((state: RootState) => state.allUsers);
+  const { push } = useInternalRouter();
 
   const handleClickMobileSearch = () => {
     setIsMobileSearchOpen((prev) => !prev);
@@ -104,7 +106,15 @@ function Header() {
     setIsSearchResultOpen(false);
     setIsMobileSearchOpen(false);
   };
-
+  const handleSearchHashTag = (hashtag: string) => {
+    const removeHashtag = hashtag.replace("#", "");
+    if (removeHashtag.length === 0) return;
+    push(`/explore/hashtags/${removeHashtag}`);
+  };
+  const checkIfValidHashtag = (hashtag: string) => {
+    const regexExp = /^#[^ !@#$%^&*(),.?":{}|<>]*$/gi;
+    return regexExp.test(hashtag);
+  };
   useEffect(() => {
     const checkAuth = localStorage.getItem("profile") ?? "";
     if (!checkAuth) return navigate.push("/auth");
@@ -143,6 +153,8 @@ function Header() {
             recentSearchHistory={recentSearchHistory}
             handleDeleteSearchHistory={handleDeleteSearchHistory}
             isLoading={isLoading}
+            handleSearchHashTag={handleSearchHashTag}
+            checkIfValidHashtag={checkIfValidHashtag}
           />
           <div className="flex justify-center items-center">
             <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full lg:hidden">
@@ -171,43 +183,56 @@ function Header() {
           </div>
           <div className="absolute h-[200px] overflow-auto w-full bg-white z-50">
             {mobileSearchValue.length ? (
-              allUsers
-                .filter((user) =>
-                  user.name
-                    .toLowerCase()
-                    .trim()
-                    .includes(mobileSearchValue.toLowerCase().trim())
-                )
-                .map((user) => (
-                  <div
-                    key={user._id}
-                    className="flex items-center cursor-pointer hover:bg-gray-200 text-black p-1"
-                    onClick={() =>
-                      handleClickSearchingUser(
-                        user.name,
-                        user.profilePicture,
-                        user._id
-                      )
-                    }
-                  >
-                    <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                      {user.profilePicture === defaultProfilePicture ? (
-                        <img
-                          src={user.profilePicture}
-                          alt="userProfilePicture"
-                        />
-                      ) : (
-                        <Image
-                          cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                          publicId={user.profilePicture}
-                          className="w-full h-full"
-                          crop="scale"
-                        />
-                      )}
+              checkIfValidHashtag(mobileSearchValue) ? (
+                <div
+                  className="text-black w-full h-full "
+                  onClick={() => handleSearchHashTag(mobileSearchValue)}
+                >
+                  <p className="text-2xl font-bold w-full cursor-pointer text-center">
+                    {mobileSearchValue}
+                  </p>
+                </div>
+              ) : (
+                allUsers
+                  .filter((user) =>
+                    user.name
+                      .toLowerCase()
+                      .trim()
+                      .includes(mobileSearchValue.toLowerCase().trim())
+                  )
+                  .map((user) => (
+                    <div
+                      key={user._id}
+                      className="flex items-center cursor-pointer hover:bg-gray-200 text-black p-1"
+                      onClick={() =>
+                        handleClickSearchingUser(
+                          user.name,
+                          user.profilePicture,
+                          user._id
+                        )
+                      }
+                    >
+                      <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                        {user.profilePicture === defaultProfilePicture ? (
+                          <img
+                            src={user.profilePicture}
+                            alt="userProfilePicture"
+                          />
+                        ) : (
+                          <Image
+                            cloudName={
+                              process.env.REACT_APP_CLOUDINARY_USERNAME
+                            }
+                            publicId={user.profilePicture}
+                            className="w-full h-full"
+                            crop="scale"
+                          />
+                        )}
+                      </div>
+                      <h2 className="font-bold text-center">{user.name}</h2>
                     </div>
-                    <h2 className="font-bold text-center">{user.name}</h2>
-                  </div>
-                ))
+                  ))
+              )
             ) : (
               <div className="text-black w-full h-full">
                 <div className="h-8 w-full p-1">

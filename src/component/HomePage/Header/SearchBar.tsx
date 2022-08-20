@@ -22,6 +22,8 @@ interface Props {
   recentSearchHistory: { name: string; profileImg: string; userId: string }[];
   handleDeleteSearchHistory: (userId: string) => void;
   isLoading: boolean;
+  handleSearchHashTag: (hashtag: string) => void;
+  checkIfValidHashtag: (hashtag: string) => boolean;
 }
 
 function SearchBar({
@@ -34,10 +36,11 @@ function SearchBar({
   searchResultRef,
   recentSearchHistory,
   handleDeleteSearchHistory,
+  handleSearchHashTag,
   isLoading,
+  checkIfValidHashtag,
 }: Props) {
   const allUsers = useSelector((state: RootState) => state.allUsers);
-
   return (
     <div className="relative">
       <div
@@ -65,44 +68,60 @@ function SearchBar({
       </div>
       {isSearchResultOpen && (
         <div
-          className="border absolute -bottom-[25rem] -left-12 rounded-lg w-[300px] h-[400px] overflow-auto bg-white "
+          className={`border absolute -bottom-[25rem] -left-12 rounded-lg w-[300px] overflow-auto bg-white ${
+            checkIfValidHashtag(searchValue)
+              ? "h-16 -bottom-[4rem] px-2"
+              : "h-[400px]"
+          }`}
           ref={searchResultRef}
         >
           {searchValue.length ? (
-            allUsers
-              .filter((user) =>
-                user.name
-                  .toLowerCase()
-                  .trim()
-                  .includes(searchValue.toLowerCase().trim())
-              )
-              .map((user) => (
-                <div
-                  key={user._id}
-                  className="flex items-center cursor-pointer hover:bg-gray-200 text-black p-1"
-                  onClick={() =>
-                    handleClickSearchingUser(
-                      user.name,
-                      user.profilePicture,
-                      user._id
-                    )
-                  }
-                >
-                  <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                    {user.profilePicture === defaultProfilePicture ? (
-                      <img src={user.profilePicture} alt="userProfilePicture" />
-                    ) : (
-                      <Image
-                        cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                        publicId={user.profilePicture}
-                        className="w-full h-full"
-                        crop="scale"
-                      />
-                    )}
+            checkIfValidHashtag(searchValue) ? (
+              <div
+                className="text-black cursor-pointer h-14 flex items-center"
+                onClick={() => handleSearchHashTag(searchValue)}
+              >
+                <p className="text-2xl text-bold">{searchValue}</p>
+              </div>
+            ) : (
+              allUsers
+                .filter((user) =>
+                  user.name
+                    .toLowerCase()
+                    .trim()
+                    .includes(searchValue.toLowerCase().trim())
+                )
+                .map((user) => (
+                  <div
+                    key={user._id}
+                    className="flex items-center cursor-pointer hover:bg-gray-200 text-black p-1"
+                    onClick={() =>
+                      handleClickSearchingUser(
+                        user.name,
+                        user.profilePicture,
+                        user._id
+                      )
+                    }
+                  >
+                    <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                      {user.profilePicture === defaultProfilePicture ? (
+                        <img
+                          src={user.profilePicture}
+                          alt="userProfilePicture"
+                        />
+                      ) : (
+                        <Image
+                          cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
+                          publicId={user.profilePicture}
+                          className="w-full h-full"
+                          crop="scale"
+                        />
+                      )}
+                    </div>
+                    <h2 className="font-bold text-center">{user.name}</h2>
                   </div>
-                  <h2 className="font-bold text-center">{user.name}</h2>
-                </div>
-              ))
+                ))
+            )
           ) : (
             <div className="text-black w-full h-full">
               <div className="h-8 w-full p-1">
