@@ -17,6 +17,7 @@ import {
   USER_LEAVE_COMMENT,
   USER_LIKE_POST,
   USER_DELETE_COMMENT,
+  EDIT_USER_POST,
 } from "./authActionDispatch";
 import * as api from "../api";
 import { Comment } from "./postActionDispatch";
@@ -287,6 +288,23 @@ export const deleteUserComment =
       await api.deleteUserComment(postId, commentId);
       dispatch({ type: USER_DELETE_COMMENT, payload: IDs });
       toastSuccess("Deleted your comment!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const editUserPost =
+  (postId: string, message: string, title: string) =>
+  async (dispatch: Dispatch) => {
+    const editPost = {
+      postId,
+      message,
+      title,
+    };
+    try {
+      await api.editUserPost(postId, message, title);
+      dispatch({ type: EDIT_USER_POST, payload: editPost });
+      toastSuccess("Your post has been updated!");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");

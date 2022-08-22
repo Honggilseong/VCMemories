@@ -18,6 +18,7 @@ import {
   USER_LEAVE_COMMENT,
   USER_LIKE_POST,
   USER_DELETE_COMMENT,
+  EDIT_USER_POST,
 } from "../actions/authActionDispatch";
 interface FollowRequests {
   _id: string;
@@ -155,6 +156,15 @@ const AuthReducer = (
                 ),
               }
             : post
+        ),
+      };
+    }
+    case EDIT_USER_POST: {
+      const { postId, message, title } = action.payload;
+      return {
+        ...state,
+        userPosts: state.userPosts.map((post) =>
+          post._id === postId ? { ...post, title, message, isEdit: true } : post
         ),
       };
     }
