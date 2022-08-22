@@ -288,6 +288,23 @@ export const leaveComment = (id: string, comment: Comment): AxiosPromise => {
   };
   return API.patch(`/posts/${id}/leavecomment`, { comment }, config);
 };
+
+export const editUserPost = (
+  postId: string,
+  message: string,
+  title: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/posts/edit/${postId}`, { message, title }, config);
+};
+
 export const deleteUserComment = (
   id: string,
   commentId: string
