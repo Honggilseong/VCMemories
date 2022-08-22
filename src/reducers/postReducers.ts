@@ -20,6 +20,7 @@ interface PostData {
   userId: string;
   likes: string[];
   comments: Comment[];
+  isEdit: boolean;
 }
 type PostsState = PostData[];
 const initialState: PostsState = [];

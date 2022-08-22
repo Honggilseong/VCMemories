@@ -39,6 +39,7 @@ interface Props {
     userId: string;
     profilePicture: string;
     comments: Comment[];
+    isEdit: boolean;
   };
 }
 interface ReportsList {
@@ -237,10 +238,12 @@ function Post({ post }: Props) {
             }
           })}
         </p>
-        <p>{post.tags.map((tag: string) => tag)}</p>
-        <p className="text-gray-500 text-sm">
-          {moment(post.createdAt).fromNow()}
-        </p>
+        <div className="flex">
+          <p className="text-gray-500 text-sm mr-1">
+            {moment(post.createdAt).fromNow()}
+          </p>
+          {post.isEdit && <p className="text-gray-500 text-sm">(edited)</p>}
+        </div>
       </div>
       <div className="flex w-full xl:w-[800px]">
         <div

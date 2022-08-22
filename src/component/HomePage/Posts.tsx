@@ -14,6 +14,7 @@ interface UserPost {
   userId: string;
   profilePicture: string;
   comments: Comment[];
+  isEdit: boolean;
 }
 
 function Posts() {

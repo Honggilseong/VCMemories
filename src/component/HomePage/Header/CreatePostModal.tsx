@@ -33,6 +33,7 @@ interface NewPost {
   userId: string;
   likes: string[];
   comments: Comment[];
+  isEdit: boolean;
 }
 
 const customStyles = {
@@ -58,6 +59,7 @@ function CreatePostModal() {
     userId: "",
     likes: [],
     comments: [],
+    isEdit: false,
   });
   const modal = useSelector((state: RootState) => state.modal);
   const dispatch = useAppDispatch();
@@ -82,6 +84,7 @@ function CreatePostModal() {
       userId: "",
       likes: [],
       comments: [],
+      isEdit: false,
     });
     setPreviewImage([]);
     setIsLoading(false);
@@ -138,6 +141,7 @@ function CreatePostModal() {
       userId: "",
       likes: [],
       comments: [],
+      isEdit: false,
     });
     setPreviewImage([]);
     dispatch(closePostModal());

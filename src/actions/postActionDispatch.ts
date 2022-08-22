@@ -22,6 +22,7 @@ export interface NewPost {
   likes: string[];
   _id?: string;
   comments: Comment[];
+  isEdit: boolean;
 }
 
 export interface createPost {
