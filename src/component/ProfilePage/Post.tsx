@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   deletePost,
   deleteUserComment,
+  editUserPost,
   leaveComment,
   likePost,
 } from "../../actions/authAction";
@@ -10,28 +11,38 @@ import { Comment } from "../../actions/postActionDispatch";
 import { useInternalRouter } from "../../pages/routing";
 import { useAppDispatch } from "../../reducers/store";
 import ProfileInfoModal from "./ProfileInfoModal";
-
+interface EditTextValue {
+  message: string;
+  title: string;
+}
 function Post({ post, authUser }: any) {
   const [commentValue, setCommentValue] = useState<Comment>({
     comment: "",
     commentUserId: "",
     commentUserName: "",
   });
+  const [editTextValue, setEditTextValue] = useState<EditTextValue>({
+    message: "",
+    title: "",
+  });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isRemindModalOepn, isRemindModalOpen] = useState<boolean>(false);
   const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
 
   const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue({ ...commentValue, comment: event.target.value });
   };
-
+  const handleEditValueTitleMessage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name } = event.target;
+    setEditTextValue({ ...editTextValue, [name]: event.target.value });
+    console.log(editTextValue);
+  };
   const handleClickDetailPost = () => {
     setIsModalOpen(true);
-  };
-
-  const handleClickPostInfo = () => {
-    setPostInfoOpen((prev) => !prev);
   };
 
   const handleDeletePost = () => {
@@ -72,6 +83,21 @@ function Post({ post, authUser }: any) {
     const removeHashtag = hashtag.replace("#", "");
     push(`/explore/hashtags/${removeHashtag}`);
   };
+  const handleClickEditPost = () => {
+    if (!isEdit) setEditTextValue({ message: post.message, title: post.title });
+    setIsEdit((prev) => !prev);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsEdit(false);
+    setEditTextValue({ message: "", title: "" });
+  };
+  const handleClickUpdatePost = () => {
+    dispatch(
+      editUserPost(post._id, editTextValue.message, editTextValue.title)
+    );
+  };
   return (
     <>
       <div
@@ -90,9 +116,6 @@ function Post({ post, authUser }: any) {
         post={post}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        setPostInfoOpen={setPostInfoOpen}
-        isPostInfoOpen={isPostInfoOpen}
-        handleClickPostInfo={handleClickPostInfo}
         handleDeletePost={handleDeletePost}
         handleLeaveComment={handleLeaveComment}
         commentValue={commentValue}
@@ -100,6 +123,12 @@ function Post({ post, authUser }: any) {
         handleLikePost={handleLikePost}
         handleDeleteUserComment={handleDeleteUserComment}
         handleClickHashtag={handleClickHashtag}
+        handleClickEditPost={handleClickEditPost}
+        isEdit={isEdit}
+        handleEditValueTitleMessage={handleEditValueTitleMessage}
+        editTextValue={editTextValue}
+        handleCloseModal={handleCloseModal}
+        handleClickUpdatePost={handleClickUpdatePost}
       />
     </>
   );
