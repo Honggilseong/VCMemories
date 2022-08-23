@@ -46,7 +46,7 @@ function Body({
                 {searchUserInfo.name}
               </h1>
               <p className="w-full text-xl mb-5 break-words text-center">
-                {authUser.bio}
+                {searchUserInfo.bio}
               </p>
             </div>
             <div className="flex justify-evenly mt-5 mb-5">

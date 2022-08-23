@@ -36,6 +36,7 @@ export interface GetSearchingUser {
   _id: string;
   isPrivate: boolean;
   userTitle: string;
+  bio: string;
 }
 type SearchUserState = GetSearchingUser;
 const initialState: SearchUserState = {
@@ -49,6 +50,7 @@ const initialState: SearchUserState = {
   notifications: [],
   isPrivate: false,
   userTitle: "",
+  bio: "",
 };
 
 const SearchUserReducer = (
