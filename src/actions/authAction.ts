@@ -18,6 +18,7 @@ import {
   USER_LIKE_POST,
   USER_DELETE_COMMENT,
   EDIT_USER_POST,
+  UPDATE_USER_BIO,
 } from "./authActionDispatch";
 import * as api from "../api";
 import { Comment } from "./postActionDispatch";
@@ -305,6 +306,17 @@ export const editUserPost =
       await api.editUserPost(postId, message, title);
       dispatch({ type: EDIT_USER_POST, payload: editPost });
       toastSuccess("Your post has been updated!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const updateUserBio =
+  (id: string, bio: string) => async (dispatch: Dispatch) => {
+    try {
+      await api.updateUserBio(id, bio);
+      dispatch({ type: UPDATE_USER_BIO, payload: bio });
+      toastSuccess("Your bio has been updated!");
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");

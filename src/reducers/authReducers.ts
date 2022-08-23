@@ -19,6 +19,7 @@ import {
   USER_LIKE_POST,
   USER_DELETE_COMMENT,
   EDIT_USER_POST,
+  UPDATE_USER_BIO,
 } from "../actions/authActionDispatch";
 interface FollowRequests {
   _id: string;
@@ -40,6 +41,7 @@ interface InitialState {
   isPrivate?: boolean;
   userTitle?: string;
   followRequests?: FollowRequests[];
+  bio?: string;
 }
 const initialState = {
   name: "",
@@ -166,6 +168,12 @@ const AuthReducer = (
         userPosts: state.userPosts.map((post) =>
           post._id === postId ? { ...post, title, message, isEdit: true } : post
         ),
+      };
+    }
+    case UPDATE_USER_BIO: {
+      return {
+        ...state,
+        bio: action.payload,
       };
     }
     default:

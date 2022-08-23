@@ -16,6 +16,7 @@ export const SWITCH_ACCOUNT_STATE = "SWITCH_ACCOUNT_STATE";
 export const DELETE_ALL_FOLLOW_REQUESTS = "DELETE_ALL_FOLLOW_REQUESTS";
 export const USER_DELETE_COMMENT = "USER_DELETE_COMMENT";
 export const EDIT_USER_POST = "EDIT_USER_POST";
+export const UPDATE_USER_BIO = "UPDATE_USER_BIO";
 export interface UserInfo {
   email: string;
   password: string;
@@ -90,6 +91,7 @@ export interface GetUserInfo {
   userTitle: string;
   followRequests: FollowRequests[];
   blockUsers: BlockUsers[];
+  bio: string;
 }
 
 export interface getUserInfo {
@@ -161,6 +163,10 @@ export interface editUserPost {
   type: typeof EDIT_USER_POST;
   payload: EditUserPost;
 }
+export interface updateUserBio {
+  type: typeof UPDATE_USER_BIO;
+  payload: string;
+}
 export type authActionDispatch =
   | createUser
   | signIn
@@ -179,4 +185,5 @@ export type authActionDispatch =
   | switchAccountState
   | deleteAllFollowRequests
   | deleteUserComment
-  | editUserPost;
+  | editUserPost
+  | updateUserBio;
