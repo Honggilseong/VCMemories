@@ -5,6 +5,7 @@ import {
   deleteUser,
   signOut,
   switchAccountState,
+  updateUserBio,
 } from "../actions/authAction";
 import { resetPosts } from "../actions/postAction";
 import Header from "../component/HomePage/Header";
@@ -15,6 +16,8 @@ import { useInternalRouter } from "./routing";
 function UserSettings() {
   const [settingState, setSettingState] = useState<string>("accountSettings");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpenBio, setIsOpenBio] = useState<boolean>(false);
+  const [bioValue, setBioValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
@@ -41,6 +44,20 @@ function UserSettings() {
     dispatch(switchAccountState(authUser._id));
     setIsLoading(false);
   };
+  const handleClickBio = () => {
+    if (!isOpenBio) setBioValue(authUser.bio);
+    setIsOpenBio((prev) => !prev);
+  };
+  const handleChangeBioValue = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setBioValue(event.target.value);
+  };
+  const handleClickUpdateBio = () => {
+    setIsOpenBio(false);
+    if (authUser.bio === bioValue) return;
+    dispatch(updateUserBio(authUser._id, bioValue));
+  };
   return (
     <div>
       <Header />
@@ -51,6 +68,11 @@ function UserSettings() {
         handleClickSettings={handleClickSettings}
         handleDeleteUser={handleDeleteUser}
         handleClickAccountState={handleClickAccountState}
+        handleClickBio={handleClickBio}
+        isOpenBio={isOpenBio}
+        handleChangeBioValue={handleChangeBioValue}
+        bioValue={bioValue}
+        handleClickUpdateBio={handleClickUpdateBio}
       />
     </div>
   );
