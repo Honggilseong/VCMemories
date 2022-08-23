@@ -203,7 +203,16 @@ export const deleteAllFollowRequests = (id: string): AxiosPromise => {
   };
   return API.patch(`/user/${id}/deleteallfollowrequests`, {}, config);
 };
-
+export const updateUserBio = (id: string, bio: string): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/user/${id}/updatebio`, { bio }, config);
+};
 //posts
 export const createPost = (postData: PostData): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
