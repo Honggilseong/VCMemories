@@ -45,6 +45,9 @@ function Body({
               <h1 className="font-bold text-3xl mt-5 mb-5">
                 {searchUserInfo.name}
               </h1>
+              <p className="w-full text-xl mb-5 break-words text-center">
+                {authUser.bio}
+              </p>
             </div>
             <div className="flex justify-evenly mt-5 mb-5">
               <div className="flex justify-center items-center flex-col cursor-pointer">
