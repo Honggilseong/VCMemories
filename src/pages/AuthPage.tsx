@@ -84,11 +84,11 @@ function AuthPage() {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-1">
-      <div className="flex-[0.3] border-r-2 border-gray-800">
+    <div className="w-screen h-screen flex">
+      <div className="w-full lg:flex-[0.3] mx-auto lg:mx-0">
         <AuthPageForm {...props} />
       </div>
-      <div className="flex-[0.7] h-screen w-full">
+      <div className="hidden lg:flex[0.7] lg:block h-screen w-full">
         <img src={authPageImg} alt="authpageimg" className="w-full h-full" />
       </div>
     </div>

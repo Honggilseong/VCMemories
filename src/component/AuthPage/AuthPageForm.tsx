@@ -30,10 +30,13 @@ function AuthPageForm({
   isSignUp,
 }: Props) {
   return (
-    <div className="flex flex-row justify-center w-[550px]">
+    <div className="flex flex-row justify-center w-full lg:w-[550px]">
       <div>
+        <p className="text-center font-bold text-4xl mt-36 text-purple-500 mb-5">
+          VCMemories
+        </p>
         {isSignUp && (
-          <div className="w-[300px] mt-36 text-center mb-10">
+          <div className="w-[300px] text-center mb-10">
             <p>
               By continuing, you are setting up a VCMemories account and agree
               to our{" "}
@@ -54,9 +57,7 @@ function AuthPageForm({
             </p>
           </div>
         )}
-        <h1
-          className={`font-bold text-3xl text-center ${!isSignUp && "mt-36"}`}
-        >
+        <h1 className={`font-bold text-3xl text-center`}>
           {isSignUp ? "Sign Up" : "Sign In"}
         </h1>
         <div className="border w-[300px] mt-5 mb-5 border-purple-500" />
@@ -110,7 +111,7 @@ function AuthPageForm({
             {isSignUp ? "Sign Up" : "Sign In"}
           </button>
         </form>
-        <p className="text-center mt-4 text-gray-500">
+        <p className="text-center mt-4 text-gray-500 mb-6 lg:mb-0">
           {isSignUp ? "You have an account? " : "You don't have an account? "}
           <span
             className="text-blue-500 font-bold cursor-pointer"
