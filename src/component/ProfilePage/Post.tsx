@@ -1,15 +1,18 @@
 import { Image } from "cloudinary-react";
 import React, { useState } from "react";
+import { MentionItem } from "react-mentions";
 import {
   deletePost,
   deleteUserComment,
   editUserPost,
   leaveComment,
   likePost,
+  mentionUser,
 } from "../../actions/authAction";
 import { Comment } from "../../actions/postActionDispatch";
 import { useInternalRouter } from "../../pages/routing";
 import { useAppDispatch } from "../../reducers/store";
+import { parsingMentionTag } from "../../util/parsingMentionTag";
 import ProfileInfoModal from "./ProfileInfoModal";
 interface EditTextValue {
   message: string;
@@ -27,12 +30,19 @@ function Post({ post, authUser }: any) {
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isRemindModalOepn, isRemindModalOpen] = useState<boolean>(false);
+  const [mentionUsers, setMentionUsers] = useState<string[]>([]);
+
   const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
 
-  const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentValue({ ...commentValue, comment: event.target.value });
+  const handleValueComment = (
+    e: any,
+    newValue: any,
+    newPlainTextValue: any,
+    mentions: MentionItem[]
+  ) => {
+    setCommentValue({ ...commentValue, comment: e.target.value });
+    setMentionUsers(mentions.map((mention) => mention.id));
   };
   const handleEditValueTitleMessage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -64,7 +74,7 @@ function Post({ post, authUser }: any) {
       leaveComment(
         post._id,
         {
-          ...commentValue,
+          comment: parsingMentionTag(commentValue.comment),
           commentUserId: authUser._id,
           commentUserName: authUser.name,
         },
@@ -73,6 +83,17 @@ function Post({ post, authUser }: any) {
         post.picture
       )
     );
+    if (mentionUsers.length > 0) {
+      dispatch(
+        mentionUser(
+          post._id,
+          authUser.name,
+          post.picture,
+          "mentioned",
+          mentionUsers
+        )
+      );
+    }
     setCommentValue({
       comment: "",
       commentUserId: "",
@@ -97,6 +118,10 @@ function Post({ post, authUser }: any) {
     dispatch(
       editUserPost(post._id, editTextValue.message, editTextValue.title)
     );
+  };
+  const handleClickUserMention = (username: string) => {
+    const removeText = username.replace("@", "");
+    push(`/user/search/${removeText}`);
   };
   return (
     <>
@@ -129,6 +154,7 @@ function Post({ post, authUser }: any) {
         editTextValue={editTextValue}
         handleCloseModal={handleCloseModal}
         handleClickUpdatePost={handleClickUpdatePost}
+        handleClickUserMention={handleClickUserMention}
       />
     </>
   );
