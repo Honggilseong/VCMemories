@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import Modal from "react-modal";
 import { Comment } from "../../../../actions/postActionDispatch";
+import { v4 as uuidv4 } from "uuid";
+import { Mention, MentionItem, MentionsInput } from "react-mentions";
+import { mentionInputStyle, mentionStyle } from "../../../../util/mentionCSS";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../reducers/store";
 const customStyles = {
   content: {
     top: "50%",
@@ -18,7 +23,12 @@ interface Props {
   isUserPostModalOpen: boolean;
   handleCloseModal: () => void;
   modalPost: any;
-  handleValueComment: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleValueComment: (
+    event: any,
+    newValue: string,
+    newPlainTextValue: string,
+    mentions: MentionItem[]
+  ) => void;
   commentValue: Comment;
   handleLikePost: (
     postId: string,
@@ -33,6 +43,8 @@ interface Props {
     postPicture: string
   ) => void;
   handleDeleteUserComment: (postId: string, commentId: string) => void;
+  handleClickUserMention: (username: string) => void;
+  handleClickHashtag: (hashtag: string) => void;
 }
 function UserPostModal({
   isUserPostModalOpen,
@@ -44,8 +56,11 @@ function UserPostModal({
   authUser,
   handleLeaveComment,
   handleDeleteUserComment,
+  handleClickUserMention,
+  handleClickHashtag,
 }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
+  const allUsers = useSelector((state: RootState) => state.allUsers);
   useEffect(() => {
     if (!modalPost) return;
     const likedPost = modalPost?.likes.findIndex(
@@ -83,8 +98,24 @@ function UserPostModal({
           </div>
           <div className="my-2">
             <h2 className="font-bold text-lg">{modalPost.title}</h2>
-            <p>{modalPost.message}</p>
-            {/* <p>{modalPost.tags.map((tag: string) => tag)}</p> */}
+            <p>
+              {" "}
+              {modalPost.message.split(" ").map((msg: string) => {
+                if (msg.startsWith("#")) {
+                  return (
+                    <span
+                      key={uuidv4()}
+                      className="cursor-pointer text-blue-500"
+                      onClick={() => handleClickHashtag(msg)}
+                    >
+                      {msg}{" "}
+                    </span>
+                  );
+                } else {
+                  return msg + " ";
+                }
+              })}
+            </p>
             <p className="text-gray-500 text-sm">
               {moment(modalPost.createdAt).fromNow()}
             </p>
@@ -125,13 +156,33 @@ function UserPostModal({
             }
           >
             <div className="flex-1">
-              <input
-                type="text"
-                placeholder="Add a comment"
-                className="h-full w-full focus:outline-none"
+              <MentionsInput
                 value={commentValue.comment}
-                onChange={handleValueComment}
-              />
+                onChange={(event, newValue, newPlainTextValue, mentions) =>
+                  handleValueComment(
+                    event,
+                    newValue,
+                    newPlainTextValue,
+                    mentions
+                  )
+                }
+                className="w-full h-full"
+                style={mentionInputStyle}
+                placeholder="Add a comment"
+              >
+                <Mention
+                  trigger="@"
+                  data={allUsers.map((user) => ({
+                    id: user._id,
+                    display: user.name,
+                  }))}
+                  appendSpaceOnAdd
+                  style={mentionStyle}
+                  displayTransform={(id, display) => {
+                    return `@${display}`;
+                  }}
+                />
+              </MentionsInput>
             </div>
             <button
               type="submit"
@@ -152,7 +203,23 @@ function UserPostModal({
                 >
                   <div className="flex">
                     <p className="font-bold mr-2">{comment.commentUserName}:</p>
-                    <p>{comment.comment}</p>
+                    <p>
+                      {comment.comment.split(" ").map((msg) => {
+                        if (msg.startsWith("@")) {
+                          return (
+                            <span
+                              key={uuidv4()}
+                              className="cursor-pointer text-blue-500 font-bold"
+                              onClick={() => handleClickUserMention(msg)}
+                            >
+                              {msg}{" "}
+                            </span>
+                          );
+                        } else {
+                          return msg + " ";
+                        }
+                      })}
+                    </p>
                   </div>
                   {comment.commentUserId === authUser._id && (
                     <div

@@ -7,18 +7,25 @@ import {
   deleteUserComment,
   leaveComment,
   likePost,
+  mentionUser,
   readNotifications,
 } from "../../../actions/authAction";
 import { useAppDispatch } from "../../../reducers/store";
 import { Image } from "cloudinary-react";
 import UserPostModal from "./Notification/UserPostModal";
 import { Comment } from "../../../actions/postActionDispatch";
+import * as api from "../../../api";
+import { useInternalRouter } from "../../../pages/routing";
+import { MentionItem } from "react-mentions";
+import { parsingMentionTag } from "../../../util/parsingMentionTag";
+
 export interface Notifications {
   _id: string;
   read: boolean;
   sender: string;
   image?: string;
   notificationType: string;
+  postId?: string;
 }
 function Notification() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,6 +38,8 @@ function Notification() {
     commentUserId: "",
     commentUserName: "",
   });
+  const [mentionUsers, setMentionUsers] = useState<string[]>([]);
+  const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
   const dropDownRef = useRef(
     null
@@ -56,7 +65,7 @@ function Notification() {
       leaveComment(
         postId,
         {
-          ...commentValue,
+          comment: parsingMentionTag(commentValue.comment),
           commentUserId: authUser._id,
           commentUserName: authUser.name,
         },
@@ -65,16 +74,30 @@ function Notification() {
         postPicture
       )
     );
-    const newComment = {
-      _id: new Date(),
-      commentUserId: authUser._id,
-      commentUserName: authUser.name,
-      comment: commentValue.comment,
-    };
     setModalPost({
       ...modalPost,
-      comments: [...modalPost.comments, newComment],
+      comments: [
+        ...modalPost.comments,
+        {
+          _id: new Date(),
+          commentUserId: authUser._id,
+          commentUserName: authUser.name,
+          comment: parsingMentionTag(commentValue.comment),
+        },
+      ],
     });
+
+    if (mentionUsers.length > 0) {
+      dispatch(
+        mentionUser(
+          modalPost._id,
+          authUser.name,
+          modalPost.picture,
+          "mentioned",
+          mentionUsers
+        )
+      );
+    }
     setCommentValue({
       comment: "",
       commentUserId: "",
@@ -101,9 +124,14 @@ function Notification() {
       setModalPost({ ...modalPost, likes });
     }
   };
-  const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleValueComment = (
+    event: any,
+    newValue: string,
+    newPlainTextValue: string,
+    mentions: MentionItem[]
+  ) => {
     setCommentValue({ ...commentValue, comment: event.target.value });
-    console.log(commentValue.comment);
+    setMentionUsers(mentions.map((mention) => mention.id));
   };
   const handleCloseModal = () => {
     setIsUserPostModalOpen(false);
@@ -114,12 +142,11 @@ function Notification() {
       commentUserName: "",
     });
   };
-  const handleOpenModal = (image: string) => {
+  const handleOpenModal = async (id: string) => {
+    if (!id) return;
     setIsUserPostModalOpen(true);
-    const postIndex = authUser.userPosts?.findIndex(
-      (post) => post.picture === image
-    );
-    setModalPost(authUser.userPosts[postIndex]);
+    const notificationPost = await api.getNotificationPost(id);
+    setModalPost(notificationPost.data);
     setIsOpen(false);
   };
   const handleStateNotification = () => {
@@ -128,6 +155,14 @@ function Notification() {
   };
   const handleDeleteNotifications = () => {
     dispatch(deleteNotifications(authUser._id));
+  };
+  const handleClickHashtag = (hashtag: string) => {
+    const removeHashtag = hashtag.replace("#", "");
+    push(`/explore/hashtags/${removeHashtag}`);
+  };
+  const handleClickUserMention = (username: string) => {
+    const removeText = username.replace("@", "");
+    push(`/user/search/${removeText}`);
   };
   useEffect(() => {
     const handleClickPostInfo = (e: any) => {
@@ -183,7 +218,7 @@ function Notification() {
                   className={`flex items-center p-2 border-2 cursor-pointer w-full ${
                     data.read && "bg-gray-400"
                   }`}
-                  onClick={() => handleOpenModal(data.image)}
+                  onClick={() => handleOpenModal(data.postId)}
                 >
                   <div className="flex justify-center items-center">
                     <p className="font-bold mr-2">{data.sender} </p>
@@ -220,6 +255,8 @@ function Notification() {
         authUser={authUser}
         handleLeaveComment={handleLeaveComment}
         handleDeleteUserComment={handleDeleteUserComment}
+        handleClickHashtag={handleClickHashtag}
+        handleClickUserMention={handleClickUserMention}
       />
     </>
   );
