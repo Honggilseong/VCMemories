@@ -9,6 +9,9 @@ import { Comment } from "../../actions/postActionDispatch";
 import { useAppDispatch } from "../../reducers/store";
 import UserProfileInfoModal from "./UserProfileInfoModal";
 import { useInternalRouter } from "../../pages/routing";
+import { mentionUser } from "../../actions/authAction";
+import { parsingMentionTag } from "../../util/parsingMentionTag";
+import { MentionItem } from "react-mentions";
 
 function Post({ post, authUser }: any) {
   const [commentValue, setCommentValue] = useState<Comment>({
@@ -18,10 +21,17 @@ function Post({ post, authUser }: any) {
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
+  const [mentionUsers, setMentionUsers] = useState<string[]>([]);
   const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
-  const handleValueComment = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentValue({ ...commentValue, comment: event.target.value });
+  const handleValueComment = (
+    e: any,
+    newValue: any,
+    newPlainTextValue: any,
+    mentions: MentionItem[]
+  ) => {
+    setCommentValue({ ...commentValue, comment: e.target.value });
+    setMentionUsers(mentions.map((mention) => mention.id));
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -46,7 +56,7 @@ function Post({ post, authUser }: any) {
       leaveComment(
         post._id,
         {
-          ...commentValue,
+          comment: parsingMentionTag(commentValue.comment),
           commentUserId: authUser._id,
           commentUserName: authUser.name,
         },
@@ -55,6 +65,17 @@ function Post({ post, authUser }: any) {
         post.picture
       )
     );
+    if (mentionUsers.length > 0) {
+      dispatch(
+        mentionUser(
+          post._id,
+          authUser.name,
+          post.picture,
+          "mentioned",
+          mentionUsers
+        )
+      );
+    }
     setCommentValue({
       comment: "",
       commentUserId: "",
@@ -64,6 +85,10 @@ function Post({ post, authUser }: any) {
   const handleClickHashtag = (hashtag: string) => {
     const removeHashtag = hashtag.replace("#", "");
     push(`/explore/hashtags/${removeHashtag}`);
+  };
+  const handleClickUserMention = (username: string) => {
+    const removeText = username.replace("@", "");
+    push(`/user/search/${removeText}`);
   };
   return (
     <>
@@ -93,6 +118,7 @@ function Post({ post, authUser }: any) {
         handleLikePost={handleLikePost}
         handleDeleteUserComment={handleDeleteUserComment}
         handleClickHashtag={handleClickHashtag}
+        handleClickUserMention={handleClickUserMention}
       />
     </>
   );

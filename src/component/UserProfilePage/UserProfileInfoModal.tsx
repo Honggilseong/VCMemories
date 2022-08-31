@@ -6,6 +6,10 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "react-modal";
 import { Comment } from "../../actions/postActionDispatch";
 import { v4 as uuidv4 } from "uuid";
+import { Mention, MentionsInput } from "react-mentions";
+import { mentionInputStyle, mentionStyle } from "../../util/mentionCSS";
+import { useSelector } from "react-redux";
+import { RootState } from "../../reducers/store";
 const customStyles = {
   content: {
     top: "50%",
@@ -29,11 +33,13 @@ function UserProfileInfoModal({
   handleLikePost,
   handleDeleteUserComment,
   handleClickHashtag,
+  handleClickUserMention,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
+  const allUsers = useSelector((state: RootState) => state.allUsers);
   useEffect(() => {
-    const likedPost = post.likes.findIndex((id: string) => id === authUser._id);
-    if (likedPost === -1) {
+    const isLiked = post.likes.findIndex((id: string) => id === authUser._id);
+    if (isLiked === -1) {
       setLikedPost(false);
     } else {
       setLikedPost(true);
@@ -43,7 +49,7 @@ function UserProfileInfoModal({
     <Modal
       isOpen={isModalOpen}
       onRequestClose={handleCloseModal}
-      contentLabel="Example Modal"
+      contentLabel="Search User Post Modal"
       style={customStyles}
     >
       <div className="lg:h-[750px] w-full h-[500px] overflow-auto">
@@ -119,13 +125,28 @@ function UserProfileInfoModal({
           onSubmit={handleLeaveComment}
         >
           <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Add a comment"
-              className="h-full w-full focus:outline-none"
+            <MentionsInput
               value={commentValue.comment}
-              onChange={handleValueComment}
-            />
+              onChange={(event, newValue, newPlainTextValue, mentions) =>
+                handleValueComment(event, newValue, newPlainTextValue, mentions)
+              }
+              className="w-full h-full"
+              style={mentionInputStyle}
+              placeholder="Add a comment"
+            >
+              <Mention
+                trigger="@"
+                data={allUsers.map((user) => ({
+                  id: user._id,
+                  display: user.name,
+                }))}
+                appendSpaceOnAdd
+                style={mentionStyle}
+                displayTransform={(id, display) => {
+                  return `@${display}`;
+                }}
+              />
+            </MentionsInput>
           </div>
           <button
             type="submit"
@@ -146,7 +167,23 @@ function UserProfileInfoModal({
               >
                 <div className="flex">
                   <p className="font-bold mr-2">{comment.commentUserName}:</p>
-                  <p>{comment.comment}</p>
+                  <p>
+                    {comment.comment.split(" ").map((msg) => {
+                      if (msg.startsWith("@")) {
+                        return (
+                          <span
+                            key={uuidv4()}
+                            className="cursor-pointer text-blue-500 font-bold"
+                            onClick={() => handleClickUserMention(msg)}
+                          >
+                            {msg}{" "}
+                          </span>
+                        );
+                      } else {
+                        return msg + " ";
+                      }
+                    })}
+                  </p>
                 </div>
                 {comment.commentUserId === authUser._id && (
                   <div
