@@ -20,6 +20,7 @@ interface NotificationSender {
   sender: string;
   notificationType: string;
   image?: string;
+  postId?: string;
 }
 const API = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 //user
@@ -213,7 +214,28 @@ export const updateUserBio = (id: string, bio: string): AxiosPromise => {
   };
   return API.patch(`/user/${id}/updatebio`, { bio }, config);
 };
+
 //posts
+export const mentionUser = (
+  id: string,
+  sender: string,
+  image: string,
+  notificationType: string,
+  mentionUsers: string[]
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/posts/${id}/mentionuser`,
+    { mentionUsers, sender, image, notificationType },
+    config
+  );
+};
 export const createPost = (postData: PostData): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
 
@@ -312,6 +334,18 @@ export const editUserPost = (
     },
   };
   return API.patch(`/posts/edit/${postId}`, { message, title }, config);
+};
+
+export const getNotificationPost = (id: string) => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/posts/${id}/notificationpost`, {}, config);
 };
 
 export const deleteUserComment = (
