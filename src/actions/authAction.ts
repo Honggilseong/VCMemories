@@ -156,6 +156,7 @@ export const leaveComment =
           sender: senderName,
           notificationType: "Left a comment",
           image,
+          postId: id,
         });
       }
       toastSuccess("Your comment has been left successfully 😀");
@@ -181,6 +182,7 @@ export const likePost =
           sender: senderName,
           notificationType: "liked your Post",
           image,
+          postId: id,
         });
       }
       dispatch({
@@ -284,7 +286,6 @@ export const deleteUserComment =
       postId,
       commentId,
     };
-    console.log(commentId);
     try {
       await api.deleteUserComment(postId, commentId);
       dispatch({ type: USER_DELETE_COMMENT, payload: IDs });
@@ -317,6 +318,22 @@ export const updateUserBio =
       await api.updateUserBio(id, bio);
       dispatch({ type: UPDATE_USER_BIO, payload: bio });
       toastSuccess("Your bio has been updated!");
+    } catch (err) {
+      console.log(err);
+      toastError("Sorry something went wrong... please try again... 😢");
+    }
+  };
+export const mentionUser =
+  (
+    id: string,
+    sender: string,
+    image: string,
+    notificationType: string,
+    mentionUsers: string[]
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      await api.mentionUser(id, sender, image, notificationType, mentionUsers);
     } catch (err) {
       console.log(err);
       toastError("Sorry something went wrong... please try again... 😢");

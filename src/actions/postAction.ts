@@ -72,6 +72,7 @@ export const likePost =
           sender: senderName,
           notificationType: "liked your Post",
           image,
+          postId: id,
         });
       }
       dispatch({
@@ -105,6 +106,7 @@ export const leaveComment =
           sender: senderName,
           notificationType: "Left a comment",
           image,
+          postId: id,
         });
       }
       toastSuccess("Your comment has been left successfully 😀");
