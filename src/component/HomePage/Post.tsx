@@ -26,6 +26,9 @@ import { RootState } from "../../reducers";
 import { toastError, toastSuccess } from "../../util/toast";
 import { useInternalRouter } from "../../pages/routing";
 import { v4 as uuidv4 } from "uuid";
+import { MentionItem } from "react-mentions";
+import { mentionUser } from "../../actions/authAction";
+import { parsingMentionTag } from "../../util/parsingMentionTag";
 interface Props {
   post: {
     createdAt: string;
@@ -52,6 +55,7 @@ function Post({ post }: Props) {
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
   const [isReportLoading, setIsReportLoading] = useState<boolean>(false);
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
+  const [mentionUsers, setMentionUsers] = useState<string[]>([]);
   const authUser = useSelector((state: RootState) => state.auth);
   const { push } = useInternalRouter();
   const [commentValue, setCommentValue] = useState<Comment>({
@@ -121,7 +125,7 @@ function Post({ post }: Props) {
       leaveComment(
         post._id,
         {
-          ...commentValue,
+          comment: parsingMentionTag(commentValue.comment),
           commentUserId: authUser._id,
           commentUserName: authUser.name,
         },
@@ -130,6 +134,17 @@ function Post({ post }: Props) {
         post.picture
       )
     );
+    if (mentionUsers.length > 0) {
+      dispatch(
+        mentionUser(
+          post._id,
+          authUser.name,
+          post.picture,
+          "mentioned",
+          mentionUsers
+        )
+      );
+    }
     setCommentValue({
       comment: "",
       commentUserId: "",
@@ -140,8 +155,18 @@ function Post({ post }: Props) {
     const removeHashtag = hashtag.replace("#", "");
     push(`/explore/hashtags/${removeHashtag}`);
   };
-  const handleInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleClickUserMention = (username: string) => {
+    const removeText = username.replace("@", "");
+    push(`/user/search/${removeText}`);
+  };
+  const handleInputComment = (
+    e: any,
+    newValue: any,
+    newPlainTextValue: any,
+    mentions: MentionItem[]
+  ) => {
     setCommentValue({ ...commentValue, comment: e.target.value });
+    setMentionUsers(mentions.map((mention) => mention.id));
   };
 
   useEffect(() => {
@@ -283,6 +308,7 @@ function Post({ post }: Props) {
         commentValue={commentValue}
         authUser={authUser}
         handleDeleteUserComment={handleDeleteUserComment}
+        handleClickUserMention={handleClickUserMention}
       />
     </>
   );
