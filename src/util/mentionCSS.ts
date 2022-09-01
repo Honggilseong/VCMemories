@@ -35,6 +35,8 @@ export const mentionInputStyle = {
       backgroundColor: "white",
       border: "1px solid rgba(0,0,0,0.15)",
       fontSize: 14,
+      height: 100,
+      overflow: "auto",
     },
     item: {
       padding: "5px 15px",
