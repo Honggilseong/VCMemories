@@ -3,6 +3,7 @@ import ProtectedRoute from "../hooks/ProtectedRoute";
 import AuthPage from "./AuthPage";
 import HashtagPage from "./HashtagPage";
 import HomePage from "./HomePage";
+import PageNotFound from "./PageNotFound";
 import PrivacyPolicy from "./PrivacyPolicy";
 import ProfilePage from "./ProfilePage";
 import TermsConditions from "./TermsConditions";
@@ -55,6 +56,7 @@ function Routes() {
           </ProtectedRoute>
         }
       />
+      <Route path="*" element={<PageNotFound />} />
     </ReactRouterRoutes>
   );
 }
