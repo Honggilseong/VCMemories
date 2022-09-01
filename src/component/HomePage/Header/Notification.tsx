@@ -200,7 +200,7 @@ function Notification() {
           </span>
         ) : null}
         {isOpen ? (
-          <div className="absolute -bottom-50 -left-20 bg-white text-black border-purple-500 border z-50 max-w-md max-h-80 overflow-auto">
+          <div className="absolute -bottom-50 -left-28 xl:-left-40 bg-white text-black border-purple-500 border z-50 h-48 w-[300px] xl:h-[320px] xl:w-[400px] overflow-auto">
             {authUser.notifications?.length ? (
               <div className="flex justify-end p-2">
                 <p
@@ -220,7 +220,7 @@ function Notification() {
                   }`}
                   onClick={() => handleOpenModal(data.postId)}
                 >
-                  <div className="flex justify-center items-center">
+                  <div className="flex justify-evenly items-center w-full">
                     <p className="font-bold mr-2">{data.sender} </p>
                     <p className="mr-2">{data.notificationType}</p>
                     {data.image && (
