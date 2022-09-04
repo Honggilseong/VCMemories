@@ -98,10 +98,17 @@ function Body({
               <div
                 className="flex justify-center items-center flex-col cursor-pointer"
                 onClick={() =>
-                  handleClickFollowUsersList(
-                    "Followers",
-                    searchUserInfo.followers
-                  )
+                  searchUserInfo.isPrivate
+                    ? isFollowing
+                      ? handleClickFollowUsersList(
+                          "Followers",
+                          searchUserInfo.followers
+                        )
+                      : null
+                    : handleClickFollowUsersList(
+                        "Followers",
+                        searchUserInfo.followers
+                      )
                 }
               >
                 <h2 className="font-bold text-xl">Followers</h2>
@@ -110,10 +117,17 @@ function Body({
               <div
                 className="flex justify-center items-center flex-col cursor-pointer"
                 onClick={() =>
-                  handleClickFollowUsersList(
-                    "Following",
-                    searchUserInfo.following
-                  )
+                  searchUserInfo.isPrivate
+                    ? isFollowing
+                      ? handleClickFollowUsersList(
+                          "Following",
+                          searchUserInfo.following
+                        )
+                      : null
+                    : handleClickFollowUsersList(
+                        "Following",
+                        searchUserInfo.following
+                      )
                 }
               >
                 <h2 className="font-bold text-xl">Following</h2>
