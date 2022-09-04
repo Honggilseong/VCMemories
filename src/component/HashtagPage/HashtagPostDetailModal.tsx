@@ -6,6 +6,10 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "react-modal";
 import { Comment } from "../../actions/postActionDispatch";
 import { v4 as uuidv4 } from "uuid";
+import { Mention, MentionsInput } from "react-mentions";
+import { mentionInputStyle, mentionStyle } from "../../util/mentionCSS";
+import { useSelector } from "react-redux";
+import { RootState } from "../../reducers/store";
 
 const customStyles = {
   content: {
@@ -28,7 +32,9 @@ function HashtagPostDetailModal({
   handleLeaveComment,
   handleInputComment,
   handleDeleteUserComment,
+  handleClickUserMention,
 }: any) {
+  const allUsers = useSelector((state: RootState) => state.allUsers);
   const [likedPost, setLikedPost] = useState<boolean>(false);
   useEffect(() => {
     const likedPost = hashtagPost.likes.findIndex(
@@ -120,13 +126,28 @@ function HashtagPostDetailModal({
           onSubmit={handleLeaveComment}
         >
           <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Add a comment"
-              className="h-full w-full focus:outline-none"
+            <MentionsInput
               value={commentValue.comment}
-              onChange={handleInputComment}
-            />
+              onChange={(event, newValue, newPlainTextValue, mentions) =>
+                handleInputComment(event, newValue, newPlainTextValue, mentions)
+              }
+              className="w-full"
+              style={mentionInputStyle}
+              placeholder="Add a comment"
+            >
+              <Mention
+                trigger="@"
+                data={allUsers.map((user: any) => ({
+                  id: user._id,
+                  display: user.name,
+                }))}
+                appendSpaceOnAdd
+                style={mentionStyle}
+                displayTransform={(id, display) => {
+                  return `@${display}`;
+                }}
+              />
+            </MentionsInput>
           </div>
           <button
             type="submit"
@@ -147,7 +168,23 @@ function HashtagPostDetailModal({
               >
                 <div className="flex">
                   <p className="font-bold mr-2">{comment.commentUserName}:</p>
-                  <p>{comment.comment}</p>
+                  <p>
+                    {comment.comment.split(" ").map((msg) => {
+                      if (msg.startsWith("@")) {
+                        return (
+                          <span
+                            key={uuidv4()}
+                            className="cursor-pointer text-blue-500 font-bold"
+                            onClick={() => handleClickUserMention(msg)}
+                          >
+                            {msg}{" "}
+                          </span>
+                        );
+                      } else {
+                        return msg + " ";
+                      }
+                    })}
+                  </p>
                 </div>
                 {comment.commentUserId === authUser._id && (
                   <div
