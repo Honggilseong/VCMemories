@@ -3,9 +3,12 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { NewPost } from "../../actions/postActionDispatch";
 import { RootState } from "../../reducers";
+import * as api from "../../api";
 import Post from "./Post";
 import ProfileFollowRequestsModal from "./ProfileFollowRequestsModal";
 import ProfileImageModal from "./ProfileImageModal";
+import FollowUsersModal from "./FollowUsersModal";
+import { useInternalRouter } from "../../pages/routing";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 interface Props {
@@ -21,13 +24,48 @@ function Body({
   setIsFollowRequestsModalOpen,
 }: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const [isFollowUsersListModalOpen, setIsFollowUsersListModalOpen] =
+    useState<boolean>(false);
+  const [followUsersModalTitle, setFollowUsersModalTitle] =
+    useState<string>("");
+  const [followUsers, setFollowUsers] = useState<any>([]);
+  const [isFollowUsersLoading, setIsFollowUsersLoading] =
+    useState<boolean>(false);
+  const [followUserSearchValue, setFollowUserSearchValue] =
+    useState<string>("");
+  const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
 
   const handleOpenUploadProfile = () => {
     setIsModalOpen(true);
   };
 
+  const handleClickFollowUsersList = async (
+    titleName: string,
+    followUserList: string[]
+  ) => {
+    setIsFollowUsersLoading(true);
+    setFollowUsersModalTitle(titleName);
+    setIsFollowUsersListModalOpen(true);
+    if (followUserList.length === 0) {
+      setFollowUsers([]);
+      setIsFollowUsersLoading(false);
+      return;
+    }
+    const { data } = await api.getFollowUsersList(authUser._id, followUserList);
+    setFollowUsers(data);
+    setIsFollowUsersLoading(false);
+  };
+  const handleClickFollowUser = (username: string) => {
+    push(`/user/search/${username}`);
+    setIsFollowUsersListModalOpen(false);
+  };
+  const handleSearchFollowUser = (event: any) => {
+    setFollowUserSearchValue(event.target.value);
+  };
+  const handleClickDeleteSearchValue = () => {
+    setFollowUserSearchValue("");
+  };
   return (
     <>
       <section className="w-full h-full">
@@ -70,11 +108,21 @@ function Body({
             </p>
           </div>
           <div className="flex justify-evenly mt-5 mb-5">
-            <div className="flex justify-center items-center flex-col cursor-pointer">
+            <div
+              className="flex justify-center items-center flex-col cursor-pointer"
+              onClick={() =>
+                handleClickFollowUsersList("Followers", authUser.followers)
+              }
+            >
               <h2 className="font-bold text-xl">Followers</h2>
               <p>{authUser.followers?.length}</p>
             </div>
-            <div className="flex justify-center items-center flex-col cursor-pointer">
+            <div
+              className="flex justify-center items-center flex-col cursor-pointer"
+              onClick={() =>
+                handleClickFollowUsersList("Followers", authUser.following)
+              }
+            >
               <h2 className="font-bold text-xl">Following</h2>
               <p>{authUser.following?.length}</p>
             </div>
@@ -103,6 +151,17 @@ function Body({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         authUser={authUser}
+      />
+      <FollowUsersModal
+        setIsFollowUsersListModalOpen={setIsFollowUsersListModalOpen}
+        isFollowUsersListModalOpen={isFollowUsersListModalOpen}
+        followUsersModalTitle={followUsersModalTitle}
+        followUsers={followUsers}
+        isFollowUsersLoading={isFollowUsersLoading}
+        handleClickFollowUser={handleClickFollowUser}
+        followUserSearchValue={followUserSearchValue}
+        handleSearchFollowUser={handleSearchFollowUser}
+        handleClickDeleteSearchValue={handleClickDeleteSearchValue}
       />
     </>
   );
