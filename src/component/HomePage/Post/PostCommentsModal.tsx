@@ -94,11 +94,11 @@ function PostCommentsModal({
             </button>
           </div>
         </div>
-        <div className="h-[300px] overflow-y-scroll">
+        <div className="h-[300px] overflow-y-scroll scrollbar-hide">
           {comments.length ? (
             comments.map((comment) => (
               <div
-                className="overflow-hidden group flex justify-between py-[1px] px-1 items-center"
+                className="group flex justify-between py-[1px] px-1 items-center"
                 key={comment._id}
               >
                 <p className="font-bold">
