@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { Image } from "cloudinary-react";
 import { useSelector } from "react-redux";
 import { GetSearchingUser } from "../../reducers/searchUserReducers";
 import { RootState } from "../../reducers/store";
+import * as api from "../../api";
+import FollowUsersModal from "./FollowUsersModal";
 import Post from "./Post";
+import { useInternalRouter } from "../../pages/routing";
+
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 interface Props {
@@ -18,7 +23,47 @@ function Body({
   isFollowing,
   isLoading,
 }: Props) {
+  const [isFollowUsersListModalOpen, setIsFollowUsersListModalOpen] =
+    useState<boolean>(false);
+  const [followUsersModalTitle, setFollowUsersModalTitle] =
+    useState<string>("");
   const authUser = useSelector((state: RootState) => state.auth);
+  const [followUsers, setFollowUsers] = useState<any>([]);
+  const [isFollowUsersLoading, setIsFollowUsersLoading] =
+    useState<boolean>(false);
+  const [followUserSearchValue, setFollowUserSearchValue] =
+    useState<string>("");
+
+  const { push } = useInternalRouter();
+  const handleClickFollowUsersList = async (
+    titleName: string,
+    followUserList: string[]
+  ) => {
+    setIsFollowUsersLoading(true);
+    setFollowUsersModalTitle(titleName);
+    setIsFollowUsersListModalOpen(true);
+    if (followUserList.length === 0) {
+      setFollowUsers([]);
+      setIsFollowUsersLoading(false);
+      return;
+    }
+    const { data } = await api.getFollowUsersList(
+      searchUserInfo._id,
+      followUserList
+    );
+    setFollowUsers(data);
+    setIsFollowUsersLoading(false);
+  };
+  const handleClickFollowUser = (username: string) => {
+    push(`/user/search/${username}`);
+    setIsFollowUsersListModalOpen(false);
+  };
+  const handleSearchFollowUser = (event: any) => {
+    setFollowUserSearchValue(event.target.value);
+  };
+  const handleClickDeleteSearchValue = () => {
+    setFollowUserSearchValue("");
+  };
   return (
     <>
       {isLoading ? (
@@ -50,11 +95,27 @@ function Body({
               </p>
             </div>
             <div className="flex justify-evenly mt-5 mb-5">
-              <div className="flex justify-center items-center flex-col cursor-pointer">
+              <div
+                className="flex justify-center items-center flex-col cursor-pointer"
+                onClick={() =>
+                  handleClickFollowUsersList(
+                    "Followers",
+                    searchUserInfo.followers
+                  )
+                }
+              >
                 <h2 className="font-bold text-xl">Followers</h2>
                 <p>{searchUserInfo.followers?.length}</p>
               </div>
-              <div className="flex justify-center items-center flex-col cursor-pointer">
+              <div
+                className="flex justify-center items-center flex-col cursor-pointer"
+                onClick={() =>
+                  handleClickFollowUsersList(
+                    "Following",
+                    searchUserInfo.following
+                  )
+                }
+              >
                 <h2 className="font-bold text-xl">Following</h2>
                 <p>{searchUserInfo.following?.length}</p>
               </div>
@@ -108,6 +169,17 @@ function Body({
           </div>
         </section>
       )}
+      <FollowUsersModal
+        setIsFollowUsersListModalOpen={setIsFollowUsersListModalOpen}
+        isFollowUsersListModalOpen={isFollowUsersListModalOpen}
+        followUsersModalTitle={followUsersModalTitle}
+        followUsers={followUsers}
+        isFollowUsersLoading={isFollowUsersLoading}
+        handleClickFollowUser={handleClickFollowUser}
+        followUserSearchValue={followUserSearchValue}
+        handleSearchFollowUser={handleSearchFollowUser}
+        handleClickDeleteSearchValue={handleClickDeleteSearchValue}
+      />
     </>
   );
 }
