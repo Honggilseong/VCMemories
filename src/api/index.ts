@@ -32,6 +32,18 @@ export const signIn = (formData: FormData): AxiosPromise => {
   return API.post("/user/signin", formData);
 };
 
+export const getFollowUsersList = (id: string, followList: string[]) => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.post(`/user/${id}/getfollowusers`, { followList }, config);
+};
+
 export const sendNotification = (
   id: string,
   sender: NotificationSender
