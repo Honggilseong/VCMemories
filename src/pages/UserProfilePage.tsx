@@ -13,10 +13,13 @@ function UserProfilePage() {
   const dispatch = useAppDispatch();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
   const searchUserInfo = useSelector((state: any) => state.searchUser);
   const authUser = useSelector((state: RootState) => state.auth);
 
   const handleFollowUser = (searchUserId: string, userId: string) => {
+    if (isFollowingLoading) return;
+    setIsFollowingLoading(true);
     if (searchUserInfo.isPrivate) {
       const senderInfo = {
         username: authUser.name,
@@ -25,8 +28,10 @@ function UserProfilePage() {
       };
       if (!isFollowing) {
         sendFollowRequest(searchUserId, senderInfo);
+        setIsFollowingLoading(false);
       } else {
         dispatch(followUser(searchUserId, userId));
+        setIsFollowingLoading(false);
       }
     } else {
       if (!isFollowing) {
@@ -40,7 +45,9 @@ function UserProfilePage() {
         }
       }
       dispatch(followUser(searchUserId, userId));
+      setIsFollowingLoading(false);
     }
+    setIsFollowingLoading(false);
   };
 
   useEffect(() => {
