@@ -53,7 +53,7 @@ function HashtagPostDetailModal({
       contentLabel="Example Modal"
       style={customStyles}
     >
-      <div className="lg:h-[750px] w-full h-[500px] overflow-auto">
+      <div className="lg:h-[750px] w-full h-[500px] overflow-auto scrollbar-hide">
         <div className="h-14 border flex justify-between items-center px-3">
           <div />
           <h1 className="font-bold">{hashtagPost.name}</h1>
