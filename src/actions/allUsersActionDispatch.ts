@@ -18,6 +18,7 @@ export interface GetAllUsers {
   userPosts: UserPosts[];
   followers: string[];
   following: string[];
+  isPrivate: boolean;
 }
 export interface getAllUsers {
   type: typeof GET_ALL_USERS;
