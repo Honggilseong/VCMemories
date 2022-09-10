@@ -1,9 +1,11 @@
 import { Image } from "cloudinary-react";
-import React, { useState } from "react";
+import React from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { TiDeleteOutline } from "react-icons/ti";
 import { useSelector } from "react-redux";
+import { GetUserInfo } from "../../../actions/authActionDispatch";
 import { RootState } from "../../../reducers";
+import { v4 as uuidv4 } from "uuid";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 
@@ -24,6 +26,7 @@ interface Props {
   isLoading: boolean;
   handleSearchHashTag: (hashtag: string) => void;
   checkIfValidHashtag: (hashtag: string) => boolean;
+  popularUsers: any;
 }
 
 function SearchBar({
@@ -39,6 +42,7 @@ function SearchBar({
   handleSearchHashTag,
   isLoading,
   checkIfValidHashtag,
+  popularUsers,
 }: Props) {
   const allUsers = useSelector((state: RootState) => state.allUsers);
   return (
@@ -124,61 +128,105 @@ function SearchBar({
             )
           ) : (
             <div className="text-black w-full h-full">
-              <div className="h-8 w-full p-1">
-                <p className="text-center font-bold">Recent search history</p>
-              </div>
               <div>
                 {recentSearchHistory.length > 0 ? (
-                  recentSearchHistory.map((history) => (
-                    <div
-                      key={history.userId}
-                      className="flex items-center justify-between cursor-pointer  text-black px-2 py-1"
-                    >
-                      <div
-                        className="flex items-center flex-1"
-                        onClick={() =>
-                          handleClickSearchingUser(
-                            history.name,
-                            history.profileImg,
-                            history.userId
-                          )
-                        }
-                      >
-                        <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                          {history.profileImg === defaultProfilePicture ? (
-                            <img
-                              src={history.profileImg}
-                              alt="userProfilePicture"
-                            />
-                          ) : (
-                            <Image
-                              cloudName={
-                                process.env.REACT_APP_CLOUDINARY_USERNAME
-                              }
-                              publicId={history.profileImg}
-                              className="w-full h-full"
-                              crop="scale"
-                            />
-                          )}
-                        </div>
-                        <h2 className="font-bold text-center">
-                          {history.name}
-                        </h2>
-                      </div>
-                      <div
-                        className="cursor-pointer hover:font-bold"
-                        onClick={() =>
-                          handleDeleteSearchHistory(history.userId)
-                        }
-                      >
-                        <p>X</p>
-                      </div>
+                  <div>
+                    <div className="h-8 w-full p-1">
+                      <p className="text-center font-bold">
+                        Recent search history
+                      </p>
                     </div>
-                  ))
-                ) : (
-                  <div className="w-full h-[360px] border flex justify-center items-center">
-                    <p>No search history</p>
+                    {recentSearchHistory.map((history) => (
+                      <div
+                        key={history.userId}
+                        className="flex items-center justify-between cursor-pointer  text-black px-2 py-1"
+                      >
+                        <div
+                          className="flex items-center flex-1"
+                          onClick={() =>
+                            handleClickSearchingUser(
+                              history.name,
+                              history.profileImg,
+                              history.userId
+                            )
+                          }
+                        >
+                          <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                            {history.profileImg === defaultProfilePicture ? (
+                              <img
+                                src={history.profileImg}
+                                alt="userProfilePicture"
+                              />
+                            ) : (
+                              <Image
+                                cloudName={
+                                  process.env.REACT_APP_CLOUDINARY_USERNAME
+                                }
+                                publicId={history.profileImg}
+                                className="w-full h-full"
+                                crop="scale"
+                              />
+                            )}
+                          </div>
+                          <h2 className="font-bold text-center">
+                            {history.name}
+                          </h2>
+                        </div>
+                        <div
+                          className="cursor-pointer hover:font-bold"
+                          onClick={() =>
+                            handleDeleteSearchHistory(history.userId)
+                          }
+                        >
+                          <p>X</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                ) : (
+                  <>
+                    <div className="h-8 w-full p-1">
+                      <p className="text-center font-bold">Popular users</p>
+                    </div>
+                    <div className="w-full h-[360px] border flex flex-col">
+                      {isLoading ? (
+                        <p>Loading..</p>
+                      ) : (
+                        popularUsers?.map((user: GetUserInfo) => (
+                          <div
+                            key={uuidv4()}
+                            className="flex items-center cursor-pointer text-black px-2 py-1"
+                            onClick={() =>
+                              handleClickSearchingUser(
+                                user.name,
+                                user.profilePicture,
+                                user._id
+                              )
+                            }
+                          >
+                            <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                              {user.profilePicture === defaultProfilePicture ? (
+                                <img
+                                  src={user.profilePicture}
+                                  alt="userProfilePicture"
+                                />
+                              ) : (
+                                <Image
+                                  cloudName={
+                                    process.env.REACT_APP_CLOUDINARY_USERNAME
+                                  }
+                                  publicId={user.profilePicture}
+                                  className="w-full h-full"
+                                  crop="scale"
+                                />
+                              )}
+                            </div>
+                            <p className="font-bold">{user.name}</p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
             </div>

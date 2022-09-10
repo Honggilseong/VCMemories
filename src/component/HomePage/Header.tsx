@@ -9,6 +9,8 @@ import Notification from "./Header/Notification";
 import { getUserInfo } from "../../actions/authAction";
 import { useSelector } from "react-redux";
 import { Image } from "cloudinary-react";
+import { GetAllUsers } from "../../actions/allUsersActionDispatch";
+import { v4 as uuidv4 } from "uuid";
 
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
@@ -27,9 +29,11 @@ function Header() {
     RecentSearchHistory[]
   >([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [popularUsers, setPopularUsers] = useState<GetAllUsers[]>([]);
   const searchResultRef = useRef(
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
+  const effectRef = useRef(false);
   const dispatch = useAppDispatch();
   const allUsers = useSelector((state: RootState) => state.allUsers);
   const { push } = useInternalRouter();
@@ -77,12 +81,11 @@ function Header() {
     setSearchValue(event.target.value);
   };
 
-  const handleFocusSearchBar = () => {
-    setIsLoading(true);
+  const handleFocusSearchBar = async () => {
     setIsSearchResultOpen(true);
-    const searchHistory = JSON.parse(localStorage.getItem("recent")) || [];
+    const searchHistory =
+      (await JSON.parse(localStorage.getItem("recent"))) || [];
     setRecentSearchHistory(searchHistory);
-    setIsLoading(false);
   };
 
   const handleClickSearchingUser = (
@@ -134,7 +137,31 @@ function Header() {
     document.addEventListener("mousedown", handleClickOutSide);
     return () => document.removeEventListener("mousedown", handleClickOutSide);
   }, [isSearchResultOpen]);
-
+  useEffect(() => {
+    if (allUsers.length === 0 || effectRef.current === true) return;
+    const getPopularUsers = async () => {
+      setIsLoading(true);
+      let copyAllUsers: GetAllUsers[] = await JSON.parse(
+        JSON.stringify(allUsers)
+      );
+      let usersArray: GetAllUsers[] = [];
+      copyAllUsers.sort(
+        (user1: GetAllUsers, user2: GetAllUsers) =>
+          user2.followers.length - user1.followers.length
+      );
+      for (let i = 0; usersArray.length < 4; i++) {
+        if (!copyAllUsers[i]?.isPrivate) {
+          usersArray.push(copyAllUsers[i]);
+        }
+      }
+      setPopularUsers(usersArray);
+      setIsLoading(false);
+    };
+    getPopularUsers();
+    return () => {
+      effectRef.current = true;
+    };
+  }, [allUsers]);
   return (
     <>
       <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">
@@ -155,6 +182,7 @@ function Header() {
             isLoading={isLoading}
             handleSearchHashTag={handleSearchHashTag}
             checkIfValidHashtag={checkIfValidHashtag}
+            popularUsers={popularUsers}
           />
           <div className="flex justify-center items-center">
             <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full lg:hidden">
@@ -235,60 +263,105 @@ function Header() {
               )
             ) : (
               <div className="text-black w-full h-full">
-                <div className="h-8 w-full p-1">
-                  <p className="text-center font-bold">Recent search history</p>
-                </div>
                 <div>
                   {recentSearchHistory.length > 0 ? (
-                    recentSearchHistory.map((history) => (
-                      <div
-                        key={history.userId}
-                        className="flex items-center justify-between cursor-pointer  text-black px-2 py-1"
-                      >
-                        <div
-                          className="flex items-center flex-1"
-                          onClick={() =>
-                            handleClickSearchingUser(
-                              history.name,
-                              history.profileImg,
-                              history.userId
-                            )
-                          }
-                        >
-                          <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
-                            {history.profileImg === defaultProfilePicture ? (
-                              <img
-                                src={history.profileImg}
-                                alt="userProfilePicture"
-                              />
-                            ) : (
-                              <Image
-                                cloudName={
-                                  process.env.REACT_APP_CLOUDINARY_USERNAME
-                                }
-                                publicId={history.profileImg}
-                                className="w-full h-full"
-                                crop="scale"
-                              />
-                            )}
-                          </div>
-                          <h2 className="font-bold text-center">
-                            {history.name}
-                          </h2>
-                        </div>
-                        <div
-                          className="cursor-pointer hover:font-bold"
-                          onClick={() =>
-                            handleDeleteSearchHistory(history.userId)
-                          }
-                        >
-                          <p>X</p>
-                        </div>
+                    <div>
+                      <div className="h-8 w-full p-1">
+                        <p className="text-center font-bold">
+                          Recent search history
+                        </p>
                       </div>
-                    ))
+                      {recentSearchHistory.map((history) => (
+                        <div
+                          key={history.userId}
+                          className="flex items-center justify-between cursor-pointer  text-black px-2 py-1"
+                        >
+                          <div
+                            className="flex items-center flex-1"
+                            onClick={() =>
+                              handleClickSearchingUser(
+                                history.name,
+                                history.profileImg,
+                                history.userId
+                              )
+                            }
+                          >
+                            <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                              {history.profileImg === defaultProfilePicture ? (
+                                <img
+                                  src={history.profileImg}
+                                  alt="userProfilePicture"
+                                />
+                              ) : (
+                                <Image
+                                  cloudName={
+                                    process.env.REACT_APP_CLOUDINARY_USERNAME
+                                  }
+                                  publicId={history.profileImg}
+                                  className="w-full h-full"
+                                  crop="scale"
+                                />
+                              )}
+                            </div>
+                            <h2 className="font-bold text-center">
+                              {history.name}
+                            </h2>
+                          </div>
+                          <div
+                            className="cursor-pointer hover:font-bold"
+                            onClick={() =>
+                              handleDeleteSearchHistory(history.userId)
+                            }
+                          >
+                            <p>X</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
-                    <div className="w-full h-full flex justify-center items-center">
-                      <p>No search history</p>
+                    <div className="scrollbar-hide">
+                      <div className="h-8 w-full p-1">
+                        <p className="text-center font-bold">Popular users</p>
+                      </div>
+                      <div className="w-full h-[360px] border flex flex-col">
+                        {isLoading ? (
+                          <p>Loading..</p>
+                        ) : (
+                          popularUsers?.map((user: any) => (
+                            <div
+                              key={uuidv4()}
+                              className="flex items-center cursor-pointer text-black px-2 py-1"
+                              onClick={() =>
+                                handleClickSearchingUser(
+                                  user.name,
+                                  user.profilePicture,
+                                  user._id
+                                )
+                              }
+                            >
+                              <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+                                {user.profilePicture ===
+                                defaultProfilePicture ? (
+                                  <img
+                                    src={user.profilePicture}
+                                    alt="userProfilePicture"
+                                  />
+                                ) : (
+                                  <Image
+                                    cloudName={
+                                      process.env.REACT_APP_CLOUDINARY_USERNAME
+                                    }
+                                    publicId={user.profilePicture}
+                                    className="w-full h-full"
+                                    crop="scale"
+                                  />
+                                )}
+                              </div>
+                              <p className="font-bold">{user.name}</p>
+                            </div>
+                          ))
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
