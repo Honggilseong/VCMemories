@@ -167,18 +167,20 @@ function LandingPage() {
           <source src={bgVideo} type="video/mp4" />
         </motion.video>
       </motion.div>
-      <div className="bg-white w-full h-[80vh]">
+      <div className="bg-white w-full h-[90vh]">
         {/* <h3 className="text-center mt-5 text-4xl font-bold">Title</h3> */}
         <div className="flex flex-col items-center justify-evenly w-full h-full xl:flex-row">
-          <div className="flex flex-col items-center justify-center w-[450px]">
-            <WelcomeUpload width="200px" height="200px" />
+          <div className="flex flex-col items-center justify-center w-[300px] xl:w-[450px]">
+            <WelcomeUpload className="w-40 h-40 xl:w-52 xl:h-52" />
             <p className="font-bold text-3xl mt-3 text-center">
               Upload your images/videos of unforgettable moments
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center w-[450px]">
-            <WelcomeShare width="200px" height="200px" />
-            <p className="font-bold text-3xl mt-3">Share with your friends</p>
+          <div className="flex flex-col items-center justify-center w-[300px] xl:w-[450px]">
+            <WelcomeShare className="w-40 h-40 xl:w-52 xl:h-52" />
+            <p className="font-bold text-3xl mt-3 text-center">
+              Share with your friends
+            </p>
           </div>
         </div>
       </div>
