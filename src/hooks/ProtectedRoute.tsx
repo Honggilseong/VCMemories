@@ -7,7 +7,7 @@ function ProtectedRoute({ children }: any) {
 
   useEffect(() => {
     if (!authUser) {
-      push("/auth");
+      push("/welcome");
     }
   }, []);
   return children;
