@@ -18,6 +18,7 @@ import * as api from "../../../api";
 import { useInternalRouter } from "../../../pages/routing";
 import { MentionItem } from "react-mentions";
 import { parsingMentionTag } from "../../../util/parsingMentionTag";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 
 export interface Notifications {
   _id: string;
@@ -225,13 +226,7 @@ function Notification() {
                     <p className="mr-2">{data.notificationType}</p>
                     {data.image && (
                       <div className="w-10 h-10">
-                        <Image
-                          key={data.image}
-                          cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                          publicId={data.image}
-                          className="w-full h-full"
-                          crop="scale"
-                        />
+                        <CloudinaryImage image={data.image} />
                       </div>
                     )}
                   </div>

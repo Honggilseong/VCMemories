@@ -2,6 +2,7 @@ import { Image } from "cloudinary-react";
 import { useSelector } from "react-redux";
 import { useInternalRouter } from "../../../pages/routing";
 import { RootState } from "../../../reducers/store";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 
@@ -23,12 +24,7 @@ function UserProfile() {
             {authUser.profilePicture === defaultProfilePicture ? (
               <img src={authUser.profilePicture} alt="userProfilePicture" />
             ) : (
-              <Image
-                cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-                publicId={authUser.profilePicture}
-                className="w-full h-full"
-                crop="scale"
-              />
+              <CloudinaryImage image={authUser.profilePicture} />
             )}
           </div>
         </div>

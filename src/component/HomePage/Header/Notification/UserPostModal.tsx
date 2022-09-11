@@ -9,6 +9,7 @@ import { Mention, MentionItem, MentionsInput } from "react-mentions";
 import { mentionInputStyle, mentionStyle } from "../../../../util/mentionCSS";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../reducers/store";
+import CloudinaryImage from "../../../CommonComponents/CloudinaryImage";
 const customStyles = {
   content: {
     top: "50%",
@@ -88,13 +89,7 @@ function UserPostModal({
             <div />
           </div>
           <div className="h-[450px] lg:w-[800px] w-full">
-            <Image
-              key={modalPost.picture}
-              cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-              publicId={modalPost.picture}
-              className="w-full h-full"
-              crop="scale"
-            />
+            <CloudinaryImage image={modalPost.picture} />
           </div>
           <div className="my-2">
             <h2 className="font-bold text-lg">{modalPost.title}</h2>
