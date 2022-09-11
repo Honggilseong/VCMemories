@@ -58,6 +58,7 @@ export interface UserPosts {
   _id: string;
   comments: Comment[];
   isEdit: boolean;
+  postType: string;
 }
 
 export interface Notifications {

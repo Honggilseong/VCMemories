@@ -20,6 +20,7 @@ export interface HashTagPost {
   _id?: string;
   comments: Comment[];
   createdAt: string;
+  postType: string;
 }
 
 export interface getHashtagPosts {

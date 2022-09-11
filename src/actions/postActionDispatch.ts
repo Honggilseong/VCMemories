@@ -23,6 +23,7 @@ export interface NewPost {
   _id?: string;
   comments: Comment[];
   isEdit: boolean;
+  postType: string;
 }
 
 export interface createPost {
