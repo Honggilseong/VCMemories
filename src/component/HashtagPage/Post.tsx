@@ -1,4 +1,3 @@
-import { Image } from "cloudinary-react";
 import moment from "moment";
 import React, { useState } from "react";
 import { MentionItem } from "react-mentions";
@@ -13,6 +12,7 @@ import { Comment, HashTagPost } from "../../actions/hashtagPostsDispatch";
 import { useInternalRouter } from "../../pages/routing";
 import { RootState, useAppDispatch } from "../../reducers/store";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
+import CloudinaryImage from "../CommonComponents/CloudinaryImage";
 import HashtagPostDetailModal from "./HashtagPostDetailModal";
 interface Props {
   hashtagPost: HashTagPost;
@@ -122,13 +122,7 @@ function Post({ hashtagPost }: Props) {
             className="cursor-pointer w-full h-full"
             onClick={handleOpenPostModal}
           >
-            <Image
-              key={hashtagPost.picture}
-              cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-              publicId={hashtagPost.picture}
-              className="w-full h-full"
-              crop="scale"
-            />
+            <CloudinaryImage image={hashtagPost.picture} />
           </div>
         </div>
       </div>

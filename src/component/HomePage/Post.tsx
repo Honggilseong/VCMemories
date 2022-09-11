@@ -17,10 +17,8 @@ import {
 import { useEffect } from "react";
 import PostCommentsModal from "./Post/PostCommentsModal";
 import { Comment } from "../../actions/postActionDispatch";
-import { Image } from "cloudinary-react";
 import * as api from "../../api";
 import PostReportModal from "./Post/PostReportModal";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { toastError, toastSuccess } from "../../util/toast";
@@ -29,6 +27,8 @@ import { v4 as uuidv4 } from "uuid";
 import { MentionItem } from "react-mentions";
 import { mentionUser } from "../../actions/authAction";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
+import CloudinaryImage from "../CommonComponents/CloudinaryImage";
+
 interface Props {
   post: {
     createdAt: string;
@@ -43,6 +43,7 @@ interface Props {
     profilePicture: string;
     comments: Comment[];
     isEdit: boolean;
+    postType: string;
   };
 }
 interface ReportsList {
@@ -236,13 +237,7 @@ function Post({ post }: Props) {
         </div>
       </div>
       <div className="w-full xl:w-[800px] h-[500px] mx-auto">
-        <Image
-          key={post.picture}
-          cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-          publicId={post.picture}
-          className="w-full h-full"
-          crop="scale"
-        />
+        <CloudinaryImage image={post.picture} />
       </div>
       <div className="my-2">
         <h2 className="font-bold text-lg">{post.title}</h2>

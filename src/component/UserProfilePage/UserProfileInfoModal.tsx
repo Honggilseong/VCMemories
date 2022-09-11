@@ -1,4 +1,3 @@
-import { Image } from "cloudinary-react";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
@@ -10,6 +9,7 @@ import { Mention, MentionsInput } from "react-mentions";
 import { mentionInputStyle, mentionStyle } from "../../util/mentionCSS";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers/store";
+import CloudinaryImage from "../CommonComponents/CloudinaryImage";
 const customStyles = {
   content: {
     top: "50%",
@@ -70,13 +70,7 @@ function UserProfileInfoModal({
           </div>
         </div>
         <div className="h-[450px] lg:w-[800px] w-full">
-          <Image
-            key={post.picture}
-            cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-            publicId={post.picture}
-            className="w-full h-full"
-            crop="scale"
-          />
+          <CloudinaryImage image={post.picture} />
         </div>
         <div className="my-2">
           <h2 className="font-bold text-lg">{post.title}</h2>

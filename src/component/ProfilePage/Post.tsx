@@ -1,4 +1,3 @@
-import { Image } from "cloudinary-react";
 import React, { useState } from "react";
 import { MentionItem } from "react-mentions";
 import {
@@ -13,6 +12,7 @@ import { Comment } from "../../actions/postActionDispatch";
 import { useInternalRouter } from "../../pages/routing";
 import { useAppDispatch } from "../../reducers/store";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
+import CloudinaryImage from "../CommonComponents/CloudinaryImage";
 import ProfileInfoModal from "./ProfileInfoModal";
 interface EditTextValue {
   message: string;
@@ -129,13 +129,7 @@ function Post({ post, authUser }: any) {
         className="cursor-pointer flex justify-center items-center flex-col h-44 w-44"
         onClick={handleClickDetailPost}
       >
-        <Image
-          key={post.picture}
-          cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-          publicId={post.picture}
-          className="w-full h-full"
-          crop="scale"
-        />
+        <CloudinaryImage image={post.picture} />
       </div>
       <ProfileInfoModal
         post={post}
