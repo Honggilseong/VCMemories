@@ -1,5 +1,8 @@
 import axios, { AxiosPromise } from "axios";
-
+import {
+  Comment as BoardPostComment,
+  Reply,
+} from "../actions/boardPostDispatch";
 interface FormData {
   name: string;
   email: string;
@@ -386,4 +389,242 @@ export const reportPost = (post: any): AxiosPromise => {
     },
   };
   return API.post("/report/", { post }, config);
+};
+
+//board
+
+export const getAllBoardPosts = (): AxiosPromise => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  return API.get("/board/getallboardposts", config);
+};
+
+export const postBoardPost = (boardPost: any): AxiosPromise => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  return API.post("/board/boardpost/post", { boardPost }, config);
+};
+export const getBoardPost = (id: any): AxiosPromise => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  return API.get(`/board/getboardpost/${id}`, config);
+};
+
+export const leaveBoardPostComment = (
+  boardPostId: any,
+  comment: BoardPostComment
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/leaveboardpostcomment/${boardPostId}`,
+    { comment },
+    config
+  );
+};
+export const leaveBoardPostReply = (
+  boardPostId: any,
+  comment: Reply,
+  commentId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/leaveboardpostreply/${boardPostId}`,
+    { comment, commentId },
+    config
+  );
+};
+
+export const likeBoardPost = (
+  boardPostId: any,
+  userId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/board/likeboardpost/${boardPostId}`, { userId }, config);
+};
+
+export const likeBoardPostComment = (
+  boardPostId: any,
+  userId: string,
+  commentId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/likeboardpostcomment/${boardPostId}`,
+    { userId, commentId },
+    config
+  );
+};
+
+export const likeBoardPostReply = (
+  boardPostId: any,
+  userId: string,
+  commentId: string,
+  replyId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/likeboardpostreply/${boardPostId}`,
+    { userId, commentId, replyId },
+    config
+  );
+};
+
+export const deleteBoardPost = (
+  boardPostId: any,
+  userId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(`/board/deleteboardpost/${boardPostId}`, { userId }, config);
+};
+
+export const deleteBoardPostComment = (
+  boardPostId: any,
+  userId: string,
+  commentId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/deleteboardpostcomment/${boardPostId}`,
+    { userId, commentId },
+    config
+  );
+};
+
+export const deleteBoardPostReply = (
+  boardPostId: any,
+  userId: string,
+  commentId: string,
+  replyId: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/deleteboardpostreply/${boardPostId}`,
+    { userId, commentId, replyId },
+    config
+  );
+};
+
+export const editBoardPostComment = (
+  boardPostId: any,
+  commentId: string,
+  editComment: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/editboardpostcomment/${boardPostId}`,
+    { commentId, editComment },
+    config
+  );
+};
+
+export const editBoardPostReply = (
+  boardPostId: any,
+  commentId: string,
+  replyId: string,
+  editComment: string
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/board/editboardpostreply/${boardPostId}`,
+    { commentId, replyId, editComment },
+    config
+  );
+};
+
+export const uploadBoardPostPreviewImage = (
+  id: string,
+  image: any
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.post(
+    `/board/uploadboardpostpreviewimage/${id}`,
+    { image },
+    config
+  );
 };
