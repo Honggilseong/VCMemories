@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../../../actions/authAction";
 import { useInternalRouter } from "../../../../pages/routing";
 import { RootState, useAppDispatch } from "../../../../reducers/store";
@@ -9,12 +10,15 @@ function Header() {
   const dispatch = useAppDispatch();
   const authUser = useSelector((state: RootState) => state.auth);
   const { push } = useInternalRouter();
-
+  const location = useLocation();
   const handleClickUserInfo = () => {
     push(`/forum/userinfo/${authUser.name}`);
   };
   const handleClickLogo = () => {
     push("/forum/vrchat");
+  };
+  const handleClickSignIn = () => {
+    push("/auth", { state: { from: location.pathname } });
   };
   useEffect(() => {
     const checkAuth = localStorage.getItem("profile") ?? "";
@@ -33,15 +37,15 @@ function Header() {
             className="flex items-center justify-center"
             onClick={handleClickUserInfo}
           >
-            <p className="mr-4 hidden lg:block cursor-pointer">
+            <p className="mr-4 cursor-pointer hidden lg:block">
               {authUser.name}
             </p>
-            <div className="rounded-full border-2 w-10 h-10  overflow-hidden cursor-pointer">
+            <div className="rounded-full border-2 w-10 h-10 overflow-hidden cursor-pointer">
               <img src={defaultProfilePicture} alt="profileImage" />
             </div>
           </div>
         ) : (
-          <div>
+          <div className="cursor-pointer" onClick={handleClickSignIn}>
             <p>Sign in</p>
           </div>
         )}
