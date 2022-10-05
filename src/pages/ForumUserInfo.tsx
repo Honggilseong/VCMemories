@@ -67,11 +67,12 @@ function ForumUserInfo() {
         </div>
         {userBoardPostList?.boardPosts.length !== 0 ? (
           userBoardPostList?.boardPosts.map((boardPost) => (
-            <div className="flex justify-between items-center mb-2 hover:text-purple-500 cursor-pointer border-b border-b-purple-500 px-2">
-              <div
-                key={boardPost._id}
-                onClick={() => handleClickBoardPost(boardPost._id)}
-              >
+            <div
+              className="flex justify-between items-center mb-2 hover:text-purple-500 cursor-pointer border-b border-b-purple-500 px-2"
+              key={boardPost._id}
+              onClick={() => handleClickBoardPost(boardPost._id)}
+            >
+              <div>
                 <p>
                   <span className="font-bold">{boardPost.category}</span>
                   {boardPost.title}
