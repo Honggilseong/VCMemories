@@ -144,18 +144,7 @@ function EditorComponent() {
     setVideoLink(e.target.value);
     console.log(videoLink);
   };
-  const handleInsertImageLink = () => {
-    if (!imageLink) return;
-    setEditorValue(insertMedia("IMAGE", imageLink));
-    setImageLink("");
-    setIsLinkOpen(false);
-  };
-  const handleInsertVideoLink = () => {
-    if (!videoLink) return;
-    setEditorValue(insertMedia("VIDEO", imageLink));
-    setVideoLink("");
-    setIsVideoOpen(false);
-  };
+
   const handleGenerateLink = (hyperLink: string, linkDisplayText: string) => {
     const decorator = linkDecorator;
     let link = hyperLink;
@@ -250,10 +239,22 @@ function EditorComponent() {
       setIsLoading(false);
     }
   };
+  const handleInsertImageLink = () => {
+    if (!imageLink) return;
+    setEditorValue(insertMedia("IMAGE", imageLink));
+    setImageLink("");
+    setIsLinkOpen(false);
+  };
+  // const handleInsertVideoLink = () => {
+  //   if (!videoLink) return;
+  //   setEditorValue(insertMedia("VIDEO", imageLink));
+  //   setVideoLink("");
+  //   setIsVideoOpen(false);
+  // };
   const blockRendererFunction = (contentBlock: ContentBlock) => {
     if (contentBlock.getType() === "atomic") {
       return {
-        component: isLoading ? RenderLoadingImage : RenderMedia,
+        component: isLoading ? RenderLoadingImage : RenderImage,
         editable: false,
       };
     }
