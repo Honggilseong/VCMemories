@@ -63,25 +63,24 @@ function Body({
                 <p>Private Account</p>
                 <div className="flex flex-col items-center">
                   <p className="text-sm">Current status</p>
-                  <p className="font-bold">
-                    {authUser.isPrivate ? (
-                      <div
-                        className="flex justify-center items-center cursor-pointer"
-                        onClick={handleClickAccountState}
-                      >
-                        <AiOutlineLock size={20} className="mr-2" />
-                        <p>Private</p>
-                      </div>
-                    ) : (
-                      <div
-                        className="flex justify-center items-center cursor-pointer"
-                        onClick={handleClickAccountState}
-                      >
-                        <AiOutlineUnlock size={20} className="mr-2" />
-                        <p>Public</p>
-                      </div>
-                    )}
-                  </p>
+
+                  {authUser.isPrivate ? (
+                    <div
+                      className="flex justify-center items-center cursor-pointer"
+                      onClick={handleClickAccountState}
+                    >
+                      <AiOutlineLock size={20} className="mr-2" />
+                      <p>Private</p>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex justify-center items-center cursor-pointer"
+                      onClick={handleClickAccountState}
+                    >
+                      <AiOutlineUnlock size={20} className="mr-2" />
+                      <p>Public</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
