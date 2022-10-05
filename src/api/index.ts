@@ -628,3 +628,12 @@ export const uploadBoardPostPreviewImage = (
     config
   );
 };
+
+export const getUserBoardPostList = (username: string): AxiosPromise => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  return API.get(`/board/getuserboardpostlist/${username}`, config);
+};
