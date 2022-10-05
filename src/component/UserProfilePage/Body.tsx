@@ -149,9 +149,9 @@ function Body({
             </div>
             {searchUserInfo.isPrivate ? (
               isFollowing ? (
-                searchUserInfo.userPosts?.length ? (
+                searchUserInfo.posts?.length ? (
                   <div className="md:min-h-[500px] xl:grid-cols-3 xl:gap-4 grid grid-cols-2 gap-1 w-full">
-                    {searchUserInfo.userPosts?.map((post) => (
+                    {searchUserInfo.posts?.map((post) => (
                       <div key={post._id} className="mx-auto">
                         <Post post={post} authUser={authUser} />
                       </div>
@@ -167,9 +167,9 @@ function Body({
                   <p className="font-bold">This Account is Private</p>
                 </div>
               )
-            ) : searchUserInfo.userPosts?.length ? (
+            ) : searchUserInfo.posts?.length ? (
               <div className="md:min-h-[500px] xl:grid-cols-3 xl:gap-4 grid grid-cols-2 gap-1 w-full">
-                {searchUserInfo.userPosts?.map((post) => (
+                {searchUserInfo.posts?.map((post) => (
                   <div key={post._id} className="mx-auto">
                     <Post post={post} authUser={authUser} />
                   </div>
