@@ -33,7 +33,6 @@ interface InitialState {
   password: string;
   token?: string;
   profilePicture?: string;
-  userPosts?: UserPosts[];
   followers?: string[];
   following?: string[];
   notifications?: Notifications[];
@@ -42,6 +41,7 @@ interface InitialState {
   userTitle?: string;
   followRequests?: FollowRequests[];
   bio?: string;
+  posts?: UserPosts[];
 }
 const initialState = {
   name: "",
@@ -71,10 +71,10 @@ const AuthReducer = (
       return { ...state, ...action.payload };
     }
     case USER_DELETE_POST: {
-      let userPosts = state.userPosts;
-
-      userPosts = userPosts?.filter((post) => post._id !== action.payload);
-      return { ...state, userPosts };
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload),
+      };
     }
     case UPLOAD_PROFILE_IMAGE: {
       console.log("updated");
@@ -99,7 +99,7 @@ const AuthReducer = (
       const { _id } = action.payload;
       return {
         ...state,
-        userPosts: state.userPosts?.map((post) =>
+        posts: state.posts?.map((post) =>
           post._id === _id ? action.payload : post
         ),
       };
@@ -107,7 +107,7 @@ const AuthReducer = (
     case USER_LIKE_POST: {
       return {
         ...state,
-        userPosts: state.userPosts?.map((post) =>
+        posts: state.posts?.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
       };
@@ -149,7 +149,7 @@ const AuthReducer = (
       const { postId, commentId } = action.payload;
       return {
         ...state,
-        userPosts: state.userPosts.map((post) =>
+        posts: state.posts.map((post) =>
           post._id === postId
             ? {
                 ...post,
@@ -165,7 +165,7 @@ const AuthReducer = (
       const { postId, message, title } = action.payload;
       return {
         ...state,
-        userPosts: state.userPosts.map((post) =>
+        posts: state.posts.map((post) =>
           post._id === postId ? { ...post, title, message, isEdit: true } : post
         ),
       };

@@ -29,7 +29,6 @@ export interface GetSearchingUser {
   name: string;
   email: string;
   profilePicture: string;
-  userPosts: UserPosts[];
   followers: string[];
   following: string[];
   notifications: Notifications[];
@@ -37,6 +36,7 @@ export interface GetSearchingUser {
   isPrivate: boolean;
   userTitle: string;
   bio: string;
+  posts: UserPosts[];
 }
 type SearchUserState = GetSearchingUser;
 const initialState: SearchUserState = {
@@ -44,13 +44,13 @@ const initialState: SearchUserState = {
   email: "",
   name: "",
   profilePicture: "",
-  userPosts: [],
   followers: [],
   following: [],
   notifications: [],
   isPrivate: false,
   userTitle: "",
   bio: "",
+  posts: [],
 };
 
 const SearchUserReducer = (
@@ -67,7 +67,7 @@ const SearchUserReducer = (
     case SEARCH_LEAVE_COMMENT: {
       return {
         ...state,
-        userPosts: state.userPosts.map((post) =>
+        posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
       };
@@ -75,7 +75,7 @@ const SearchUserReducer = (
     case SEARCH_LIKE_POST: {
       return {
         ...state,
-        userPosts: state.userPosts.map((post) =>
+        posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
       };
@@ -84,7 +84,7 @@ const SearchUserReducer = (
       const { postId, commentId } = action.payload;
       return {
         ...state,
-        userPosts: state.userPosts.map((post) =>
+        posts: state.posts.map((post) =>
           post._id === postId
             ? {
                 ...post,

@@ -18,7 +18,7 @@ export interface AllUsers {
   email: string;
   name: string;
   profilePicture: string;
-  userPosts: UserPosts[];
+  posts: UserPosts[];
   followers: string[];
   following: string[];
 }
