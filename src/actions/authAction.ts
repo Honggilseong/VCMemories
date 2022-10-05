@@ -25,7 +25,8 @@ import { Comment } from "./postActionDispatch";
 import { toastError, toastSuccess } from "../util/toast";
 
 export const createUser =
-  (userInfo: UserInfo, navigate: any) => async (dispatch: Dispatch) => {
+  (userInfo: UserInfo, navigate: any, location?: any) =>
+  async (dispatch: Dispatch) => {
     try {
       const { data } = await api.signUp(userInfo);
       dispatch({
@@ -37,6 +38,10 @@ export const createUser =
         type: GET_USER_INFO,
         payload: userData.data,
       });
+      if (location && location?.state?.from?.match("forum")) {
+        navigate("/forum/vrchat");
+        return;
+      }
       navigate("/");
     } catch (error: any) {
       console.log(error);
@@ -44,7 +49,8 @@ export const createUser =
     }
   };
 export const signIn =
-  (userInfo: UserInfo, navigate: any) => async (dispatch: Dispatch) => {
+  (userInfo: UserInfo, navigate: any, location?: any) =>
+  async (dispatch: Dispatch) => {
     try {
       const { data } = await api.signIn(userInfo);
       dispatch({
@@ -56,6 +62,10 @@ export const signIn =
         type: GET_USER_INFO,
         payload: userData.data,
       });
+      if (location && location?.state?.from?.match("forum")) {
+        navigate("/forum/vrchat");
+        return;
+      }
       navigate("/");
     } catch (error) {
       console.log(error);

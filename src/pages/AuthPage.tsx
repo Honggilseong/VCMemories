@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { createUser, signIn } from "../actions/authAction";
 import AuthPageForm from "../component/AuthPage/AuthPageForm";
 import { useAppDispatch } from "../reducers/store";
@@ -23,7 +24,7 @@ function AuthPage() {
     confirmPassword: "",
   });
   const dispatch = useAppDispatch();
-
+  const location = useLocation();
   const { push } = useInternalRouter();
 
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
@@ -41,9 +42,9 @@ function AuthPage() {
       if (userInfo.name.match(/^[0-9A-Za-z]+$/) === null) {
         return toastError("We only allow alphabets and numbers for username");
       }
-      dispatch(createUser(userInfo, push));
+      dispatch(createUser(userInfo, push, location));
     } else {
-      dispatch(signIn(userInfo, push));
+      dispatch(signIn(userInfo, push, location));
     }
   };
 
