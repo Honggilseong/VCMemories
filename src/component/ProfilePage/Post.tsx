@@ -44,9 +44,7 @@ function Post({ post, authUser }: any) {
     setCommentValue({ ...commentValue, comment: e.target.value });
     setMentionUsers(mentions.map((mention) => mention.id));
   };
-  const handleEditValueTitleMessage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleEditValueTitleMessage = (event: any) => {
     const { name } = event.target;
     setEditTextValue({ ...editTextValue, [name]: event.target.value });
     console.log(editTextValue);

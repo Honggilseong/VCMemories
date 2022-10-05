@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { Comment } from "../../actions/postActionDispatch";
@@ -38,8 +38,13 @@ function ProfileInfoModal({
   handleClickUserMention,
 }: any) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
+  const textRef = useRef(null);
+  const handleResizeHeight = useCallback(() => {
+    textRef.current.style.height = textRef.current.scrollHeight + "px";
+  }, []);
   const authUser = useSelector((state: RootState) => state.auth);
   const allUsers = useSelector((state: RootState) => state.allUsers);
+
   useEffect(() => {
     const likedPost = post.likes.findIndex((id: string) => id === authUser._id);
     if (likedPost === -1) {
@@ -73,7 +78,7 @@ function ProfileInfoModal({
                 className="w-full h-full rounded-lg outline-none"
                 placeholder="Title"
                 value={editTextValue.title}
-                onChange={(event) => handleEditValueTitleMessage(event)}
+                onChange={handleEditValueTitleMessage}
               />
             </div>
           ) : (
@@ -81,18 +86,19 @@ function ProfileInfoModal({
           )}
 
           {isEdit ? (
-            <div className="h-11 mx-1 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
-              <input
+            <div className="mx-1 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg">
+              <textarea
                 name="message"
-                type="text"
-                placeholder="Message"
-                className="w-full h-full rounded-lg outline-none"
                 value={editTextValue.message}
-                onChange={(event) => handleEditValueTitleMessage(event)}
+                ref={textRef}
+                onInput={handleResizeHeight}
+                onChange={handleEditValueTitleMessage}
+                placeholder="Add a comment"
+                className="w-full h-full focus:outline-none p-1 resize-none"
               />
             </div>
           ) : (
-            <p>
+            <p className="whitespace-pre">
               {post.message.split(" ").map((msg: string) => {
                 if (msg.startsWith("#")) {
                   return (

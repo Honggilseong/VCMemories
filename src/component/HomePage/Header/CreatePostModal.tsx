@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
@@ -64,6 +64,11 @@ function CreatePostModal() {
     postType: "",
   });
   const modal = useSelector((state: RootState) => state.modal);
+  const textRef = useRef(null);
+  const handleResizeHeight = useCallback(() => {
+    textRef.current.style.height = textRef.current.scrollHeight + "px";
+  }, []);
+
   const dispatch = useAppDispatch();
 
   const onDrop = useCallback((acceptedFiles: AcceptedFiles[]) => {
@@ -93,7 +98,7 @@ function CreatePostModal() {
     setIsLoading(false);
   };
 
-  const handleInputNewUser = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputNewPost = (e: any) => {
     const { name, value } = e.target;
     setNewPost({ ...newPost, [name]: value });
     console.log(newPost);
@@ -167,31 +172,23 @@ function CreatePostModal() {
           placeholder="Title"
           className="w-full h-full rounded-lg outline-none"
           value={newPost.title}
-          onChange={handleInputNewUser}
+          onChange={handleInputNewPost}
         />
       </div>
       <h2 className="mt-3 text-gray-500">Message</h2>
-      <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
-        <input
-          type="text"
-          name="message"
-          placeholder="Message"
-          className="w-full h-full rounded-lg outline-none"
-          value={newPost.message}
-          onChange={handleInputNewUser}
-        />
+      <div className="mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
+        <div className="w-full">
+          <textarea
+            name="message"
+            value={newPost.message}
+            ref={textRef}
+            onInput={handleResizeHeight}
+            onChange={handleInputNewPost}
+            placeholder="Message"
+            className="w-full h-full focus:outline-none resize-none"
+          />
+        </div>
       </div>
-      {/* <h2 className="mt-3 text-gray-500">Tags(comma)</h2>
-      <div className="h-11 mt-2 flex justify-center items-center outline-1 outline outline-purple-500 focus-within:outline-2 rounded-lg p-1">
-        <input
-          type="text"
-          name="tags"
-          placeholder="Tags"
-          className="w-full h-full rounded-lg outline-none"
-          value={newPost.tags}
-          onChange={handleInputNewUser}
-        />
-      </div> */}
       {isLoading ? (
         <div className="h-12 bg-gray-400 text-white mt-3 rounded-lg flex items-center justify-center cursor-pointer">
           <p>Uploading...</p>

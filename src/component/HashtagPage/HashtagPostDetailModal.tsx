@@ -76,7 +76,7 @@ function HashtagPostDetailModal({
         </div>
         <div className="my-2">
           <h2 className="font-bold text-lg">{hashtagPost.title}</h2>
-          <p>
+          <p className="whitespace-pre">
             {hashtagPost.message.split(" ").map((msg: string) => {
               if (msg.startsWith("#")) {
                 return (

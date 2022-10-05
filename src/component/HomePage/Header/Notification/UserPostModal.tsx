@@ -93,8 +93,7 @@ function UserPostModal({
           </div>
           <div className="my-2">
             <h2 className="font-bold text-lg">{modalPost.title}</h2>
-            <p>
-              {" "}
+            <p className="whitespace-pre">
               {modalPost.message.split(" ").map((msg: string) => {
                 if (msg.startsWith("#")) {
                   return (

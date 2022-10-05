@@ -241,7 +241,7 @@ function Post({ post }: Props) {
       </div>
       <div className="my-2">
         <h2 className="font-bold text-lg">{post.title}</h2>
-        <p>
+        <p className="whitespace-pre">
           {post.message.split(" ").map((msg) => {
             if (msg.startsWith("#")) {
               return (
