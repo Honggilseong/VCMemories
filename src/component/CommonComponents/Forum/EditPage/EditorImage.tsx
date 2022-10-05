@@ -56,7 +56,6 @@ export const RenderLoadingImage = (props: any) => {
         className="self-center blur-sm w-full"
         height={540}
       />
-      ;
     </div>
   );
 };
