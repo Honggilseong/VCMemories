@@ -33,10 +33,10 @@ export interface User {
   email: string;
   name: string;
   profilePicture: string;
-  userPosts: UserPosts[];
   followers: string[];
   following: string[];
   notifications: Notifications[];
+  posts: UserPosts[];
 }
 export interface getSearchingUser {
   type: typeof SEARCH_USER;

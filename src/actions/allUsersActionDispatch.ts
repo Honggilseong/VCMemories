@@ -15,7 +15,7 @@ export interface GetAllUsers {
   email: string;
   name: string;
   profilePicture: string;
-  userPosts: UserPosts[];
+  posts: UserPosts[];
   followers: string[];
   following: string[];
   isPrivate: boolean;

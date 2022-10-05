@@ -84,7 +84,6 @@ export interface GetUserInfo {
   email: string;
   name: string;
   profilePicture: string;
-  userPosts: UserPosts[];
   followers: string[];
   following: string[];
   notifications: Notifications[];
@@ -93,6 +92,7 @@ export interface GetUserInfo {
   followRequests: FollowRequests[];
   blockUsers: BlockUsers[];
   bio: string;
+  posts: UserPosts[];
 }
 
 export interface getUserInfo {
