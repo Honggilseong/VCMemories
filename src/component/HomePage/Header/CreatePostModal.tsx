@@ -72,7 +72,6 @@ function CreatePostModal() {
   const dispatch = useAppDispatch();
 
   const onDrop = useCallback((acceptedFiles: AcceptedFiles[]) => {
-    console.log(acceptedFiles);
     setPreviewImage(
       acceptedFiles.map((file: any) =>
         Object.assign(file, { preview: URL.createObjectURL(file) })
@@ -101,7 +100,6 @@ function CreatePostModal() {
   const handleInputNewPost = (e: any) => {
     const { name, value } = e.target;
     setNewPost({ ...newPost, [name]: value });
-    console.log(newPost);
   };
 
   const handleUploadPost = async (e: React.MouseEvent<HTMLElement>) => {
