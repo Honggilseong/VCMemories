@@ -47,7 +47,6 @@ function Post({ post, authUser }: any) {
   const handleEditValueTitleMessage = (event: any) => {
     const { name } = event.target;
     setEditTextValue({ ...editTextValue, [name]: event.target.value });
-    console.log(editTextValue);
   };
   const handleClickDetailPost = () => {
     setIsModalOpen(true);
