@@ -63,7 +63,7 @@ function ForumUserInfo() {
           )}
         </section>
         <div className="w-full bg-black text-white font-bold rounded-lg p-2 mb-3">
-          User's post list
+          Post list
         </div>
         {userBoardPostList?.boardPosts.length !== 0 ? (
           userBoardPostList?.boardPosts.map((boardPost) => (
