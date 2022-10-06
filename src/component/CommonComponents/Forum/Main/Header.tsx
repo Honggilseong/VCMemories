@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../../../actions/authAction";
 import { useInternalRouter } from "../../../../pages/routing";
 import { RootState, useAppDispatch } from "../../../../reducers/store";
+import CloudinaryImage from "../../CloudinaryImage";
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
 function Header() {
@@ -41,7 +42,11 @@ function Header() {
               {authUser.name}
             </p>
             <div className="rounded-full border-2 w-10 h-10 overflow-hidden cursor-pointer">
-              <img src={defaultProfilePicture} alt="profileImage" />
+              {authUser.profilePicture === defaultProfilePicture ? (
+                <img src={authUser.profilePicture} alt="userProfilePicture" />
+              ) : (
+                <CloudinaryImage image={authUser.profilePicture} />
+              )}
             </div>
           </div>
         ) : (
