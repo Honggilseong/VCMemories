@@ -8,7 +8,7 @@ export function useInternalRouter() {
       goBack() {
         navigate(-1);
       },
-      push(path: string, options?: NavigateOptions) {
+      push(path: any, options?: NavigateOptions) {
         navigate(path, options);
       },
     };
