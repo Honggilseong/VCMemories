@@ -29,7 +29,9 @@ import { useInternalRouter } from "../../../../pages/routing";
 import Header from "../Main/Header";
 import EditorImageModal from "./EditorImageModal";
 import EditorVideoModal from "./EditorVideoModal";
+import useInterval from "../../../../hooks/useSetInterval";
 
+const BOARDPOST_SAVE_TIME = 30000;
 interface HyperlinkValue {
   displayText: string;
   link: string;
@@ -39,9 +41,9 @@ function EditorComponent() {
   const [categoryList] = useState<string[]>([
     "Unity",
     "Blender",
-    "Question",
+    "Questions",
     "Tips",
-    "Request",
+    "Requests",
     "etc",
   ]);
   const [category, setCategory] = useState<string>("");
@@ -54,6 +56,7 @@ function EditorComponent() {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   const [imageLink, setImageLink] = useState<string>("");
   const [videoLink, setVideoLink] = useState<string>("");
+
   const [hyperlinkValue, setHyperlinkValue] = useState<HyperlinkValue>({
     displayText: "",
     link: "",
@@ -75,6 +78,12 @@ function EditorComponent() {
     const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
     localStorage.setItem("TextEdit", data);
   };
+
+  useInterval(() => {
+    handleSaveEditor();
+    toastSuccess("Your post has been saved automatically");
+  }, BOARDPOST_SAVE_TIME);
+
   const handleKeyCommand = (command: DraftEditorCommand) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -110,6 +119,7 @@ function EditorComponent() {
       await api.postBoardPost(boardPost);
       toastSuccess("Your post has been shared successfully :)");
       push("/forum/vrchat");
+      localStorage.removeItem("TextEdit");
     } catch (e: any) {
       toastError(e.message);
     }
