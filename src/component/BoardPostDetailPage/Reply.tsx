@@ -9,6 +9,7 @@ import {
   deleteBoardPostReply,
   editBoardPostReply,
 } from "../../actions/boardPostAction";
+import { useInternalRouter } from "../../pages/routing";
 import { RootState, useAppDispatch } from "../../reducers/store";
 import { toastError } from "../../util/toast";
 import EditComment from "../CommonComponents/Forum/BoardPostDetail/Comment/EditComment";
@@ -41,6 +42,7 @@ function Reply({
   const [isEditComment, setIsEditComment] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [editCommentValue, setEditCommentValue] = useState<string>(message);
+  const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
   const params = useParams();
   const dispatch = useAppDispatch();
@@ -117,15 +119,20 @@ function Reply({
     setIsLoading(false);
     setIsEditComment(false);
   };
+  const handleClickUsername = () => {
+    push(`/forum/userinfo/${username}`);
+  };
   return (
     <>
       <section className="w-full max-w-4xl p-2 border border-purple-500 mt-5">
         <div className="flex items-center justify-between border-b border-purple-500">
           <div className="flex items-center">
-            {/* <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
-              <img src={profilePicture} alt="profilePicture" />
-            </div> */}
-            <p className="font-bold">{username}</p>
+            <p
+              className="font-bold cursor-pointer"
+              onClick={handleClickUsername}
+            >
+              {username}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center">
@@ -178,7 +185,7 @@ function Reply({
           {replyUserId === authUser._id && (
             <>
               <div
-                className="text-gray-500 cursor-pointer"
+                className="text-red-500 cursor-pointer hover:text-red-600"
                 onClick={handleDeleteReply}
               >
                 Delete

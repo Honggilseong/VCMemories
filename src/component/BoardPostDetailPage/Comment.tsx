@@ -11,6 +11,7 @@ import {
   likeBoardPostReply,
 } from "../../actions/boardPostAction";
 import { Reply as ReplyType } from "../../actions/boardPostDispatch";
+import { useInternalRouter } from "../../pages/routing";
 import { RootState, useAppDispatch } from "../../reducers/store";
 import { toastError } from "../../util/toast";
 import EditComment from "../CommonComponents/Forum/BoardPostDetail/Comment/EditComment";
@@ -46,6 +47,7 @@ function Comment({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEditComment, setIsEditComment] = useState<boolean>(false);
   const [editCommentValue, setEditCommentValue] = useState<string>(message);
+  const { push } = useInternalRouter();
   const params = useParams();
   const dispatch = useAppDispatch();
   const authUser = useSelector((state: RootState) => state.auth);
@@ -119,12 +121,20 @@ function Comment({
     setIsLoading(false);
     setIsEditComment(false);
   };
+  const handleClickUsername = () => {
+    push(`/forum/userinfo/${username}`);
+  };
   return (
     <>
       <section className={`w-full max-w-4xl p-2 border border-purple-500 mt-5`}>
         <div className="flex items-center justify-between border-b border-purple-500">
           <div className="flex items-center">
-            <p className="font-bold">{username}</p>
+            <p
+              className="font-bold cursor-pointer"
+              onClick={handleClickUsername}
+            >
+              {username}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center">
