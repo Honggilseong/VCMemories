@@ -1,5 +1,14 @@
 import { HashLoader } from "react-spinners";
 
+const embedVideoCallBack = (link: string) => {
+  if (link.indexOf("youtube") >= 0 || link.indexOf("youtu") >= 0) {
+    link = link.replace("watch?v=", "embed/");
+    link = link.replace("/watch/", "/embed/");
+    link = link.replace("youtu.be/", "youtube.com/embed/");
+  }
+  return link;
+};
+
 export const RenderImage = (props: any) => {
   const { src } = props.contentState
     .getEntity(props.block.getEntityAt(0))
@@ -12,19 +21,21 @@ export const RenderImage = (props: any) => {
   );
 };
 
-// export const RenderVideo = (props: any) => {
-//   const { src } = props.contentState
-//     .getEntity(props.block.getEntityAt(0))
-//     .getData();
+export const RenderVideo = (props: any) => {
+  const { src } = props.contentState
+    .getEntity(props.block.getEntityAt(0))
+    .getData();
 
-//   return (
-//     <iframe
-//       src={src}
-//       title="Youtube player"
-//       sandbox="allow-same-origin allow-forms allow-popups allow-scripts allow-presentation"
-//     ></iframe>
-//   );
-// };
+  return (
+    <iframe
+      src={embedVideoCallBack(src)}
+      title={src}
+      sandbox="allow-same-origin allow-forms allow-popups allow-scripts allow-presentation"
+      width="100%"
+      height="500px"
+    ></iframe>
+  );
+};
 
 export const RenderMedia = (props: any) => {
   const entity = props.contentState.getEntity(props.block.getEntityAt(0));
@@ -34,9 +45,9 @@ export const RenderMedia = (props: any) => {
   if (type === "IMAGE") {
     media = <RenderImage {...props} />;
   }
-  // if (type === "VIDEO") {
-  //   media = <RenderVideo {...props} />;
-  // }
+  if (type === "VIDEO") {
+    media = <RenderVideo {...props} />;
+  }
   return media;
 };
 
