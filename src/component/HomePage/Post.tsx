@@ -179,7 +179,7 @@ function Post({ post }: Props) {
     }
   }, [post.likes]);
   const handleClickUsername = (name: string) => {
-    push(`/user/search/${name}`);
+    push(`/user/search/${name.toLowerCase()}`);
   };
   useEffect(() => {
     const handleClickPostInfo = (e: any) => {
