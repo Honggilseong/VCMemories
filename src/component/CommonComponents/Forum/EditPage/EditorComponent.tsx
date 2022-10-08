@@ -81,7 +81,7 @@ function EditorComponent() {
 
   useInterval(() => {
     handleSaveEditor();
-    toastSuccess("Your post has been saved automatically");
+    toastSuccess("Your post has been saved automatically (30s)", 1000);
   }, BOARDPOST_SAVE_TIME);
 
   const handleKeyCommand = (command: DraftEditorCommand) => {
@@ -152,7 +152,6 @@ function EditorComponent() {
   };
   const handleInputVideoLink = (e: any) => {
     setVideoLink(e.target.value);
-    console.log(videoLink);
   };
 
   const handleGenerateLink = (hyperLink: string, linkDisplayText: string) => {
@@ -255,16 +254,16 @@ function EditorComponent() {
     setImageLink("");
     setIsLinkOpen(false);
   };
-  // const handleInsertVideoLink = () => {
-  //   if (!videoLink) return;
-  //   setEditorValue(insertMedia("VIDEO", imageLink));
-  //   setVideoLink("");
-  //   setIsVideoOpen(false);
-  // };
+  const handleInsertVideoLink = () => {
+    if (!videoLink) return;
+    setEditorValue(insertMedia("VIDEO", videoLink));
+    setVideoLink("");
+    setIsVideoOpen(false);
+  };
   const blockRendererFunction = (contentBlock: ContentBlock) => {
     if (contentBlock.getType() === "atomic") {
       return {
-        component: isLoading ? RenderLoadingImage : RenderImage,
+        component: isLoading ? RenderLoadingImage : RenderMedia,
         editable: false,
       };
     }
@@ -418,7 +417,7 @@ function EditorComponent() {
                 />
               )}
             </div>
-            {/* <div className="relative">
+            <div className="relative">
               <EditorButton
                 Icon={<RiVideoLine size={20} />}
                 handleClickButton={handleOpenVideoModal}
@@ -431,7 +430,7 @@ function EditorComponent() {
                   handleInsertVideoLink={handleInsertVideoLink}
                 />
               )}
-            </div> */}
+            </div>
           </div>
           <div className="h-full">
             <Editor
