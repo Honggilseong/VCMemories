@@ -25,7 +25,7 @@ function EditorButton({
     <button
       className={`border p-2 cursor-pointer hover:bg-gray-300 h-10 w-10 flex items-center justify-center ${
         name ? "font-bold" : "font-normal"
-      }`}
+      } ${active ? "bg-black text-white" : "bg-white text-black"}`}
       onClick={() => handleClickButton(label ? label : null)}
     >
       {Icon ? Icon : name}

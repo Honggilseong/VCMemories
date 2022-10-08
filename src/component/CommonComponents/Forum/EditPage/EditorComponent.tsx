@@ -64,6 +64,13 @@ function EditorComponent() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
   const editorRef = useRef(null);
+  const inlineType = editorState.getCurrentInlineStyle();
+  const selection = editorState.getSelection();
+  const blockType = editorState
+    .getCurrentContent()
+    .getBlockForKey(selection.getStartKey())
+    .getType();
+
   const linkModalRef = useRef(
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
@@ -125,17 +132,9 @@ function EditorComponent() {
     }
   };
   const handleClickInlineStyleButton = (inlineStyle: string) => {
-    console.log(editorState.getCurrentInlineStyle());
     setEditorValue(RichUtils.toggleInlineStyle(editorState, inlineStyle));
   };
   const handleClickBlockStyleButton = (blockStyle: string) => {
-    // const selection = editorState.getSelection();
-    // setFocusType(
-    //   editorState
-    //     .getCurrentContent()
-    //     .getBlockForKey(selection.getStartKey())
-    //     .getType()
-    // );
     setEditorValue(RichUtils.toggleBlockType(editorState, blockStyle));
   };
   const handleOpenLinkModal = () => {
@@ -351,41 +350,63 @@ function EditorComponent() {
               name="H1"
               handleClickButton={handleClickBlockStyleButton}
               label="header-one"
+              active={blockType === "header-one"}
             />
             <EditorButton
               name="H2"
               handleClickButton={handleClickBlockStyleButton}
               label="header-two"
+              active={blockType === "header-two"}
             />
             <EditorButton
               name="H3"
               handleClickButton={handleClickBlockStyleButton}
               label="header-three"
+              active={blockType === "header-three"}
             />
             <EditorButton
-              Icon={<FaItalic />}
+              Icon={<FaItalic color={inlineType.has("ITALIC") && "white"} />}
               handleClickButton={handleClickInlineStyleButton}
+              active={inlineType.has("ITALIC")}
               label="ITALIC"
             />
             <EditorButton
-              Icon={<FaUnderline />}
+              Icon={
+                <FaUnderline color={inlineType.has("UNDERLINE") && "white"} />
+              }
               handleClickButton={handleClickInlineStyleButton}
+              active={inlineType.has("UNDERLINE")}
               label="UNDERLINE"
             />
             <EditorButton
-              Icon={<GoBold size={20} />}
+              Icon={
+                <GoBold size={20} color={inlineType.has("BOLD") && "white"} />
+              }
               handleClickButton={handleClickInlineStyleButton}
+              active={inlineType.has("BOLD")}
               label="BOLD"
             />
             <EditorButton
-              Icon={<AiOutlineUnorderedList size={20} />}
+              Icon={
+                <AiOutlineUnorderedList
+                  size={20}
+                  color={blockType === "unordered-list-item" && "white"}
+                />
+              }
               handleClickButton={handleClickBlockStyleButton}
               label="unordered-list-item"
+              active={blockType === "unordered-list-item"}
             />
             <EditorButton
-              Icon={<AiOutlineOrderedList size={20} />}
+              Icon={
+                <AiOutlineOrderedList
+                  size={20}
+                  color={blockType === "ordered-list-item" && "white"}
+                />
+              }
               handleClickButton={handleClickBlockStyleButton}
               label="ordered-list-item"
+              active={blockType === "ordered-list-item"}
             />
             <div className="relative">
               <EditorButton
