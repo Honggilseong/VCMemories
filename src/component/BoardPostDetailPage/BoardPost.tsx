@@ -5,15 +5,21 @@ import { BiCommentDetail } from "react-icons/bi";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { Editor, convertFromRaw, EditorState, ContentBlock } from "draft-js";
 import { linkDecorator } from "../CommonComponents/Forum/EditPage/EditorLink";
-import { RenderImage } from "../CommonComponents/Forum/EditPage/EditorImage";
+import { RenderMedia } from "../CommonComponents/Forum/EditPage/EditorImage";
 import { RootState, useAppDispatch } from "../../reducers/store";
 import { likeBoardPost } from "../../actions/boardPostAction";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { getCountReplies } from "../../util/countReplies";
+import { BoardPost as BoardPostType } from "../../actions/boardPostDispatch";
 
-function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: any) {
+interface Props {
+  boardPost: BoardPostType;
+  handleClickDeleteBoardPostConfirm: () => void;
+}
+
+function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [likedBoardPost, setLikedBoardPost] = useState<boolean>(false);
 
@@ -32,7 +38,7 @@ function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: any) {
   const blockRendererFunction = (contentBlock: ContentBlock) => {
     if (contentBlock.getType() === "atomic") {
       return {
-        component: RenderImage,
+        component: RenderMedia,
         editable: false,
       };
     }
@@ -79,6 +85,7 @@ function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: any) {
       )}
       <div className="flex justify-between items-center">
         <h1 className="font-bold text-xl">{boardPost?.title}</h1>
+
         <div className="flex font-bold">
           <div className="flex items-center mr-2">
             <FaRegThumbsUp className="mr-1" />
