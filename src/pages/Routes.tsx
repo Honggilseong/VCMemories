@@ -19,6 +19,7 @@ import MainForumPage from "./MainForumPage";
 import BoardPostDetailPage from "./BoardPostDetailPage";
 import CreateBoardPostPage from "./CreateBoardPostPage";
 import ForumUserInfo from "./ForumUserInfo";
+import BoardPostEditPage from "./BoardPostEditPage";
 
 function Routes() {
   const location = useLocation();
@@ -70,7 +71,8 @@ function Routes() {
         />
         <Route path="/welcome" element={<LandingPage />} />
         <Route path="/forum/vrchat" element={<MainForumPage />} />
-        <Route path="/forum/:id/edit" element={<CreateBoardPostPage />} />
+        <Route path="/forum/:id/create" element={<CreateBoardPostPage />} />
+        <Route path="/forum/:id/edit" element={<BoardPostEditPage />} />
         <Route
           path="/forum/:channel/:boardpostid"
           element={<BoardPostDetailPage />}
