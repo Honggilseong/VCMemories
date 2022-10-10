@@ -10,16 +10,15 @@ import {
   Editor,
 } from "draft-js";
 import { useEffect, useRef, useState } from "react";
-import { FaItalic, FaUnderline, FaUndoAlt } from "react-icons/fa";
+import { FaItalic, FaUnderline } from "react-icons/fa";
 import { RiVideoLine } from "react-icons/ri";
 import { GoBold } from "react-icons/go";
 import "draft-js/dist/Draft.css";
 import { AiOutlineOrderedList, AiOutlineUnorderedList } from "react-icons/ai";
 import { BsImage, BsLink45Deg } from "react-icons/bs";
-import { DraftHandleValue } from "draft-js";
 import { linkDecorator } from "./EditorLink";
 import { toastError, toastSuccess } from "../../../../util/toast";
-import { RenderImage, RenderLoadingImage, RenderMedia } from "./EditorImage";
+import { RenderLoadingImage, RenderMedia } from "./EditorImage";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../reducers/store";
 import * as api from "../../../../api";
@@ -30,14 +29,17 @@ import Header from "../Main/Header";
 import EditorImageModal from "./EditorImageModal";
 import EditorVideoModal from "./EditorVideoModal";
 import useInterval from "../../../../hooks/useSetInterval";
+import { useParams } from "react-router-dom";
 
 const BOARDPOST_SAVE_TIME = 30000;
 interface HyperlinkValue {
   displayText: string;
   link: string;
 }
-
-function EditorComponent() {
+interface Props {
+  isEdit?: boolean;
+}
+function EditorComponent({ isEdit }: Props) {
   const [categoryList] = useState<string[]>([
     "Unity",
     "Blender",
@@ -80,7 +82,8 @@ function EditorComponent() {
   const videoModalRef = useRef(
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
-  const { push } = useInternalRouter();
+  const params = useParams();
+  const { push, goBack } = useInternalRouter();
   const handleSaveEditor = () => {
     const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
     localStorage.setItem("TextEdit", data);
@@ -126,6 +129,32 @@ function EditorComponent() {
       await api.postBoardPost(boardPost);
       toastSuccess("Your post has been shared successfully :)");
       push("/forum/vrchat");
+      localStorage.removeItem("TextEdit");
+    } catch (e: any) {
+      toastError(e.message);
+    }
+  };
+  const handleUploadEditBoardPost = async () => {
+    if (isLoading)
+      return toastError("please wait until your image has uploaded.");
+    if (!title) return toastError("please set your title.");
+    if (!category) return toastError("please set category.");
+    const editorToRaw = JSON.stringify(
+      convertToRaw(editorState.getCurrentContent())
+    );
+    const boardPost = {
+      username: authUser.name,
+      updatedAt: Date.now(),
+      content: editorToRaw,
+      category,
+      userId: authUser._id,
+      channel: "vrchat",
+      title,
+    };
+    try {
+      await api.updateBoardPost(params.id, boardPost);
+      toastSuccess("Your post has been updated successfully :)");
+      goBack();
       localStorage.removeItem("TextEdit");
     } catch (e: any) {
       toastError(e.message);
@@ -268,6 +297,7 @@ function EditorComponent() {
     }
     return null;
   };
+
   const getBlockStyle = (block: any) => {
     switch (block.getType()) {
       case "header-one":
@@ -281,14 +311,34 @@ function EditorComponent() {
     }
   };
   useEffect(() => {
-    const data = localStorage.getItem("TextEdit");
-    const initialState = data
-      ? EditorState.createWithContent(
-          convertFromRaw(JSON.parse(data)),
-          linkDecorator
-        )
-      : EditorState.createEmpty(linkDecorator);
-    setEditorValue(initialState);
+    const initializeBoardPostData = async () => {
+      if (isEdit) {
+        const { data } = await api.getEditBoardPost(params.id);
+        if (data.userId !== authUser._id) {
+          goBack();
+          toastError("Wrong requests");
+          return;
+        }
+        setEditorValue(
+          EditorState.createWithContent(
+            convertFromRaw(JSON.parse(data.content)),
+            linkDecorator
+          )
+        );
+        setCategory(data.category);
+        setTitle(data.title);
+        return;
+      }
+      const data = localStorage.getItem("TextEdit");
+      const initialState = data
+        ? EditorState.createWithContent(
+            convertFromRaw(JSON.parse(data)),
+            linkDecorator
+          )
+        : EditorState.createEmpty(linkDecorator);
+      setEditorValue(initialState);
+    };
+    initializeBoardPostData();
   }, []);
   useEffect(() => {
     const handleClickBackground = (e: any) => {
@@ -465,7 +515,7 @@ function EditorComponent() {
           </div>
         </div>
         <button
-          onClick={handleUploadPost}
+          onClick={isEdit ? handleUploadEditBoardPost : handleUploadPost}
           className="rounded-lg p-2 bg-purple-500 text-white w-20 mt-5"
         >
           Post
