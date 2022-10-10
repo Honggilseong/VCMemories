@@ -17,9 +17,14 @@ import { BoardPost as BoardPostType } from "../../actions/boardPostDispatch";
 interface Props {
   boardPost: BoardPostType;
   handleClickDeleteBoardPostConfirm: () => void;
+  handleClickEditBoardPost: () => void;
 }
 
-function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: Props) {
+function BoardPost({
+  boardPost,
+  handleClickDeleteBoardPostConfirm,
+  handleClickEditBoardPost,
+}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [likedBoardPost, setLikedBoardPost] = useState<boolean>(false);
 
@@ -72,15 +77,20 @@ function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: Props) {
       <div className="bg-black text-white p-1 font-bold rounded-lg text-center mt-5 mb-5">
         <p>{boardPost?.category}</p>
       </div>
-      {boardPost.userId === authUser._id && (
+      {boardPost?.userId === authUser._id && (
         <div className="flex gap-2 justify-end mb-2">
           <div
-            className="cursor-pointer text-red-500 hover:text-red-700"
+            className="cursor-pointer text-red-500 hover:text-red-700 hover:underline"
             onClick={handleClickDeleteBoardPostConfirm}
           >
             Delete
           </div>
-          <div className="cursor-pointer hover:text-gray-500">Edit</div>
+          <div
+            className="cursor-pointer hover:text-gray-500 hover:underline"
+            onClick={handleClickEditBoardPost}
+          >
+            Edit
+          </div>
         </div>
       )}
       <div className="flex justify-between items-center">
@@ -98,12 +108,17 @@ function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: Props) {
         </div>
       </div>
 
-      <section className="border font-bold p-1 flex justify-between items-center mt-5">
+      <section className="border font-bold p-1 flex justify-between items-center mt-5 w-full">
         <p>{boardPost?.username}</p>
         <div className="flex">
           <div className="flex text-sm items-center mr-2">
             <AiOutlineClockCircle size={17} className="mr-1" />
-            <p>{moment(boardPost?.createdAt).format("DD/MM/YY")}</p>
+            <p>
+              {boardPost?.updatedAt
+                ? `${moment(boardPost?.updatedAt).format("DD/MM/YY")}` +
+                  "(edited)"
+                : moment(boardPost?.createdAt).format("DD/MM/YY")}
+            </p>
           </div>
           <div className="flex text-sm items-center">
             <AiOutlineEye size={17} className="mr-1" />
@@ -111,7 +126,7 @@ function BoardPost({ boardPost, handleClickDeleteBoardPostConfirm }: Props) {
           </div>
         </div>
       </section>
-      <section className="border w-[900px]">
+      <section className="border w-full">
         {boardPost?.content && (
           <Editor
             readOnly

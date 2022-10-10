@@ -32,6 +32,9 @@ function Body() {
   const handleClickGoToForum = () => {
     push("/forum/vrchat");
   };
+  const handleClickEditBoardPost = () => {
+    push(`/forum/${params.boardpostid}/edit`);
+  };
   return (
     <div className="w-full h-full">
       <div className="max-w-[900px] mx-auto p-3 xl:p-0">
@@ -74,6 +77,7 @@ function Body() {
               handleClickDeleteBoardPostConfirm={
                 handleClickDeleteBoardPostConfirm
               }
+              handleClickEditBoardPost={handleClickEditBoardPost}
             />
             <Comments
               commentValue={commentValue}
