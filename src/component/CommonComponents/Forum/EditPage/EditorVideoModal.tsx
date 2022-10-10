@@ -7,7 +7,10 @@ function EditorVideoModal({
   videoLink,
 }: any) {
   return (
-    <div className="p-2 border absolute left-0 -bottom-26 z-50 bg-white">
+    <div
+      className="p-2 border absolute left-0 -bottom-26 z-50 bg-white"
+      ref={videoModalRef}
+    >
       <label htmlFor="videoURL" className="font-bold my-2">
         Video link
       </label>
