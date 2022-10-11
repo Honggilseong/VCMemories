@@ -399,7 +399,16 @@ export const getAllBoardPosts = (): AxiosPromise => {
       "Content-type": "application/json",
     },
   };
-  return API.get("/board/getallboardposts", config);
+  return API.get("/forum/getallboardposts", config);
+};
+
+export const getBoardPostsQuery = (page: number): AxiosPromise => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  return API.get(`/forum/vrchat?page=${!page ? 1 : page}`, config);
 };
 
 export const postBoardPost = (boardPost: any): AxiosPromise => {
@@ -408,15 +417,44 @@ export const postBoardPost = (boardPost: any): AxiosPromise => {
       "Content-type": "application/json",
     },
   };
-  return API.post("/board/boardpost/post", { boardPost }, config);
+  return API.post("/forum/boardpost/post", { boardPost }, config);
 };
-export const getBoardPost = (id: any): AxiosPromise => {
+export const getBoardPost = (boardPostId: string): AxiosPromise => {
   const config = {
     headers: {
       "Content-type": "application/json",
     },
   };
-  return API.get(`/board/getboardpost/${id}`, config);
+  return API.get(`/forum/getboardpost/${boardPostId}`, config);
+};
+
+export const updateBoardPost = (
+  boardPostId: string,
+  boardPost: any
+): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.patch(
+    `/forum/updateboardpost/${boardPostId}`,
+    { boardPost },
+    config
+  );
+};
+
+export const getEditBoardPost = (id: string): AxiosPromise => {
+  const user = JSON.parse(localStorage.getItem("profile") || "");
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + user.user.token,
+    },
+  };
+  return API.get(`/forum/geteditboardpost/${id}`, config);
 };
 
 export const leaveBoardPostComment = (
@@ -432,7 +470,7 @@ export const leaveBoardPostComment = (
     },
   };
   return API.patch(
-    `/board/leaveboardpostcomment/${boardPostId}`,
+    `/forum/leaveboardpostcomment/${boardPostId}`,
     { comment },
     config
   );
@@ -451,7 +489,7 @@ export const leaveBoardPostReply = (
     },
   };
   return API.patch(
-    `/board/leaveboardpostreply/${boardPostId}`,
+    `/forum/leaveboardpostreply/${boardPostId}`,
     { comment, commentId },
     config
   );
@@ -469,7 +507,7 @@ export const likeBoardPost = (
       Authorization: "Bearer " + user.user.token,
     },
   };
-  return API.patch(`/board/likeboardpost/${boardPostId}`, { userId }, config);
+  return API.patch(`/forum/likeboardpost/${boardPostId}`, { userId }, config);
 };
 
 export const likeBoardPostComment = (
@@ -486,7 +524,7 @@ export const likeBoardPostComment = (
     },
   };
   return API.patch(
-    `/board/likeboardpostcomment/${boardPostId}`,
+    `/forum/likeboardpostcomment/${boardPostId}`,
     { userId, commentId },
     config
   );
@@ -507,7 +545,7 @@ export const likeBoardPostReply = (
     },
   };
   return API.patch(
-    `/board/likeboardpostreply/${boardPostId}`,
+    `/forum/likeboardpostreply/${boardPostId}`,
     { userId, commentId, replyId },
     config
   );
@@ -525,7 +563,7 @@ export const deleteBoardPost = (
       Authorization: "Bearer " + user.user.token,
     },
   };
-  return API.patch(`/board/deleteboardpost/${boardPostId}`, { userId }, config);
+  return API.patch(`/forum/deleteboardpost/${boardPostId}`, { userId }, config);
 };
 
 export const deleteBoardPostComment = (
@@ -542,7 +580,7 @@ export const deleteBoardPostComment = (
     },
   };
   return API.patch(
-    `/board/deleteboardpostcomment/${boardPostId}`,
+    `/forum/deleteboardpostcomment/${boardPostId}`,
     { userId, commentId },
     config
   );
@@ -563,7 +601,7 @@ export const deleteBoardPostReply = (
     },
   };
   return API.patch(
-    `/board/deleteboardpostreply/${boardPostId}`,
+    `/forum/deleteboardpostreply/${boardPostId}`,
     { userId, commentId, replyId },
     config
   );
@@ -583,7 +621,7 @@ export const editBoardPostComment = (
     },
   };
   return API.patch(
-    `/board/editboardpostcomment/${boardPostId}`,
+    `/forum/editboardpostcomment/${boardPostId}`,
     { commentId, editComment },
     config
   );
@@ -604,7 +642,7 @@ export const editBoardPostReply = (
     },
   };
   return API.patch(
-    `/board/editboardpostreply/${boardPostId}`,
+    `/forum/editboardpostreply/${boardPostId}`,
     { commentId, replyId, editComment },
     config
   );
@@ -623,7 +661,7 @@ export const uploadBoardPostPreviewImage = (
     },
   };
   return API.post(
-    `/board/uploadboardpostpreviewimage/${id}`,
+    `/forum/uploadboardpostpreviewimage/${id}`,
     { image },
     config
   );
@@ -635,5 +673,5 @@ export const getUserBoardPostList = (username: string): AxiosPromise => {
       "Content-type": "application/json",
     },
   };
-  return API.get(`/board/getuserboardpostlist/${username}`, config);
+  return API.get(`/forum/getuserboardpostlist/${username}`, config);
 };
