@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { RotateLoader } from "react-spinners";
 import { deleteBoardPost } from "../../actions/boardPostAction";
 import { useInternalRouter } from "../../pages/routing";
 import { RootState, useAppDispatch } from "../../reducers/store";
 import BoardPost from "./BoardPost";
 import Comments from "./Comments";
-
-function Body() {
+interface Props {
+  isBoardPostLoading: boolean;
+}
+function Body({ isBoardPostLoading }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [commentValue, setCommentValue] = useState<string>("");
   const [isDeleteBoardPost, setIsDeleteBoardPost] = useState<boolean>(false);
@@ -38,7 +41,9 @@ function Body() {
   return (
     <div className="w-full h-full">
       <div className="max-w-[900px] mx-auto p-3 xl:p-0">
-        {!boardPost?.title ? (
+        {isBoardPostLoading ? (
+          <RotateLoader color="#36d7b7" />
+        ) : !boardPost?.title ? (
           <div className="w-full mt-10 items-center flex justify-center flex-col">
             <h1 className="text-2xl font-bold">This post deleted...😢</h1>
             <button
