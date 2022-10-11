@@ -1,15 +1,13 @@
 import React from "react";
 import { FaRegThumbsUp } from "react-icons/fa";
-import { BoardPost } from "../../actions/boardPostDispatch";
 import useWindowSize from "../../hooks/useWindowSize";
 import Table from "./Table";
 interface Props {
   handleClickCategory: (category: string) => void;
   category: string;
-  boardPosts: BoardPost[];
 }
 
-function Board({ handleClickCategory, category, boardPosts }: Props) {
+function Board({ handleClickCategory, category }: Props) {
   const { width } = useWindowSize();
   return (
     <section className="w-full xl:max-w-[900px]">
@@ -44,7 +42,15 @@ function Board({ handleClickCategory, category, boardPosts }: Props) {
           }`}
           onClick={() => handleClickCategory("Question")}
         >
-          <p>Question</p>
+          <p>Questions</p>
+        </div>
+        <div
+          className={`border p-2 cursor-pointer ${
+            category === "Requests" && "bg-purple-500 text-white"
+          }`}
+          onClick={() => handleClickCategory("Requests")}
+        >
+          <p>Requests</p>
         </div>
         <div
           className={`border p-2 cursor-pointer ${
@@ -80,7 +86,7 @@ function Board({ handleClickCategory, category, boardPosts }: Props) {
           <p className="font-bold text-xs xl:text-sm">Views</p>
         </div>
       </div>
-      <Table boardPosts={boardPosts} />
+      <Table />
     </section>
   );
 }

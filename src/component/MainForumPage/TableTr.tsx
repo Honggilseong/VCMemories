@@ -5,12 +5,16 @@ import { getCountReplies } from "../../util/countReplies";
 
 interface Props {
   boardPost: BoardPost;
+  currentPage: number;
 }
-function TableTr({ boardPost }: Props) {
+function TableTr({ boardPost, currentPage }: Props) {
   const { push } = useInternalRouter();
 
   const handleClickBoardPost = () => {
-    push(`/forum/vrchat/${boardPost._id}`);
+    push({
+      pathname: `/forum/vrchat/${boardPost._id}`,
+      search: `?page=${currentPage || 1}`,
+    });
   };
   return (
     <tr

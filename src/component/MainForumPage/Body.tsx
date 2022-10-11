@@ -1,26 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Board from "./Board";
-import { getAllBoardPosts } from "../../api";
-import { BoardPost } from "../../actions/boardPostDispatch";
 function Body() {
   const [category, setCategory] = useState<string>("all");
-  const [boardPosts, setBoardPosts] = useState<BoardPost[]>([]);
-  const effectRef = useRef(false);
   const handleClickCategory = (category: string) => {
     setCategory(category);
   };
-  useEffect(() => {
-    const getBoardPosts = async () => {
-      if (effectRef.current === false) {
-        const { data } = await getAllBoardPosts();
-        setBoardPosts(data);
-      }
-    };
-    getBoardPosts();
-    return () => {
-      effectRef.current = true;
-    };
-  }, []);
   return (
     <section className="w-full h-full mt-10">
       <div className="flex flex-col xl:flex-row xl:items-start xl:justify-evenly">
@@ -37,7 +21,6 @@ function Body() {
           <Board
             handleClickCategory={handleClickCategory}
             category={category}
-            boardPosts={boardPosts}
           />
         </div>
         <div></div>
