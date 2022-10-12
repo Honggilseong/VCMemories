@@ -18,7 +18,7 @@ function Table() {
   const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
   const handleClickPost = () => {
-    if (!authUser.name) return toastError("You need to sign in");
+    if (!authUser.name) return toastError("Please sign in first.");
     push(`/forum/${authUser._id}/create`);
   };
 
