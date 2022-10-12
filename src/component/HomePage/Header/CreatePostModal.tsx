@@ -25,7 +25,6 @@ interface Comment {
 }
 interface NewPost {
   title: string;
-  picture: string;
   message: string;
   tags: string[];
   name: string;
@@ -52,7 +51,6 @@ function CreatePostModal() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newPost, setNewPost] = useState<NewPost>({
     title: "",
-    picture: "",
     message: "",
     tags: [],
     name: "",
@@ -82,7 +80,6 @@ function CreatePostModal() {
     dispatch(closePostModal());
     setNewPost({
       title: "",
-      picture: "",
       message: "",
       tags: [],
       name: "",
@@ -101,37 +98,29 @@ function CreatePostModal() {
     const { name, value } = e.target;
     setNewPost({ ...newPost, [name]: value });
   };
-
   const handleUploadPost = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (!previewImage[0]) {
-      toastError("You have to upload your image!");
+      toastError("Please upload your image!");
       return;
     }
     setIsLoading(true);
-    const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_USERNAME}/upload`;
-    const formData = new FormData();
-    formData.append("file", previewImage[0]);
-    formData.append(
-      "upload_preset",
-      `${process.env.REACT_APP_CLOUDINARY_NAME}`
-    );
     const userInfo = JSON.parse(localStorage.getItem("profile") || "");
+    const formData = new FormData();
+    for (let i = 0; i < previewImage.length; i++) {
+      formData.append("image", previewImage[i]);
+    }
+    formData.append(
+      "data",
+      JSON.stringify({
+        ...newPost,
+        name: userInfo.user.name,
+        userId: userInfo.user._id,
+        postType: "",
+      })
+    );
     try {
-      const response = await fetch(url, {
-        method: "post",
-        body: formData,
-      }).then();
-      const data = await response.json();
-      dispatch(
-        createPost({
-          ...newPost,
-          name: userInfo.user.name,
-          picture: data.public_id,
-          userId: userInfo.user._id,
-          postType: previewImage[0].type,
-        })
-      );
+      await dispatch(createPost(formData));
       setIsLoading(false);
     } catch (err) {
       console.log(err);
@@ -140,7 +129,6 @@ function CreatePostModal() {
     }
     setNewPost({
       title: "",
-      picture: "",
       message: "",
       tags: [],
       name: "",
