@@ -6,7 +6,6 @@ interface Props {
 function CloudinaryImage({ image }: Props) {
   return (
     <Image
-      key={image}
       cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
       publicId={image}
       className="w-full h-full"
