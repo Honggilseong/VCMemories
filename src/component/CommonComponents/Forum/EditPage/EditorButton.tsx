@@ -1,10 +1,6 @@
 import React from "react";
 import { IconType } from "react-icons";
-// interface IconTypeProps {
-//   size: number;
-//   color?: string;
-// }
-// type IconType = (props: IconTypeProps) => JSX.Element;
+
 interface Props {
   active?: boolean;
   label?: string;
@@ -26,7 +22,7 @@ function EditorButton({
       className={`border p-2 cursor-pointer hover:bg-gray-300 h-10 w-10 flex items-center justify-center ${
         name ? "font-bold" : "font-normal"
       } ${active ? "bg-black text-white" : "bg-white text-black"}`}
-      onClick={() => handleClickButton(label ? label : null)}
+      onClick={() => handleClickButton(label && label)}
     >
       {Icon ? Icon : name}
     </button>
