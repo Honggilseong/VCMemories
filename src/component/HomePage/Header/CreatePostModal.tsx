@@ -98,29 +98,50 @@ function CreatePostModal() {
     const { name, value } = e.target;
     setNewPost({ ...newPost, [name]: value });
   };
+  const getBase64Data = async (file: Blob) => {
+    return new Promise((resolve, reject) => {
+      let fileReader = new FileReader();
+      fileReader.onerror = () => {
+        reject("Err");
+      };
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        if (fileReader.result !== undefined) {
+          resolve(fileReader.result);
+        } else {
+          reject("Err");
+        }
+      };
+    });
+  };
+  const makeBase64Array = async () => {
+    let base64Array: any[] = [];
+    for (let i = 0; i < previewImage.length; i++) {
+      await getBase64Data(previewImage[i]).then((base64) => {
+        base64Array.push(base64);
+      });
+    }
+    return base64Array;
+  };
   const handleUploadPost = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (!previewImage[0]) {
       toastError("Please upload your image!");
       return;
     }
+    const imageArray = await makeBase64Array();
+
     setIsLoading(true);
     const userInfo = JSON.parse(localStorage.getItem("profile") || "");
-    const formData = new FormData();
-    for (let i = 0; i < previewImage.length; i++) {
-      formData.append("image", previewImage[i]);
-    }
-    formData.append(
-      "data",
-      JSON.stringify({
-        ...newPost,
-        name: userInfo.user.name,
-        userId: userInfo.user._id,
-        postType: "",
-      })
-    );
+    const postData = {
+      ...newPost,
+      name: userInfo.user.name,
+      userId: userInfo.user._id,
+      postType: "",
+      images: imageArray,
+    };
     try {
-      await dispatch(createPost(formData));
+      await dispatch(createPost(postData));
       setIsLoading(false);
     } catch (err) {
       console.log(err);

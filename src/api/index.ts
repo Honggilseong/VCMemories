@@ -253,16 +253,16 @@ export const mentionUser = (
     config
   );
 };
-export const createPost = (formData: any): AxiosPromise => {
+export const createPost = (postData: any): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
 
   const config = {
     headers: {
-      "Content-type": "multipart/form-data",
+      "Content-type": "application/json",
       Authorization: "Bearer " + user.user.token,
     },
   };
-  return API.patch("/posts/createpost", formData, config);
+  return API.patch("/posts/createpost", { postData }, config);
 };
 
 export const getPosts = (followingUsers: string[]): AxiosPromise => {
