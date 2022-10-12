@@ -11,7 +11,6 @@ import {
   readNotifications,
 } from "../../../actions/authAction";
 import { useAppDispatch } from "../../../reducers/store";
-import { Image } from "cloudinary-react";
 import UserPostModal from "./Notification/UserPostModal";
 import { Comment } from "../../../actions/postActionDispatch";
 import * as api from "../../../api";
