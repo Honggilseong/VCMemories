@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { Image } from "cloudinary-react";
 import { GetAllUsers } from "../../actions/allUsersActionDispatch";
 import { v4 as uuidv4 } from "uuid";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
@@ -37,6 +38,7 @@ function Header() {
   const dispatch = useAppDispatch();
   const allUsers = useSelector((state: RootState) => state.allUsers);
   const { push } = useInternalRouter();
+  const { width } = useWindowSize();
 
   const handleClickMobileSearch = () => {
     setIsMobileSearchOpen((prev) => !prev);
@@ -162,6 +164,10 @@ function Header() {
       effectRef.current = true;
     };
   }, [allUsers]);
+  useEffect(() => {
+    if (width < 1024) setIsSearchResultOpen(false);
+    if (width > 1024) setIsMobileSearchOpen(false);
+  }, [width]);
   return (
     <>
       <header className="w-full h-16 border-b-purple-800 border-b-2 bg-purple-500 text-white">

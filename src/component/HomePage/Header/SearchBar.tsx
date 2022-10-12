@@ -72,7 +72,7 @@ function SearchBar({
       </div>
       {isSearchResultOpen && (
         <div
-          className={`border absolute -bottom-[25rem] -left-12 rounded-lg w-[300px] overflow-auto bg-white ${
+          className={`border absolute -bottom-[25rem] -left-12 rounded-lg w-[300px] overflow-auto bg-white z-50 ${
             checkIfValidHashtag(searchValue)
               ? "h-16 -bottom-[4rem] px-2"
               : "h-[400px]"
