@@ -110,9 +110,9 @@ function EditorComponent({ isEdit }: Props) {
   };
   const handleUploadPost = async () => {
     if (isLoading)
-      return toastError("please wait until your image has uploaded.");
-    if (!title) return toastError("please set your title.");
-    if (!category) return toastError("please set category.");
+      return toastError("Please wait until the image has uploaded");
+    if (!title) return toastError("Please set your title");
+    if (!category) return toastError("Please set the category");
     const editorToRaw = JSON.stringify(
       convertToRaw(editorState.getCurrentContent())
     );
@@ -136,9 +136,9 @@ function EditorComponent({ isEdit }: Props) {
   };
   const handleUploadEditBoardPost = async () => {
     if (isLoading)
-      return toastError("please wait until your image has uploaded.");
-    if (!title) return toastError("please set your title.");
-    if (!category) return toastError("please set category.");
+      return toastError("Please wait until the image has uploaded");
+    if (!title) return toastError("Please set your title");
+    if (!category) return toastError("Please set the category");
     const editorToRaw = JSON.stringify(
       convertToRaw(editorState.getCurrentContent())
     );
@@ -415,14 +415,20 @@ function EditorComponent({ isEdit }: Props) {
               active={blockType === "header-three"}
             />
             <EditorButton
-              Icon={<FaItalic color={inlineType.has("ITALIC") && "white"} />}
+              Icon={
+                <FaItalic
+                  color={inlineType.has("ITALIC") ? "white" : undefined}
+                />
+              }
               handleClickButton={handleClickInlineStyleButton}
               active={inlineType.has("ITALIC")}
               label="ITALIC"
             />
             <EditorButton
               Icon={
-                <FaUnderline color={inlineType.has("UNDERLINE") && "white"} />
+                <FaUnderline
+                  color={inlineType.has("UNDERLINE") ? "white" : undefined}
+                />
               }
               handleClickButton={handleClickInlineStyleButton}
               active={inlineType.has("UNDERLINE")}
@@ -430,7 +436,10 @@ function EditorComponent({ isEdit }: Props) {
             />
             <EditorButton
               Icon={
-                <GoBold size={20} color={inlineType.has("BOLD") && "white"} />
+                <GoBold
+                  size={20}
+                  color={inlineType.has("BOLD") ? "white" : undefined}
+                />
               }
               handleClickButton={handleClickInlineStyleButton}
               active={inlineType.has("BOLD")}
@@ -440,7 +449,9 @@ function EditorComponent({ isEdit }: Props) {
               Icon={
                 <AiOutlineUnorderedList
                   size={20}
-                  color={blockType === "unordered-list-item" && "white"}
+                  color={
+                    blockType === "unordered-list-item" ? "white" : undefined
+                  }
                 />
               }
               handleClickButton={handleClickBlockStyleButton}
@@ -451,7 +462,9 @@ function EditorComponent({ isEdit }: Props) {
               Icon={
                 <AiOutlineOrderedList
                   size={20}
-                  color={blockType === "ordered-list-item" && "white"}
+                  color={
+                    blockType === "ordered-list-item" ? "white" : undefined
+                  }
                 />
               }
               handleClickButton={handleClickBlockStyleButton}

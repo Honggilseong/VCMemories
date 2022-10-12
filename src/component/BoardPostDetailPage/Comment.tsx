@@ -70,13 +70,13 @@ function Comment({
   };
   const handleClickLikeComment = () => {
     if (isLoading) return;
-    if (!authUser.name) return toastError("you need to sign in");
+    if (!authUser.name) return toastError("Please sign in");
     setIsLoading(true);
     dispatch(likeBoardPostComment(params.boardpostid, authUser._id, commentId));
     setIsLoading(false);
   };
   const handleClickLikeReply = (replyId: string) => {
-    if (!authUser.name) return toastError("you need to sign in");
+    if (!authUser.name) return toastError("Please sign in");
     dispatch(
       likeBoardPostReply(params.boardpostid, authUser._id, commentId, replyId)
     );
@@ -89,7 +89,7 @@ function Comment({
   };
   const handleLeaveReply = () => {
     if (isLoading) return;
-    if (!authUser.name) return toastError("you need to sign in");
+    if (!authUser.name) return toastError("Please sign in");
     setIsLoading(true);
     dispatch(
       boardPostLeaveReply(
