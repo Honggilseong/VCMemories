@@ -27,7 +27,8 @@ import { v4 as uuidv4 } from "uuid";
 import { MentionItem } from "react-mentions";
 import { mentionUser } from "../../actions/authAction";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
-import CloudinaryImage from "../CommonComponents/CloudinaryImage";
+import { useIsTruncated } from "../../util/useIsTruncated";
+import Carousel from "../CommonComponents/Carousel";
 
 interface Props {
   post: {
@@ -44,6 +45,7 @@ interface Props {
     comments: Comment[];
     isEdit: boolean;
     postType: string;
+    images: string[];
   };
 }
 interface ReportsList {
@@ -56,6 +58,7 @@ function Post({ post }: Props) {
   const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
   const [isReportLoading, setIsReportLoading] = useState<boolean>(false);
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
+  const [isOpenText, setIsOpenText] = useState<boolean>(false);
   const [mentionUsers, setMentionUsers] = useState<string[]>([]);
   const authUser = useSelector((state: RootState) => state.auth);
   const { push } = useInternalRouter();
@@ -74,6 +77,8 @@ function Post({ post }: Props) {
     ],
     selected: "",
   });
+  const textRef = useRef(null);
+  const isTruncated = useIsTruncated(textRef);
   const dropDownRef = useRef(
     null
   ) as unknown as React.MutableRefObject<HTMLDivElement>;
@@ -169,7 +174,9 @@ function Post({ post }: Props) {
     setCommentValue({ ...commentValue, comment: e.target.value });
     setMentionUsers(mentions.map((mention) => mention.id));
   };
-
+  const handleClickMoreButton = () => {
+    setIsOpenText((prev) => !prev);
+  };
   useEffect(() => {
     const likedPost = post.likes.findIndex((id) => id === authUser._id);
     if (likedPost === -1) {
@@ -236,12 +243,12 @@ function Post({ post }: Props) {
           )}
         </div>
       </div>
-      <div className="w-full xl:w-[800px] h-[500px] mx-auto">
-        <CloudinaryImage image={post.picture} />
+      <div className="w-full xl:w-[800px] h-[500px] flex items-center justify-center">
+        <Carousel images={post.images} />
       </div>
       <div className="my-2">
         <h2 className="font-bold text-lg">{post.title}</h2>
-        <p className="whitespace-pre">
+        <p className="whitespace-pre line-clamp-2" ref={textRef}>
           {post.message.split(" ").map((msg) => {
             if (msg.startsWith("#")) {
               return (
@@ -258,6 +265,7 @@ function Post({ post }: Props) {
             }
           })}
         </p>
+        {isTruncated && <button>{isOpenText ? "[less]" : "[more]"}</button>}
         <div className="flex">
           <p className="text-gray-500 text-sm mr-1">
             {moment(post.createdAt).fromNow()}

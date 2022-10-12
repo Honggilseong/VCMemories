@@ -12,6 +12,7 @@ import { useInternalRouter } from "../../pages/routing";
 import { mentionUser } from "../../actions/authAction";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
 import { MentionItem } from "react-mentions";
+import CloudinaryImage from "../CommonComponents/CloudinaryImage";
 
 function Post({ post, authUser }: any) {
   const [commentValue, setCommentValue] = useState<Comment>({
@@ -96,13 +97,7 @@ function Post({ post, authUser }: any) {
         className="cursor-pointer flex justify-center items-center flex-col h-44 w-44"
         onClick={handleClickDetailPost}
       >
-        <Image
-          key={post.picture}
-          cloudName={process.env.REACT_APP_CLOUDINARY_USERNAME}
-          publicId={post.picture}
-          className="w-full h-full"
-          crop="scale"
-        />
+        <CloudinaryImage image={post.images[0]} />
       </div>
       <UserProfileInfoModal
         authUser={authUser}

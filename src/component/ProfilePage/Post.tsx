@@ -126,7 +126,7 @@ function Post({ post, authUser }: any) {
         className="cursor-pointer flex justify-center items-center flex-col h-44 w-44"
         onClick={handleClickDetailPost}
       >
-        <CloudinaryImage image={post.picture} />
+        <CloudinaryImage image={post.images[0]} />
       </div>
       <ProfileInfoModal
         post={post}

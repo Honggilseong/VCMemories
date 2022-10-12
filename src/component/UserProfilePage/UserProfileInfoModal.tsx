@@ -9,7 +9,8 @@ import { Mention, MentionsInput } from "react-mentions";
 import { mentionInputStyle, mentionStyle } from "../../util/mentionCSS";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers/store";
-import CloudinaryImage from "../CommonComponents/CloudinaryImage";
+import Carousel from "../CommonComponents/Carousel";
+
 const customStyles = {
   content: {
     top: "50%",
@@ -20,6 +21,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
   },
 };
+
 function UserProfileInfoModal({
   post,
   isModalOpen,
@@ -69,8 +71,8 @@ function UserProfileInfoModal({
             )}
           </div>
         </div>
-        <div className="h-[450px] lg:w-[800px] w-full">
-          <CloudinaryImage image={post.picture} />
+        <div className="h-[450px] lg:w-[800px] w-full items-center flex justify-center">
+          <Carousel images={post.images} />
         </div>
         <div className="my-2">
           <h2 className="font-bold text-lg">{post.title}</h2>
@@ -91,7 +93,6 @@ function UserProfileInfoModal({
               }
             })}
           </p>
-          <p>{post.tags.map((tag: string) => tag)}</p>
           <p className="text-gray-500 text-sm">
             {moment(post.createdAt).fromNow()}
           </p>

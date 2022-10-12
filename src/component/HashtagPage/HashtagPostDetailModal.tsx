@@ -9,7 +9,7 @@ import { Mention, MentionsInput } from "react-mentions";
 import { mentionInputStyle, mentionStyle } from "../../util/mentionCSS";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers/store";
-import CloudinaryImage from "../CommonComponents/CloudinaryImage";
+import Carousel from "../CommonComponents/Carousel";
 
 const customStyles = {
   content: {
@@ -71,8 +71,8 @@ function HashtagPostDetailModal({
               </div> */}
           <div />
         </div>
-        <div className="h-[450px] lg:w-[800px] w-full">
-          <CloudinaryImage image={hashtagPost.picture} />
+        <div className="h-[450px] lg:w-[800px] w-full items-center flex justify-center">
+          <Carousel images={hashtagPost.images} />
         </div>
         <div className="my-2">
           <h2 className="font-bold text-lg">{hashtagPost.title}</h2>

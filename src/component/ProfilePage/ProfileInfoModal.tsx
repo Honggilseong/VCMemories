@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import Modal from "react-modal";
 import { Mention, MentionsInput } from "react-mentions";
 import { mentionInputStyle, mentionStyle } from "../../util/mentionCSS";
-import CloudinaryImage from "../CommonComponents/CloudinaryImage";
+import Carousel from "../CommonComponents/Carousel";
 const customStyles = {
   content: {
     top: "50%",
@@ -66,8 +66,8 @@ function ProfileInfoModal({
           <h1 className="font-bold">{post.name}</h1>
           <div />
         </div>
-        <div className="h-[450px] lg:w-[800px] w-full">
-          <CloudinaryImage image={post.picture} />
+        <div className="h-[450px] lg:w-[800px] w-full flex items-center justify-center">
+          <Carousel images={post.images} />
         </div>
         <div className="my-2">
           {isEdit ? (

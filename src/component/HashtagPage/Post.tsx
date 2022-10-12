@@ -122,7 +122,7 @@ function Post({ hashtagPost }: Props) {
             className="cursor-pointer w-full h-full"
             onClick={handleOpenPostModal}
           >
-            <CloudinaryImage image={hashtagPost.picture} />
+            <CloudinaryImage image={hashtagPost.images[0]} />
           </div>
         </div>
       </div>
