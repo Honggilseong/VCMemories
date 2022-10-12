@@ -21,6 +21,7 @@ export interface HashTagPost {
   comments: Comment[];
   createdAt: string;
   postType: string;
+  images: string[];
 }
 
 export interface getHashtagPosts {
