@@ -18,6 +18,8 @@ interface PostData {
   profilePicture: string;
   userId: string;
   likes: string[];
+  images?: any;
+  postType: string;
 }
 interface NotificationSender {
   sender: string;
@@ -251,16 +253,16 @@ export const mentionUser = (
     config
   );
 };
-export const createPost = (postData: PostData): AxiosPromise => {
+export const createPost = (formData: any): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
 
   const config = {
     headers: {
-      "Content-type": "application/json",
+      "Content-type": "multipart/form-data",
       Authorization: "Bearer " + user.user.token,
     },
   };
-  return API.post("/posts/createpost", postData, config);
+  return API.patch("/posts/createpost", formData, config);
 };
 
 export const getPosts = (followingUsers: string[]): AxiosPromise => {

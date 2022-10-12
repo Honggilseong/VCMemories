@@ -24,6 +24,7 @@ export interface NewPost {
   comments: Comment[];
   isEdit: boolean;
   postType: string;
+  images?: any;
 }
 
 export interface createPost {

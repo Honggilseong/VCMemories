@@ -6,21 +6,21 @@ import {
   GET_POSTS,
   POST_LEAVE_COMMENT,
   POST_LIKE_POST,
-  NewPost,
   RESET_POSTS,
   POST_DELETE_COMMENT,
 } from "./postActionDispatch";
 import * as api from "../api";
 import { toastError, toastSuccess } from "../util/toast";
 
-export const createPost = (newPost: NewPost) => async (dispatch: Dispatch) => {
+export const createPost = (formData: any) => async (dispatch: Dispatch) => {
   try {
-    const { data } = await api.createPost(newPost);
+    const { data } = await api.createPost(formData);
 
     dispatch({
       type: CREATE_POST,
       payload: data,
     });
+    toastSuccess("Your post has been posted 😀");
   } catch (err) {
     console.log(err);
     toastError("Sorry something went wrong... please try again... 😢");
