@@ -13,6 +13,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     backgroundColor: "white",
   },
+  overlay: { zIndex: 1000 },
 };
 interface AcceptedFiles {
   path: string;
