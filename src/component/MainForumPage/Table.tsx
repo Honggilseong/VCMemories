@@ -9,6 +9,7 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 import TableTr from "./TableTr";
 import Pagination from "rc-pagination";
+import BoardPostSearchBar from "./BoardPostSearchBar";
 
 function Table() {
   const location = useLocation();
@@ -104,6 +105,7 @@ function Table() {
           Post
         </button>
       </div>
+
       <Pagination
         current={currentPage}
         pageSize={1}
@@ -112,6 +114,7 @@ function Table() {
         className="flex items-center justify-center"
         itemRender={itemRender}
       />
+      <BoardPostSearchBar />
     </>
   );
 }
