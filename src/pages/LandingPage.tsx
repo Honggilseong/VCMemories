@@ -11,7 +11,9 @@ function LandingPage() {
   const handleClickGoToMain = () => {
     push("/auth");
   };
-
+  const handleClickGoToForum = () => {
+    push("/forum/vrchat");
+  };
   return (
     <motion.div
       className="w-full h-full"
@@ -126,23 +128,44 @@ function LandingPage() {
         >
           Post all you're fun memories
         </motion.p>
+
         <motion.button
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
             scale: 1,
             y: width >= 1280 ? 170 : 120,
+            x: width >= 1280 ? 100 : 80,
           }}
           transition={{
             duration: 1,
             delay: 6,
             ease: "backIn",
           }}
-          className="absolute bg-purple-500 text-white p-3 rounded-lg text-lg xl:text-2xl z-50"
+          className="absolute bg-purple-500 text-white p-3 rounded-lg text-lg xl:text-2xl z-50 w-[180px]"
           onClick={handleClickGoToMain}
         >
-          Go to main
+          Social media
         </motion.button>
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            y: width >= 1280 ? 170 : 120,
+            x: width >= 1280 ? -100 : -90,
+          }}
+          transition={{
+            duration: 1,
+            delay: 6,
+            ease: "backIn",
+          }}
+          className="absolute bg-purple-500 text-white p-3 rounded-lg text-lg xl:text-2xl z-50 w-[120px]"
+          onClick={handleClickGoToForum}
+        >
+          Forum
+        </motion.button>
+
         <motion.video
           autoPlay
           muted
