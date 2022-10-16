@@ -7,6 +7,7 @@ import postReducer from "./postReducers";
 import searchUserReducer from "./searchUserReducers";
 import hashtagPostsReducer from "./hashtagPostsReducers";
 import boardPostReducer from "./boardPostReducers";
+import boardPostListReducer from "./boardPostListReducers";
 const rootReducer = combineReducers({
   auth: authReducer,
   modal: modalReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   allUsers: allUsersReducer,
   hashtagPosts: hashtagPostsReducer,
   boardPost: boardPostReducer,
+  boardPostList: boardPostListReducer,
 });
 
 export default rootReducer;
