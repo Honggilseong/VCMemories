@@ -22,41 +22,41 @@ function Board({ handleClickCategory, category }: Props) {
         </div>
         <div
           className={`border p-2 cursor-pointer ${
-            category === "Unity" && "bg-purple-500 text-white"
+            category === "unity" && "bg-purple-500 text-white"
           }`}
-          onClick={() => handleClickCategory("Unity")}
+          onClick={() => handleClickCategory("unity")}
         >
           <p>Unity</p>
         </div>
         <div
           className={`border p-2 cursor-pointer ${
-            category === "Blender" && "bg-purple-500 text-white"
+            category === "blender" && "bg-purple-500 text-white"
           }`}
-          onClick={() => handleClickCategory("Blender")}
+          onClick={() => handleClickCategory("blender")}
         >
           <p>Blender</p>
         </div>
         <div
           className={`border p-2 cursor-pointer ${
-            category === "Question" && "bg-purple-500 text-white"
+            category === "questions" && "bg-purple-500 text-white"
           }`}
-          onClick={() => handleClickCategory("Question")}
+          onClick={() => handleClickCategory("questions")}
         >
           <p>Questions</p>
         </div>
         <div
           className={`border p-2 cursor-pointer ${
-            category === "Requests" && "bg-purple-500 text-white"
+            category === "requests" && "bg-purple-500 text-white"
           }`}
-          onClick={() => handleClickCategory("Requests")}
+          onClick={() => handleClickCategory("requests")}
         >
           <p>Requests</p>
         </div>
         <div
           className={`border p-2 cursor-pointer ${
-            category === "Tips" && "bg-purple-500 text-white"
+            category === "tips" && "bg-purple-500 text-white"
           }`}
-          onClick={() => handleClickCategory("Tips")}
+          onClick={() => handleClickCategory("tips")}
         >
           <p>Tips</p>
         </div>
@@ -86,7 +86,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p className="font-bold text-xs xl:text-sm">Views</p>
         </div>
       </div>
-      <Table />
+      <Table category={category} />
     </section>
   );
 }

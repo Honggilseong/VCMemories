@@ -1,9 +1,23 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useInternalRouter } from "../../pages/routing";
 import Board from "./Board";
 function Body() {
-  const [category, setCategory] = useState<string>("all");
+  const [searchParams] = useSearchParams();
+  const [category, setCategory] = useState<string>(
+    searchParams.has("filter") ? searchParams.get("filter") : "all"
+  );
+  const { push } = useInternalRouter();
   const handleClickCategory = (category: string) => {
     setCategory(category);
+    if (category === "all") {
+      push("/forum/vrchat");
+    } else {
+      push({
+        pathname: "/forum/vrchat",
+        search: `?filter=${category}&page=1`,
+      });
+    }
   };
   return (
     <section className="w-full h-full mt-10">

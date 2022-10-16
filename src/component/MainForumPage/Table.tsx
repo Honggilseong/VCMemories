@@ -1,23 +1,29 @@
 import { useEffect, useState, useCallback } from "react";
 import { useInternalRouter } from "../../pages/routing";
 import { useSelector } from "react-redux";
-import { RootState } from "../../reducers/store";
+import { RootState, useAppDispatch } from "../../reducers/store";
 import { toastError } from "../../util/toast";
-import { getBoardPostsQuery } from "../../api";
-import { useLocation } from "react-router-dom";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import { useSearchParams } from "react-router-dom";
+import { getBoardPostList } from "../../actions/boardPostListAction";
+import { BoardPost } from "../../actions/boardPostListDispatch";
 
 import TableTr from "./TableTr";
 import Pagination from "rc-pagination";
 import BoardPostSearchBar from "./BoardPostSearchBar";
 
-function Table() {
-  const location = useLocation();
-  const [pageCount, setPageCount] = useState(1);
+interface Props {
+  category: string;
+}
+
+function Table({ category }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [queryBoardPosts, setQueryBoardPosts] = useState<any>();
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchParams] = useSearchParams();
   const { push } = useInternalRouter();
   const authUser = useSelector((state: RootState) => state.auth);
+  const boardPostList = useSelector((state: RootState) => state.boardPostList);
+  const dispatch = useAppDispatch();
   const handleClickPost = () => {
     if (!authUser.name) return toastError("Please sign in first.");
     push(`/forum/${authUser._id}/create`);
@@ -25,10 +31,30 @@ function Table() {
 
   const handlePageClick = (count: any) => {
     setCurrentPage(count);
-    push({
-      pathname: "/forum/vrchat",
-      search: `?page=${count}`,
-    });
+    if (searchParams.has("search")) {
+      const searchWord = searchParams.get("search");
+      push({
+        pathname: "/forum/vrchat",
+        search: `?search=${searchWord}&page=${count}`,
+      });
+    } else if (
+      searchParams.has("filter") &&
+      searchParams.get("filter") !== "all"
+    ) {
+      const filter = searchParams.get("filter");
+      push({
+        pathname: "/forum/vrchat",
+        search: `?filter=${filter}&page=${count}`,
+      });
+    } else {
+      push({
+        pathname: "/forum/vrchat",
+        search: `?page=${count}`,
+      });
+    }
+  };
+  const handleInputSearchValue = (e: any) => {
+    setSearchValue(e.target.value);
   };
   const itemRender = useCallback(
     (page: number, type: string, element: React.ReactNode) => {
@@ -56,7 +82,11 @@ function Table() {
         return (
           <IoIosArrowDropright
             size={25}
-            color={currentPage === pageCount ? "grey" : "purple"}
+            color={
+              currentPage === Math.ceil(boardPostList?.pagination.pageCount)
+                ? "grey"
+                : "purple"
+            }
           />
         );
       }
@@ -64,31 +94,83 @@ function Table() {
     },
     [currentPage]
   );
-  useEffect(() => {
-    const getBoardPosts = async () => {
-      try {
-        if (location.search) {
-          const getPageNumber = location.search[location.search.length - 1];
-          const { data } = await getBoardPostsQuery(Number(getPageNumber));
-          setQueryBoardPosts(data);
-          setPageCount(Math.ceil(data?.pagination.pageCount));
-          setCurrentPage(Number(getPageNumber));
-          return;
-        }
-        const { data } = await getBoardPostsQuery(currentPage);
-        setQueryBoardPosts(data);
-        setPageCount(Math.ceil(data?.pagination.pageCount));
-      } catch (error) {
-        console.log(error);
+  const handleClickSearchBoardPost = async () => {
+    if (!searchValue) return;
+    dispatch(getBoardPostList(1, searchValue));
+    push({
+      pathname: "/forum/vrchat",
+      search: `?search=${searchValue}&page=1`,
+    });
+    setCurrentPage(1);
+  };
+  const getBoardPosts = async () => {
+    try {
+      if (searchParams.has("page")) {
+        dispatch(getBoardPostList(Number(searchParams.get("page"))));
+        setCurrentPage(Number(searchParams.get("page")));
+      } else {
+        dispatch(getBoardPostList(currentPage));
+        setCurrentPage(1);
       }
-    };
-    getBoardPosts();
-  }, [currentPage]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getSearchBoardPosts = async () => {
+    try {
+      if (Number(searchParams.get("page")) > 1) {
+        dispatch(
+          getBoardPostList(
+            Number(searchParams.get("page")),
+            !searchValue ? searchParams.get("search") : searchValue
+          )
+        );
+        setCurrentPage(Number(searchParams.get("page")));
+      } else {
+        dispatch(
+          getBoardPostList(
+            1,
+            !searchValue ? searchParams.get("search") : searchValue
+          )
+        );
+        setCurrentPage(1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getFilterBoardPosts = async () => {
+    try {
+      if (Number(searchParams.get("page")) > 1) {
+        dispatch(
+          getBoardPostList(Number(searchParams.get("page")), "", category)
+        );
+        setCurrentPage(Number(searchParams.get("page")));
+      } else {
+        dispatch(getBoardPostList(1, "", category));
+        setCurrentPage(1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (searchParams.has("search")) {
+      getSearchBoardPosts();
+    } else if (
+      searchParams.has("filter") &&
+      searchParams.get("filter") !== "all"
+    ) {
+      getFilterBoardPosts();
+    } else {
+      getBoardPosts();
+    }
+  }, [currentPage, category]);
   return (
     <>
       <table className="w-full">
         <tbody>
-          {queryBoardPosts?.boardPosts?.map((boardPost: any) => (
+          {boardPostList?.boardPosts?.map((boardPost: BoardPost) => (
             <TableTr
               key={boardPost._id}
               boardPost={boardPost}
@@ -109,12 +191,17 @@ function Table() {
       <Pagination
         current={currentPage}
         pageSize={1}
-        total={pageCount}
+        total={Math.ceil(boardPostList?.pagination.pageCount)}
         onChange={handlePageClick}
         className="flex items-center justify-center"
         itemRender={itemRender}
+        locale={{ prev_page: "prev", next_page: "next" }}
       />
-      <BoardPostSearchBar />
+      <BoardPostSearchBar
+        handleClickSearchBoardPost={handleClickSearchBoardPost}
+        searchValue={searchValue}
+        handleInputSearchValue={handleInputSearchValue}
+      />
     </>
   );
 }
