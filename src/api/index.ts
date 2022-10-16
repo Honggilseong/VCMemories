@@ -404,13 +404,25 @@ export const getAllBoardPosts = (): AxiosPromise => {
   return API.get("/forum/getallboardposts", config);
 };
 
-export const getBoardPostsQuery = (page: number): AxiosPromise => {
+export const getBoardPostsQuery = (
+  page: number,
+  searchWord?: string,
+  category?: string
+): AxiosPromise => {
   const config = {
     headers: {
       "Content-type": "application/json",
     },
   };
-  return API.get(`/forum/vrchat?page=${!page ? 1 : page}`, config);
+  let url = "";
+  if (searchWord) {
+    url = `/forum/vrchat?search=${searchWord}&page=${!page ? 1 : page}`;
+  } else if (category) {
+    url = `/forum/vrchat?filter=${category}&page=${!page ? 1 : page}`;
+  } else {
+    url = `/forum/vrchat?page=${!page ? 1 : page}`;
+  }
+  return API.get(url, config);
 };
 
 export const postBoardPost = (boardPost: any): AxiosPromise => {
