@@ -41,7 +41,7 @@ function ForumUserInfo() {
   return (
     <div>
       <Header />
-      <section className="max-w-[900px] border mx-auto">
+      <section className="max-w-[900px] border mx-auto p-2 md:p-0">
         <section className="my-5">
           <div className="flex items-center">
             <div className="rounded-full h-20 w-20 overflow-hidden mr-2 border-2 border-green-500">
@@ -73,11 +73,11 @@ function ForumUserInfo() {
               onClick={() => handleClickBoardPost(boardPost._id)}
             >
               <div>
-                <p>
-                  <span className="font-bold">{boardPost.category}</span>
-                  {boardPost.title}
-                  <span>[{getCountReplies(boardPost.comments)}]</span>
-                </p>
+                <span className="font-bold w-[260px] md:w-[400px] lg:w-[500px] xl:w-full  text-ellipsis overflow-hidden">
+                  {boardPost.category}
+                </span>
+                {boardPost.title}
+                <span>[{getCountReplies(boardPost.comments)}]</span>
               </div>
               <div>
                 <p>{moment(boardPost.createdAt).format("DD/MM/YY")}</p>

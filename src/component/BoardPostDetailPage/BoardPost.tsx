@@ -94,7 +94,9 @@ function BoardPost({
         </div>
       )}
       <div className="flex justify-between items-center">
-        <h1 className="font-bold text-xl">{boardPost?.title}</h1>
+        <h1 className="font-bold text-xl text-ellipsis overflow-hidden w-[260px] md:w-[400px] lg:w-[500px] xl:w-full">
+          {boardPost?.title}
+        </h1>
 
         <div className="flex font-bold">
           <div className="flex items-center mr-2">

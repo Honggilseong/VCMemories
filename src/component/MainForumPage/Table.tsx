@@ -168,17 +168,15 @@ function Table({ category }: Props) {
   }, [currentPage, category]);
   return (
     <>
-      <table className="w-full">
-        <tbody>
-          {boardPostList?.boardPosts?.map((boardPost: BoardPost) => (
-            <TableTr
-              key={boardPost._id}
-              boardPost={boardPost}
-              currentPage={currentPage}
-            />
-          ))}
-        </tbody>
-      </table>
+      <section className="w-full">
+        {boardPostList?.boardPosts?.map((boardPost: BoardPost) => (
+          <TableTr
+            key={boardPost._id}
+            boardPost={boardPost}
+            currentPage={currentPage}
+          />
+        ))}
+      </section>
       <div className="flex justify-end w-full">
         <button
           className="p-1 w-16 rounded-lg bg-purple-500 text-white"

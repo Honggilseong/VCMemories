@@ -11,9 +11,9 @@ function Board({ handleClickCategory, category }: Props) {
   const { width } = useWindowSize();
   return (
     <section className="w-full xl:max-w-[900px]">
-      <nav className="flex">
+      <nav className="flex w-full">
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "all" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("all")}
@@ -21,7 +21,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p>All</p>
         </div>
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "unity" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("unity")}
@@ -29,7 +29,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p>Unity</p>
         </div>
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "blender" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("blender")}
@@ -37,7 +37,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p>Blender</p>
         </div>
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "questions" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("questions")}
@@ -45,7 +45,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p>Questions</p>
         </div>
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "requests" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("requests")}
@@ -53,7 +53,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p>Requests</p>
         </div>
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "tips" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("tips")}
@@ -61,7 +61,7 @@ function Board({ handleClickCategory, category }: Props) {
           <p>Tips</p>
         </div>
         <div
-          className={`border p-2 cursor-pointer ${
+          className={`border p-2 cursor-pointer text-xs xl:text-base flex items-center ${
             category === "etc" && "bg-purple-500 text-white"
           }`}
           onClick={() => handleClickCategory("etc")}
@@ -69,20 +69,20 @@ function Board({ handleClickCategory, category }: Props) {
           <p>etc</p>
         </div>
       </nav>
-      <div className="flex w-full border-b border-purple-500">
-        <div className="flex-[0.7] flex items-center justify-start"></div>
-        <div className="flex-[0.1] flex items-center justify-center">
+      <div className="w-full border-b border-purple-500 hidden xl:flex gap-5">
+        <div className="w-[550px] flex items-center justify-start"></div>
+        <div className="flex items-center justify-center">
           <p className="font-bold text-xs xl:text-sm">
             {width <= 1280 ? "Name" : "Username"}
           </p>
         </div>
-        <div className="flex-[0.05] flex items-center justify-center">
+        <div className="ml-3 flex items-center justify-center">
           <FaRegThumbsUp size={15} />
         </div>
-        <div className="flex-[0.1] flex items-center justify-center">
+        <div className="ml-8 flex items-center justify-center">
           <p className="font-bold text-xs xl:text-sm">Date</p>
         </div>
-        <div className="flex-[0.05] flex items-center justify-center">
+        <div className="ml-11 flex items-center justify-center">
           <p className="font-bold text-xs xl:text-sm">Views</p>
         </div>
       </div>
