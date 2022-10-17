@@ -13,6 +13,6 @@ export const useIsTruncated = (element: RefObject<HTMLParagraphElement>) => {
     return () => {
       window.removeEventListener("resize", resizeListener);
     };
-  }, []);
+  }, [element]);
   return isTruncated;
 };

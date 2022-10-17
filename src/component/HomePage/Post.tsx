@@ -15,7 +15,6 @@ import {
   likePost,
 } from "../../actions/postAction";
 import { useEffect } from "react";
-import PostCommentsModal from "./Post/PostCommentsModal";
 import { Comment } from "../../actions/postActionDispatch";
 import * as api from "../../api";
 import PostReportModal from "./Post/PostReportModal";
@@ -27,8 +26,9 @@ import { v4 as uuidv4 } from "uuid";
 import { MentionItem } from "react-mentions";
 import { mentionUser } from "../../actions/authAction";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
-import { useIsTruncated } from "../../util/useIsTruncated";
+import { useIsTruncated } from "../../hooks/useIsTruncated";
 import Carousel from "../CommonComponents/Carousel";
+import PostCommentsModal from "./Post/PostCommentsModal";
 
 interface Props {
   post: {
@@ -248,7 +248,12 @@ function Post({ post }: Props) {
       </div>
       <div className="my-2">
         <h2 className="font-bold text-lg">{post.title}</h2>
-        <p className="whitespace-pre line-clamp-2" ref={textRef}>
+        <p
+          className={`whitespace-pre ${
+            isOpenText ? "line-clamp-none" : "line-clamp-2"
+          }`}
+          ref={textRef}
+        >
           {post.message.split(" ").map((msg) => {
             if (msg.startsWith("#")) {
               return (
@@ -265,7 +270,14 @@ function Post({ post }: Props) {
             }
           })}
         </p>
-        {isTruncated && <button>{isOpenText ? "[less]" : "[more]"}</button>}
+        {isTruncated && (
+          <button
+            onClick={handleClickMoreButton}
+            className="hover:text-gray-500 text-gray-400 hover:underline"
+          >
+            {isOpenText ? "[less]" : "[more]"}
+          </button>
+        )}
         <div className="flex">
           <p className="text-gray-500 text-sm mr-1">
             {moment(post.createdAt).fromNow()}
