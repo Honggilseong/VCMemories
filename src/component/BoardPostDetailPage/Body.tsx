@@ -25,10 +25,10 @@ function Body({ isBoardPostLoading }: Props) {
   const handleClickDeleteBoardPostConfirm = () => {
     setIsDeleteBoardPost((prev) => !prev);
   };
-  const handleClickDeleteBoardPost = () => {
+  const handleClickDeleteBoardPost = async () => {
     if (!authUser.name || isLoading) return;
     setIsLoading(true);
-    dispatch(deleteBoardPost(params.boardpostid, authUser._id));
+    await dispatch(deleteBoardPost(params.boardpostid, authUser._id));
     setIsLoading(false);
     push("/forum/vrchat");
   };
@@ -42,7 +42,9 @@ function Body({ isBoardPostLoading }: Props) {
     <div className="w-full h-full">
       <div className="max-w-[900px] mx-auto p-3 xl:p-0">
         {isBoardPostLoading ? (
-          <RotateLoader color="#36d7b7" />
+          <div className="flex items-center justify-center h-[500px]">
+            <RotateLoader color="#36d7b7" />
+          </div>
         ) : !boardPost?.title ? (
           <div className="w-full mt-10 items-center flex justify-center flex-col">
             <h1 className="text-2xl font-bold">This post deleted...😢</h1>
