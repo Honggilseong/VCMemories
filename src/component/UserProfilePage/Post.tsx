@@ -23,6 +23,7 @@ function Post({ post, authUser }: any) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPostInfoOpen, setPostInfoOpen] = useState<boolean>(false);
   const [mentionUsers, setMentionUsers] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
   const handleValueComment = (
@@ -43,17 +44,25 @@ function Post({ post, authUser }: any) {
   const handleClickPostInfo = () => {
     setPostInfoOpen((prev) => !prev);
   };
-  const handleLikePost = () => {
-    dispatch(
+  const handleLikePost = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(
       likePost(post._id, authUser._id, post.userId, authUser.name, post.picture)
     );
+    setIsLoading(false);
   };
-  const handleDeleteUserComment = (commentId: string) => {
-    dispatch(deleteUserComment(post._id, commentId));
+  const handleDeleteUserComment = async (commentId: string) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(deleteUserComment(post._id, commentId));
+    setIsLoading(false);
   };
-  const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
+  const handleLeaveComment = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-    dispatch(
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(
       leaveComment(
         post._id,
         {
@@ -82,6 +91,7 @@ function Post({ post, authUser }: any) {
       commentUserId: "",
       commentUserName: "",
     });
+    setIsLoading(false);
   };
   const handleClickHashtag = (hashtag: string) => {
     const removeHashtag = hashtag.replace("#", "");

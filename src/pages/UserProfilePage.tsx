@@ -17,7 +17,7 @@ function UserProfilePage() {
   const searchUserInfo = useSelector((state: any) => state.searchUser);
   const authUser = useSelector((state: RootState) => state.auth);
 
-  const handleFollowUser = (searchUserId: string, userId: string) => {
+  const handleFollowUser = async (searchUserId: string, userId: string) => {
     if (isFollowingLoading) return;
     setIsFollowingLoading(true);
     if (searchUserInfo.isPrivate) {
@@ -27,10 +27,10 @@ function UserProfilePage() {
         profileImage: authUser.profilePicture,
       };
       if (!isFollowing) {
-        sendFollowRequest(searchUserId, senderInfo);
+        await sendFollowRequest(searchUserId, senderInfo);
         setIsFollowingLoading(false);
       } else {
-        dispatch(followUser(searchUserId, userId));
+        await dispatch(followUser(searchUserId, userId));
         setIsFollowingLoading(false);
       }
     } else {
@@ -44,7 +44,7 @@ function UserProfilePage() {
           console.log(error, "UserProfile = > sendNotification");
         }
       }
-      dispatch(followUser(searchUserId, userId));
+      await dispatch(followUser(searchUserId, userId));
       setIsFollowingLoading(false);
     }
     setIsFollowingLoading(false);
@@ -62,9 +62,12 @@ function UserProfilePage() {
     }
   }, [searchUserInfo.followers]);
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(getSearchingUser(username));
-    setIsLoading(false);
+    const getSearchingUserData = async () => {
+      setIsLoading(true);
+      await dispatch(getSearchingUser(username));
+      setIsLoading(false);
+    };
+    getSearchingUserData();
   }, [dispatch, username]);
   return (
     <section>

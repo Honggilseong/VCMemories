@@ -7,6 +7,7 @@ import * as api from "../../api";
 import FollowUsersModal from "./FollowUsersModal";
 import Post from "./Post";
 import { useInternalRouter } from "../../pages/routing";
+import { RotateLoader } from "react-spinners";
 
 const defaultProfilePicture =
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
@@ -67,7 +68,9 @@ function Body({
   return (
     <>
       {isLoading ? (
-        <p>loading...</p>
+        <div className="flex items-center justify-center h-[500px]">
+          <RotateLoader color="#36d7b7" />
+        </div>
       ) : (
         <section className="w-full h-full">
           <div className="max-w-xl mx-auto">
