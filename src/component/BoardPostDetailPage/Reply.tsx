@@ -70,11 +70,11 @@ function Reply({
   const handleClickCommentMore = () => {
     setIsShowMore((prev) => !prev);
   };
-  const handleLeaveReply = () => {
+  const handleLeaveReply = async () => {
     if (isLoading) return;
     if (!authUser.name) return toastError("you need to sign in");
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       boardPostLeaveReply(
         params.boardpostid,
         {
@@ -92,11 +92,11 @@ function Reply({
     setCommentValue("");
     setIsLoading(false);
   };
-  const handleDeleteReply = () => {
+  const handleDeleteReply = async () => {
     if (isLoading) return;
     if (!authUser.name) return toastError("you need to sign in");
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       deleteBoardPostReply(params.boardpostid, authUser._id, commentId, replyId)
     );
     setIsLoading(false);
@@ -104,11 +104,11 @@ function Reply({
   const handleClickEditReply = () => {
     setIsEditComment((prev) => !prev);
   };
-  const handleUpdateEditReply = () => {
+  const handleUpdateEditReply = async () => {
     if (isLoading) return;
     if (!authUser.name) return toastError("you need to sign in");
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       editBoardPostReply(
         params.boardpostid,
         commentId,

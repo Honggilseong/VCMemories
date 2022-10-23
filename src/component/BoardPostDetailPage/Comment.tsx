@@ -68,18 +68,23 @@ function Comment({
   const handleClickReply = () => {
     setOpenReply((prev) => !prev);
   };
-  const handleClickLikeComment = () => {
+  const handleClickLikeComment = async () => {
     if (isLoading) return;
     if (!authUser.name) return toastError("Please sign in");
     setIsLoading(true);
-    dispatch(likeBoardPostComment(params.boardpostid, authUser._id, commentId));
+    await dispatch(
+      likeBoardPostComment(params.boardpostid, authUser._id, commentId)
+    );
     setIsLoading(false);
   };
-  const handleClickLikeReply = (replyId: string) => {
+  const handleClickLikeReply = async (replyId: string) => {
+    if (isLoading) return;
     if (!authUser.name) return toastError("Please sign in");
-    dispatch(
+    setIsLoading(true);
+    await dispatch(
       likeBoardPostReply(params.boardpostid, authUser._id, commentId, replyId)
     );
+    setIsLoading(false);
   };
   const handleSetCommentValue = (e: any) => {
     setCommentValue(e.target.value);
@@ -87,11 +92,11 @@ function Comment({
   const handleClickCommentMore = () => {
     setIsShowMore((prev) => !prev);
   };
-  const handleLeaveReply = () => {
+  const handleLeaveReply = async () => {
     if (isLoading) return;
     if (!authUser.name) return toastError("Please sign in");
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       boardPostLeaveReply(
         params.boardpostid,
         {
@@ -112,10 +117,10 @@ function Comment({
   const handleClickEditComment = () => {
     setIsEditComment((prev) => !prev);
   };
-  const handleUpdateEditComment = () => {
+  const handleUpdateEditComment = async () => {
     if (isLoading) return;
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       editBoardPostComment(params.boardpostid, commentId, editCommentValue)
     );
     setIsLoading(false);

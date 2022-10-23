@@ -32,11 +32,11 @@ function BoardPost({
   const params = useParams();
   const authUser = useSelector((state: RootState) => state.auth);
 
-  const handleClickLikeBoardPost = () => {
+  const handleClickLikeBoardPost = async () => {
     if (isLoading) return;
     if (!authUser.name) return;
     setIsLoading(true);
-    dispatch(likeBoardPost(params.boardpostid, authUser._id));
+    await dispatch(likeBoardPost(params.boardpostid, authUser._id));
     setIsLoading(false);
   };
 
