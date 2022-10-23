@@ -27,11 +27,11 @@ function Comments({
   const dispatch = useAppDispatch();
   const authUser = useSelector((state: RootState) => state.auth);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleLeaveComment = () => {
+  const handleLeaveComment = async () => {
     if (isLoading) return;
     if (!authUser.name) return toastError("you need to sign in");
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       leaveBoardPostComment(params.boardpostid, {
         commentUserId: authUser._id,
         commentUserName: authUser.name,
@@ -45,15 +45,16 @@ function Comments({
     setCommentValue("");
     setIsLoading(false);
   };
-  const handleDeleteComment = (commentId: string) => {
+  const handleDeleteComment = async (commentId: string) => {
     if (isLoading) return;
     if (!authUser.name) return toastError("you need to sign in");
     setIsLoading(true);
-    dispatch(
+    await dispatch(
       deleteBoardPostComment(params.boardpostid, authUser._id, commentId)
     );
     setIsLoading(false);
   };
+
   return (
     <section className="w-full">
       <div className="border-b-2 border-black text-2xl font-bold py-3">
@@ -66,6 +67,9 @@ function Comments({
           handleLeaveComment={handleLeaveComment}
         />
       </div>
+      <section className="border">
+        <div>will be displayed comments</div>
+      </section>
       {comments?.map((comment) => (
         <Comment
           key={comment._id}

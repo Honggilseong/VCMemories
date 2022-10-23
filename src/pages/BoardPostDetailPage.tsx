@@ -9,9 +9,12 @@ function BoardPostDetailPage() {
   const dispatch = useAppDispatch();
   const [isBoardPostLoading, setIsBoardPostLoading] = useState<boolean>(false);
   useEffect(() => {
-    setIsBoardPostLoading(true);
-    dispatch(getBoardPost(params.boardpostid));
-    setIsBoardPostLoading(false);
+    const getBoardPostData = async () => {
+      setIsBoardPostLoading(true);
+      await dispatch(getBoardPost(params.boardpostid));
+      setIsBoardPostLoading(false);
+    };
+    getBoardPostData();
   }, []);
   return (
     <div>
