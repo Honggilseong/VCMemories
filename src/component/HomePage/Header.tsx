@@ -37,6 +37,7 @@ function Header() {
   const effectRef = useRef(false);
   const dispatch = useAppDispatch();
   const allUsers = useSelector((state: RootState) => state.allUsers);
+  const authUser = useSelector((state: RootState) => state.auth);
   const { push } = useInternalRouter();
   const { width } = useWindowSize();
 
@@ -122,7 +123,7 @@ function Header() {
   };
   useEffect(() => {
     const checkAuth = localStorage.getItem("profile") ?? "";
-    if (!checkAuth) return navigate.push("/auth");
+    if (!checkAuth) return;
     const isAuthenticated = JSON.parse(localStorage.getItem("profile") || "");
     dispatch(getUserInfo(isAuthenticated.user._id));
   }, [dispatch]);
@@ -194,13 +195,17 @@ function Header() {
             <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full lg:hidden">
               <MdSearch size={30} onClick={handleClickMobileSearch} />
             </div>
-            <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full">
-              <MdOutlineAddPhotoAlternate
-                size={30}
-                onClick={handleCreatePost}
-              />
-            </div>
-            <Notification />
+            {authUser._id && (
+              <>
+                <div className="cursor-pointer hover:bg-purple-400 p-2 rounded-full">
+                  <MdOutlineAddPhotoAlternate
+                    size={30}
+                    onClick={handleCreatePost}
+                  />
+                </div>
+                <Notification />
+              </>
+            )}
             <UserProfile />
           </div>
         </div>
