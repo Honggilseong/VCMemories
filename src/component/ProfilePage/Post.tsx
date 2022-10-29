@@ -31,6 +31,7 @@ function Post({ post, authUser }: any) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [mentionUsers, setMentionUsers] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
@@ -52,22 +53,33 @@ function Post({ post, authUser }: any) {
     setIsModalOpen(true);
   };
 
-  const handleDeletePost = () => {
-    dispatch(deletePost(post._id, authUser._id));
+  const handleDeletePost = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(deletePost(post._id, authUser._id));
     setIsModalOpen(false);
+    setIsLoading(false);
   };
 
-  const handleLikePost = () => {
-    dispatch(
+  const handleLikePost = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(
       likePost(post._id, authUser._id, post.userId, authUser.name, post.picture)
     );
+    setIsLoading(false);
   };
-  const handleDeleteUserComment = (postId: string, commentId: string) => {
-    dispatch(deleteUserComment(postId, commentId));
+  const handleDeleteUserComment = async (postId: string, commentId: string) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(deleteUserComment(postId, commentId));
+    setIsLoading(false);
   };
-  const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
+  const handleLeaveComment = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-    dispatch(
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(
       leaveComment(
         post._id,
         {
@@ -96,6 +108,7 @@ function Post({ post, authUser }: any) {
       commentUserId: "",
       commentUserName: "",
     });
+    setIsLoading(false);
   };
   const handleClickHashtag = (hashtag: string) => {
     const removeHashtag = hashtag.replace("#", "");
@@ -111,10 +124,13 @@ function Post({ post, authUser }: any) {
     setIsEdit(false);
     setEditTextValue({ message: "", title: "" });
   };
-  const handleClickUpdatePost = () => {
-    dispatch(
+  const handleClickUpdatePost = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(
       editUserPost(post._id, editTextValue.message, editTextValue.title)
     );
+    setIsLoading(false);
   };
   const handleClickUserMention = (username: string) => {
     const removeText = username.replace("@", "");

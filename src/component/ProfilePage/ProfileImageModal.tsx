@@ -27,6 +27,7 @@ interface AcceptedFiles {
 }
 function ProfileImageModal({ isModalOpen, setIsModalOpen, authUser }: any) {
   const [previewImage, setPreviewImage] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const onDrop = useCallback((acceptedFiles: AcceptedFiles[]) => {
     console.log(acceptedFiles);
     setPreviewImage(
@@ -37,7 +38,8 @@ function ProfileImageModal({ isModalOpen, setIsModalOpen, authUser }: any) {
   }, []);
   const dispatch = useAppDispatch();
   const handleUploadProfileImage = async () => {
-    if (!previewImage.length) return;
+    if (!previewImage.length || isLoading) return;
+    setIsLoading(true);
     const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_USERNAME}/upload`;
     const formData = new FormData();
     formData.append("file", previewImage[0]);
@@ -51,15 +53,18 @@ function ProfileImageModal({ isModalOpen, setIsModalOpen, authUser }: any) {
         body: formData,
       }).then();
       const data = await response.json();
-      dispatch(uploadProfileImage(authUser._id, data.public_id));
+      await dispatch(uploadProfileImage(authUser._id, data.public_id));
       setIsModalOpen(false);
+      setIsLoading(false);
       setPreviewImage([]);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setIsLoading(false);
     setPreviewImage([]);
   };
   return (
@@ -71,10 +76,12 @@ function ProfileImageModal({ isModalOpen, setIsModalOpen, authUser }: any) {
     >
       <DropZone onDrop={onDrop} previewImage={previewImage} />
       <div
-        className="flex justify-center items-center p-3 bg-purple-500 rounded-lg text-white mt-3 cursor-pointer"
+        className={`flex justify-center items-center p-3 bg-purple-500 rounded-lg text-white mt-3 cursor-pointer ${
+          isLoading ? "bg-gray-400" : "bg-purple-500"
+        }`}
         onClick={handleUploadProfileImage}
       >
-        <p>Upload your profile Image</p>
+        <p>{isLoading ? "Uploading..." : "Upload your profile Image"}</p>
       </div>
     </Modal>
   );

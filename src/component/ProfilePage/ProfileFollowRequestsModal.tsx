@@ -31,16 +31,16 @@ function ProfileFollowRequestsModal({
   const handleCloseModal = () => {
     setIsFollowRequestsModalOpen(false);
   };
-  const handleAcceptFollowRequest = (requestUserId: string) => {
+  const handleAcceptFollowRequest = async (requestUserId: string) => {
     if (isLoading) return;
     setIsLoading(true);
-    dispatch(acceptFollowRequest(authUser._id, requestUserId));
+    await dispatch(acceptFollowRequest(authUser._id, requestUserId));
     setIsLoading(false);
   };
-  const handleDeleteFollowRequest = (requestUserId: string) => {
+  const handleDeleteFollowRequest = async (requestUserId: string) => {
     if (isLoading) return;
     setIsLoading(true);
-    dispatch(deleteFollowRequest(authUser._id, requestUserId));
+    await dispatch(deleteFollowRequest(authUser._id, requestUserId));
     setIsLoading(false);
   };
   return (
