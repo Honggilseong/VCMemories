@@ -12,10 +12,10 @@ function HomePage() {
   const effectRef = useRef(false);
   const authUser = useSelector((state: any) => state.auth);
   useEffect(() => {
+    if (authUser._id) dispatch(getPosts(authUser.following));
+  }, [authUser]);
+  useEffect(() => {
     if (effectRef.current === false) {
-      if (authUser._id) {
-        dispatch(getPosts(authUser.following));
-      }
       dispatch(getAllUsers());
     }
     return () => {
