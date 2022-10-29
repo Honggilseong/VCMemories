@@ -12,6 +12,7 @@ import { Comment, HashTagPost } from "../../actions/hashtagPostsDispatch";
 import { useInternalRouter } from "../../pages/routing";
 import { RootState, useAppDispatch } from "../../reducers/store";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
+import { toastError } from "../../util/toast";
 import CloudinaryImage from "../CommonComponents/CloudinaryImage";
 import HashtagPostDetailModal from "./HashtagPostDetailModal";
 interface Props {
@@ -41,8 +42,9 @@ function Post({ hashtagPost }: Props) {
     setIsPostModalOpen(false);
   };
   const handleLeaveComment = async (event: React.FormEvent<EventTarget>) => {
-    if (!commentValue.comment || isLoading) return;
     event.preventDefault();
+    if (authUser._id) return toastError("Please sign in");
+    if (!commentValue.comment || isLoading) return;
     setIsLoading(true);
     await dispatch(
       leaveComment(
@@ -76,6 +78,7 @@ function Post({ hashtagPost }: Props) {
     setIsLoading(false);
   };
   const handleLikePost = async () => {
+    if (authUser._id) return toastError("Please sign in");
     if (isLoading) return;
     setIsLoading(true);
     await dispatch(

@@ -7,6 +7,7 @@ import { followUser, getSearchingUser } from "../actions/searchUserAction";
 import * as api from "../api";
 import { useSelector } from "react-redux";
 import { sendFollowRequest } from "../actions/authAction";
+import { toastError } from "../util/toast";
 
 function UserProfilePage() {
   const { username } = useParams();
@@ -18,6 +19,7 @@ function UserProfilePage() {
   const authUser = useSelector((state: RootState) => state.auth);
 
   const handleFollowUser = async (searchUserId: string, userId: string) => {
+    if (!authUser._id) return toastError("Please sign in");
     if (isFollowingLoading) return;
     setIsFollowingLoading(true);
     if (searchUserInfo.isPrivate) {

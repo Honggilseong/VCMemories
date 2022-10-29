@@ -13,6 +13,7 @@ import { mentionUser } from "../../actions/authAction";
 import { parsingMentionTag } from "../../util/parsingMentionTag";
 import { MentionItem } from "react-mentions";
 import CloudinaryImage from "../CommonComponents/CloudinaryImage";
+import { toastError } from "../../util/toast";
 
 function Post({ post, authUser }: any) {
   const [commentValue, setCommentValue] = useState<Comment>({
@@ -45,6 +46,7 @@ function Post({ post, authUser }: any) {
     setPostInfoOpen((prev) => !prev);
   };
   const handleLikePost = async () => {
+    if (!authUser._id) return toastError("Please sign in");
     if (isLoading) return;
     setIsLoading(true);
     await dispatch(
@@ -60,6 +62,7 @@ function Post({ post, authUser }: any) {
   };
   const handleLeaveComment = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
+    if (!authUser._id) return toastError("Please sign in");
     if (isLoading) return;
     setIsLoading(true);
     await dispatch(
