@@ -25,6 +25,7 @@ function Post({ hashtagPost }: Props) {
     commentUserName: "",
   });
   const [mentionUsers, setMentionUsers] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const authUser = useSelector((state: RootState) => state.auth);
   const { push } = useInternalRouter();
   const dispatch = useAppDispatch();
@@ -39,10 +40,11 @@ function Post({ hashtagPost }: Props) {
     push(`/explore/hashtags/${removeHashtag}`);
     setIsPostModalOpen(false);
   };
-  const handleLeaveComment = (event: React.FormEvent<EventTarget>) => {
-    if (!commentValue.comment) return;
+  const handleLeaveComment = async (event: React.FormEvent<EventTarget>) => {
+    if (!commentValue.comment || isLoading) return;
     event.preventDefault();
-    dispatch(
+    setIsLoading(true);
+    await dispatch(
       leaveComment(
         hashtagPost._id,
         {
@@ -71,9 +73,12 @@ function Post({ hashtagPost }: Props) {
       commentUserId: "",
       commentUserName: "",
     });
+    setIsLoading(false);
   };
-  const handleLikePost = () => {
-    dispatch(
+  const handleLikePost = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(
       likePost(
         hashtagPost._id,
         authUser._id,
@@ -82,6 +87,7 @@ function Post({ hashtagPost }: Props) {
         hashtagPost.picture
       )
     );
+    setIsLoading(false);
   };
   const handleInputComment = (
     e: any,
@@ -92,8 +98,11 @@ function Post({ hashtagPost }: Props) {
     setCommentValue({ ...commentValue, comment: e.target.value });
     setMentionUsers(mentions.map((mention) => mention.id));
   };
-  const handleDeleteUserComment = (commentId: string) => {
-    dispatch(deleteUserComment(hashtagPost._id, commentId));
+  const handleDeleteUserComment = async (commentId: string) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await dispatch(deleteUserComment(hashtagPost._id, commentId));
+    setIsLoading(false);
   };
   const handleClickUsername = (username: string) => {
     push(`/user/search/${username}`);

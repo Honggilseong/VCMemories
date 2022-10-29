@@ -36,12 +36,12 @@ function UserSettings() {
     dispatch(resetPosts());
     push("/auth");
   };
-  const handleClickAccountState = () => {
+  const handleClickAccountState = async () => {
     if (isLoading) return;
     setIsLoading(true);
     if (authUser.followRequests.length && authUser.isPrivate)
-      dispatch(deleteAllFollowRequests(authUser._id));
-    dispatch(switchAccountState(authUser._id));
+      await dispatch(deleteAllFollowRequests(authUser._id));
+    await dispatch(switchAccountState(authUser._id));
     setIsLoading(false);
   };
   const handleClickBio = () => {
@@ -53,10 +53,13 @@ function UserSettings() {
   ) => {
     setBioValue(event.target.value);
   };
-  const handleClickUpdateBio = () => {
+  const handleClickUpdateBio = async () => {
+    if (isLoading) return;
     setIsOpenBio(false);
     if (authUser.bio === bioValue) return;
-    dispatch(updateUserBio(authUser._id, bioValue));
+    setIsLoading(true);
+    await dispatch(updateUserBio(authUser._id, bioValue));
+    setIsLoading(false);
   };
   return (
     <div>

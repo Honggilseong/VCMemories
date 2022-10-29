@@ -23,11 +23,14 @@ function AuthPage() {
     name: "",
     confirmPassword: "",
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { push } = useInternalRouter();
 
-  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
+  const handleSubmit = async (event: React.FormEvent<EventTarget>) => {
+    if (isLoading) return;
+    setIsLoading(true);
     event.preventDefault();
     if (isSignUp) {
       if (!userInfo.email) return toastError("Enter your email");
@@ -42,9 +45,11 @@ function AuthPage() {
       if (userInfo.name.match(/^[0-9A-Za-z]+$/) === null) {
         return toastError("We only allow alphabets and numbers for username");
       }
-      dispatch(createUser(userInfo, push, location));
+      await dispatch(createUser(userInfo, push, location));
+      setIsLoading(false);
     } else {
-      dispatch(signIn(userInfo, push, location));
+      await dispatch(signIn(userInfo, push, location));
+      setIsLoading(false);
     }
   };
 
@@ -69,10 +74,7 @@ function AuthPage() {
   const handleClickTermsOrPrivacy = (name: string) => {
     push(name);
   };
-  // useEffect(() => {
-  //   const isAuthenticated = localStorage.getItem("profile") ?? "";
-  //   if (isAuthenticated) push("/");
-  // }, []);
+
   const props = {
     handleSignUp,
     handleShowPassword,
