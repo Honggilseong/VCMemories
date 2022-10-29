@@ -1,4 +1,3 @@
-import { Image } from "cloudinary-react";
 import { useSelector } from "react-redux";
 import { useInternalRouter } from "../../../pages/routing";
 import { RootState } from "../../../reducers/store";
@@ -12,9 +11,12 @@ function UserProfile() {
   const handleUserProfile = () => {
     navigate.push("/profile");
   };
+  const handleClickSignIn = () => {
+    navigate.push("/auth");
+  };
   return (
     <div className="ml-6">
-      {authUser ? (
+      {authUser._id ? (
         <div
           className="flex items-center justify-center cursor-pointer"
           onClick={handleUserProfile}
@@ -29,7 +31,10 @@ function UserProfile() {
           </div>
         </div>
       ) : (
-        <div className="bg-purple-800 border-2 border-purple-900 p-2 rounded-lg cursor-pointer hover:bg-purple-700">
+        <div
+          className="bg-purple-800 border-2 border-purple-900 p-2 rounded-lg cursor-pointer hover:bg-purple-700"
+          onClick={handleClickSignIn}
+        >
           Sign In
         </div>
       )}
