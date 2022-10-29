@@ -38,12 +38,9 @@ export const signIn = (formData: FormData): AxiosPromise => {
 };
 
 export const getFollowUsersList = (id: string, followList: string[]) => {
-  const user = JSON.parse(localStorage.getItem("profile") || "");
-
   const config = {
     headers: {
       "Content-type": "application/json",
-      Authorization: "Bearer " + user.user.token,
     },
   };
   return API.post(`/user/${id}/getfollowusers`, { followList }, config);
@@ -130,24 +127,18 @@ export const getUserInfo = (id: string): AxiosPromise => {
 export const getSearchingUser = (
   username: string | undefined
 ): AxiosPromise => {
-  const user = JSON.parse(localStorage.getItem("profile") || "");
-
   const config = {
     headers: {
       "Content-type": "application/json",
-      Authorization: "Bearer " + user.user.token,
     },
   };
   return API.get(`/user/search/${username}`, config);
 };
 
 export const getAllUsers = (): AxiosPromise => {
-  const user = JSON.parse(localStorage.getItem("profile") || "");
-
   const config = {
     headers: {
       "Content-type": "application/json",
-      Authorization: "Bearer " + user.user.token,
     },
   };
   return API.get("/user/getallusers", config);
@@ -266,24 +257,18 @@ export const createPost = (postData: any): AxiosPromise => {
 };
 
 export const getPosts = (followingUsers: string[]): AxiosPromise => {
-  const user = JSON.parse(localStorage.getItem("profile") || "");
-
   const config = {
     headers: {
       "Content-type": "application/json",
-      Authorization: "Bearer " + user.user.token,
     },
   };
   return API.post("/posts/", followingUsers, config);
 };
 
 export const getHashtagPosts = (hashtag: string): AxiosPromise => {
-  const user = JSON.parse(localStorage.getItem("profile") || "");
-
   const config = {
     headers: {
       "Content-type": "application/json",
-      Authorization: "Bearer " + user.user.token,
     },
   };
   return API.get(`/posts/explore/hashtags/${hashtag}`, config);
@@ -292,12 +277,6 @@ export const getHashtagPosts = (hashtag: string): AxiosPromise => {
 export const deletePost = (id: string, userId: string): AxiosPromise => {
   const user = JSON.parse(localStorage.getItem("profile") || "");
 
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: "Bearer " + user.user.token,
-    },
-  };
   return API.delete(`/posts/${id}`, {
     headers: {
       "Content-type": "application/json",
