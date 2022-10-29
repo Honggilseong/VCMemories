@@ -26,14 +26,7 @@ function Routes() {
   return (
     <AnimatePresence>
       <ReactRouterRoutes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route
           path="/profile"
@@ -43,32 +36,11 @@ function Routes() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/user/search/:username"
-          element={
-            <ProtectedRoute>
-              <UserProfilePage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/user/search/:username" element={<UserProfilePage />} />
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
         <Route path="/termsconditions" element={<TermsConditions />} />
-        <Route
-          path="/usersettings"
-          element={
-            <ProtectedRoute>
-              <UserSettings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/explore/hashtags/:hashtag"
-          element={
-            <ProtectedRoute>
-              <HashtagPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/usersettings" element={<UserSettings />} />
+        <Route path="/explore/hashtags/:hashtag" element={<HashtagPage />} />
         <Route path="/welcome" element={<LandingPage />} />
         <Route path="/forum/vrchat" element={<MainForumPage />} />
         <Route path="/forum/:id/create" element={<CreateBoardPostPage />} />
