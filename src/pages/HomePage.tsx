@@ -12,15 +12,16 @@ function HomePage() {
   const effectRef = useRef(false);
   const authUser = useSelector((state: any) => state.auth);
   useEffect(() => {
-    if (!authUser.name) return;
     if (effectRef.current === false) {
-      dispatch(getPosts(authUser.following));
+      if (authUser._id) {
+        dispatch(getPosts(authUser.following));
+      }
       dispatch(getAllUsers());
     }
     return () => {
       effectRef.current = true;
     };
-  }, [authUser]);
+  }, []);
   return (
     <div>
       <Header />
