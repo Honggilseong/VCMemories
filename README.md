@@ -1,46 +1,24 @@
-# Getting Started with Create React App
+# 프로젝트명: VCMemories
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[프로젝트에 대한 간략한 소개]
 
-## Available Scripts
+## 기능 소개
 
-In the project directory, you can run:
+- **게시글 및 댓글 시스템**
+  - 게시글 작성: 사용자가 자유롭게 생각과 경험을 공유할 수 있는 공간입니다.
+  - 댓글 기능: 각 게시글에 대한 생각을 자유롭게 나눌 수 있으며, 커뮤니케이션을 활발히 할 수 있습니다.
+  - 삭제 기능: 사용자는 자신의 게시글 및 댓글을 언제든지 삭제할 수 있어, 개인정보 관리에 유연함을 제공합니다.
 
-### `npm start`
+- **신고 시스템**
+  - 게시글 및 댓글 신고: 커뮤니티의 건전한 환경을 위해 사용자들은 부적절한 내용을 신고할 수 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **유저 프로필 관리**
+  - 프로필 검색: 다른 사용자의 프로필을 검색하여 콘텐츠와 관심사를 탐색할 수 있습니다.
+  - 프로필 페이지: 각 사용자는 개인의 특성을 반영한 프로필 페이지를 생성하고 관리할 수 있습니다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **사진 관리 기능**
+  - 사진 업로드: 손쉬운 인터페이스를 통해 사진을 업로드하고, 게시글에 생동감을 더할 수 있습니다.
+  - 사진 삭제: 업로드된 사진은 사용자의 선택에 따라 자유롭게 삭제가 가능합니다.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **이미지 최적화**
+  - 고성능 이미지 처리: 업로드된 사진은 자동으로 최적화되어, 빠른 로딩 시간과 효율적인 데이터 사용을 가능하게 합니다.
